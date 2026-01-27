@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('careers', function (Blueprint $table) {
+            // Job(id, title, description, location, type, isActive, ordering)
+            $table->id();
+            $table->string("title")->nullable();
+            $table->string("titleKm")->nullable();
+            $table->text("des")->nullable();
+            $table->text("desKm")->nullable();
+            $table->text("content")->nullable();
+            $table->text("contentKm")->nullable();
+            $table->string("location")->nullable();
+            $table->string("locationKm")->nullable();
+            $table->date("deadline")->nullable();
+            $table->string("type")->nullable();
+            $table->integer("ordering")->default(0);
+            $table->boolean("isActive")->default(false);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('careers');
+    }
+};
