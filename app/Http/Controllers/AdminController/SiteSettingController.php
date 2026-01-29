@@ -66,6 +66,9 @@ class SiteSettingController extends Controller
             case 'GENERAL':
                 $item = $this->_general($req);
                 break;
+            case 'INDIVIDUAL':
+                $item = $this->_individual($req);
+                break;
             default:
                 $item = [];
                 break;
@@ -175,6 +178,19 @@ class SiteSettingController extends Controller
             "titleKm" => $body->titleKm ?: "",
             "summary" => $body->summary ?: "",
             "summaryKm" => $body->summaryKm ?: ""
+        ];
+    }
+
+    private function _individual(Request $body) 
+    {
+        return [
+            "subtitle" => $body->subtitle ?: "",
+            "subtitleKm" => $body->subtitleKm ?: "",
+            "title" => $body->title ?: "",
+            "titleKm" => $body->titleKm ?: "",
+            "summary" => $body->summary ?: "",
+            "summaryKm" => $body->summaryKm ?: "",
+            "privacy" => $body->privacy ?: [],
         ];
     }
 
