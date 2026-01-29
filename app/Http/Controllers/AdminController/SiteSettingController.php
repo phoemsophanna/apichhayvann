@@ -322,6 +322,7 @@ class SiteSettingController extends Controller
             'working2' => $body->working2 ?: "",
             'phoneNumber' => $body->phoneNumber ?: "",
             'address' => $body->address ?: "",
+            'addressKm' => $body->addressKm ?: "",
             'embedMap' => $body->embedMap ?: "",
             'facebookLink' => $body->facebookLink ?: "",
             'instagramLink' => $body->instagramLink ?: "",
@@ -331,7 +332,14 @@ class SiteSettingController extends Controller
             'appId' => $body->appId ?: "",
             'pageId' => $body->pageId ?: "",
             "thumbnail" => $body->thumbnail ?: "",
-            "contactFormEmail" => $body->contactFormEmail ?: "",
+            "subtitle" => $body->subtitle ?: "",
+            "subtitleKm" => $body->subtitleKm ?: "",
+            "title" => $body->title ?: "",
+            "titleKm" => $body->titleKm ?: "",
+            "titlePopup" => $body->titlePopup ?: "",
+            "titlePopupKm" => $body->titlePopupKm ?: "",
+            "summaryPopup" => $body->summaryPopup ?: "",
+            "summaryPopupKm" => $body->summaryPopupKm ?: "",
         ];
     }
 

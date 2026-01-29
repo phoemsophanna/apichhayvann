@@ -13,20 +13,66 @@ use App\Models\Testimonial;
 use App\Models\WebHosting;
 use Illuminate\Http\Request;
 use App\Models\DefaultPlan;
+use App\Models\Service;
+use App\Models\Award;
+use App\Models\History;
+use App\Models\Category;
+use App\Models\Team;
+use App\Models\Partner;
+use App\Models\Product;
+use App\Models\ExchangeRate;
+use App\Models\CurrencyConvert;
+use App\Models\Trading;
 use App\Models\PerformanceType;
+use Carbon\Carbon;
 
 class WebPageController extends Controller
 {
-    public function testimonialPage()
+    public function testimonialPage(Request $request)
     {
+        $lang = $request->header("Accept-Language");
+        $testimonial = Testimonial::where([["isActive", 1]])->orderBy('ordering', 'asc')->get();
+        $testimonial->each(function($q) use ($lang) {
+            $q->reviewerPosition = $lang == "KHM" && !empty($q->reviewerPositionKm) ? $q->reviewerPositionKm : $q->reviewerPosition;
+            $q->comment = $lang == "KHM" && !empty($q->commentKm) ? $q->commentKm : $q->comment;
+        });
         $meta = PageBanner::where("pageTitle", "TestimonialPage")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
-            "testimonials" => Testimonial::where([["isActive", true]])->orderBy('ordering', 'asc')->get(),
-            "meta" => $meta
+            "testimonials" => $testimonial,
+            "banner" => $meta
         ], 200);
     }
+
+    public function exchangePage(Request $request)
+    {
+        $lang = $request->header("Accept-Language");
+        $exchange = ExchangeRate::where([["status", 1]])->get();
+        $currency = CurrencyConvert::where([["status", 1]])->get();
+        $currency->each(function($q){
+            $q->subCurrency = json_decode($q->subCurrency);
+            $q['date'] = Carbon::parse($q->updated_at)->format('j M Y, g:i a');
+        });
+
+        $service = SiteSetting::where("type", "SERVICE")->first();
+        $service = json_decode($service->content);
+        $service->convertSummary = $lang == "KHM" && !empty($service->convertSummaryKm) ? $service->convertSummaryKm : $service->convertSummary;
+        $service->description = $lang == "KHM" && !empty($service->descriptionKm) ? $service->descriptionKm : $service->description;
+        $service->summary = $lang == "KHM" && !empty($service->summaryKm) ? $service->summaryKm : $service->summary;
+        $service->title = $lang == "KHM" && !empty($service->titleKm) ? $service->titleKm : $service->title; 
+        
+        $meta = PageBanner::where("pageTitle", "ExchangePage")->first();
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "exchange" => $exchange,
+            "currency" => $currency,
+            "service" => $service,
+            "banner" => $meta
+        ], 200);
+    }
+
     public function webHostingPage()
     {
         $webHosting = SiteSetting::where("type", "WEB_HOSTING")->first();
@@ -43,41 +89,221 @@ class WebPageController extends Controller
             ]
         ], 200);
     }
-    public function aboutUsPage()
+    public function aboutUsPage(Request $request)
     {
-        $whoWeAre = SiteSetting::where("type", "WHO_WE_ARE")->first();
-        $ourGoal = SiteSetting::where("type", "OUR_GOAL")->first();
-        $whyChooseUs = SiteSetting::where("type", "WHY_CHOOSE_US")->first();
-        $skillset = SiteSetting::where("type", "SKILLSET")->first();
-        $meta = PageBanner::where("pageTitle", "AboutPage")->first();
+        $lang = $request->header("Accept-Language");
+        $aboutUs = SiteSetting::where("type", "ABOUTCOMPANY")->first();
+        $aboutUs = json_decode($aboutUs->content);
+        $aboutUs->subtitle = $lang == "KHM" && !empty($aboutUs->subtitleKm) ? $aboutUs->subtitleKm : $aboutUs->subtitle;
+        $aboutUs->aboutCompany = $lang == "KHM" && !empty($aboutUs->aboutCompanyKm) ? $aboutUs->aboutCompanyKm : $aboutUs->aboutCompany;
+        $aboutUs->companyName = $lang == "KHM" && !empty($aboutUs->companyNameKm) ? $aboutUs->companyNameKm : $aboutUs->companyName;
+        $aboutUs->desMission = $lang == "KHM" && !empty($aboutUs->desMissionKm) ? $aboutUs->desMissionKm : $aboutUs->desMission;
+        $aboutUs->desValue = $lang == "KHM" && !empty($aboutUs->desValueKm) ? $aboutUs->desValueKm : $aboutUs->desValue;
+        $aboutUs->desVision = $lang == "KHM" && !empty($aboutUs->desVisionKm) ? $aboutUs->desVisionKm : $aboutUs->desVision;
+        $aboutUs->subtitleAward = $lang == "KHM" && !empty($aboutUs->subtitleAwardKm) ? $aboutUs->subtitleAwardKm : $aboutUs->subtitleAward;
+        $aboutUs->subtitlePartner = $lang == "KHM" && !empty($aboutUs->subtitlePartnerKm) ? $aboutUs->subtitlePartnerKm : $aboutUs->subtitlePartner;
+        $aboutUs->summaryAward = $lang == "KHM" && !empty($aboutUs->summaryAwardKm) ? $aboutUs->summaryAwardKm : $aboutUs->summaryAward;
+        $aboutUs->titleAward = $lang == "KHM" && !empty($aboutUs->titleAwardKm) ? $aboutUs->titleAwardKm : $aboutUs->titleAward;
+        $aboutUs->titleMission = $lang == "KHM" && !empty($aboutUs->titleMissionKm) ? $aboutUs->titleMissionKm : $aboutUs->titleMission;
+        $aboutUs->titlePartner = $lang == "KHM" && !empty($aboutUs->titlePartnerKm) ? $aboutUs->titlePartnerKm : $aboutUs->titlePartner;
+        $aboutUs->titleValue = $lang == "KHM" && !empty($aboutUs->titleValueKm) ? $aboutUs->titleValueKm : $aboutUs->titleValue;
+        $aboutUs->titleVision = $lang == "KHM" && !empty($aboutUs->titleVisionKm) ? $aboutUs->titleVisionKm : $aboutUs->titleVision;
+
+        $partner = Partner::where("isActive",1)->get();
+        $awards = Award::where("isActive",1)->orderby('ordering')->get();
+        $awards->each(function($q) use ($lang) {
+            $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title; 
+            $q->summary = $lang == "KHM" && !empty($q->summaryKm) ? $q->summaryKm : $q->summary;
+            $q->makeHidden("titleKm","summaryKm"); 
+        });
+        $meta = PageBanner::where("pageTitle", "ABOUT")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
-
-            "performances" => Performance::where([["isActive", true]])->orderBy('ordering', 'asc')->get(),
-            "skillsets" => Skillset::where([["isActive", true]])->orderBy('ordering', 'asc')->get(),
-            "technologies" => Technology::where([["isActive", true]])->orderBy('ordering', 'asc')->get(),
-            "settings" => [
-                "whoWeAre" => $whoWeAre ? json_decode($whoWeAre->content) : null,
-                "ourGoal" => $ourGoal ? json_decode($ourGoal->content) : null,
-                "whyChooseUs" =>  $whyChooseUs ? json_decode($whyChooseUs->content) : null,
-                "skillset" =>  $skillset ? json_decode($skillset->content) : null,
-                "meta" => $meta
-            ]
+            "aboutus" => $aboutUs,
+            "partners" => $partner,
+            "awards" => $awards,
+            "banner" => $meta
         ], 200);
     }
-    public function faqPage()
+
+    public function whyChoose(Request $request) {
+        $lang = $request->header("Accept-Language");
+        $why_choose = SiteSetting::where("type", "WHYCHOOSE")->first();
+        $why_choose = json_decode($why_choose->content);
+        $why_choose->title = $lang == "KHM" && !empty($why_choose->titleKm) ? $why_choose->titleKm : $why_choose->title;
+        $why_choose->titleOne = $lang == "KHM" && !empty($why_choose->titleOneKm) ? $why_choose->titleOneKm : $why_choose->titleOne;
+        $why_choose->titleTwo = $lang == "KHM" && !empty($why_choose->titleTwoKm) ? $why_choose->titleTwoKm : $why_choose->titleTwo;
+        $why_choose->titleThree = $lang == "KHM" && !empty($why_choose->titleThreeKm) ? $why_choose->titleThreeKm : $why_choose->titleThree;
+        $why_choose->titleFour = $lang == "KHM" && !empty($why_choose->titleFourKm) ? $why_choose->titleFourKm : $why_choose->titleFour;
+        $why_choose->titleFive = $lang == "KHM" && !empty($why_choose->titleFiveKm) ? $why_choose->titleFiveKm : $why_choose->titleFive;
+        $why_choose->titleSix = $lang == "KHM" && !empty($why_choose->titleSixKm) ? $why_choose->titleSixKm : $why_choose->titleSix;
+        $why_choose->desOne = $lang == "KHM" && !empty($why_choose->desOneKm) ? $why_choose->desOneKm : $why_choose->desOne;
+        $why_choose->desTwo = $lang == "KHM" && !empty($why_choose->desTwoKm) ? $why_choose->desTwoKm : $why_choose->desTwo;
+        $why_choose->desThree = $lang == "KHM" && !empty($why_choose->desThreeKm) ? $why_choose->desThreeKm : $why_choose->desThree;
+        $why_choose->desFour = $lang == "KHM" && !empty($why_choose->desFourKm) ? $why_choose->desFourKm : $why_choose->desFour;
+        $why_choose->desFive = $lang == "KHM" && !empty($why_choose->desFiveKm) ? $why_choose->desFiveKm : $why_choose->desFive;
+        $why_choose->desSix = $lang == "KHM" && !empty($why_choose->desSixKm) ? $why_choose->desSixKm : $why_choose->desSix;
+        $why_choose->subtitle = $lang == "KHM" && !empty($why_choose->subtitleKm) ? $why_choose->subtitleKm : $why_choose->subtitle;
+        $why_choose->summary = $lang == "KHM" && !empty($why_choose->summaryKm) ? $why_choose->summaryKm : $why_choose->summary;
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "why_choose" => $why_choose,
+        ], 200);
+    }
+
+    public function faqPage(Request $request)
     {
-        $contact = SiteSetting::where("type", "CONTACT")->first();
+        $lang = $request->header("Accept-Language");
+        $category = Category::where("status", 1)->orderby("ordering")->get();
+        $category->each(function($q) use ($lang){
+            $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title;
+            $faq = $q->faq;
+            $faq->each(function($query) use ($lang){
+                $query->answer = $lang == "KHM" && !empty($query->answerKm) ? $query->answerKm : $query->answer;
+                $query->question = $lang == "KHM" && !empty($query->questionKm) ? $query->questionKm : $query->question;
+                $query->makeHidden("answerKm","questionKm");
+            });
+            $q->faq = $faq;
+        });
         $meta = PageBanner::where("pageTitle", "FaqPage")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
-            "faqs" => Faq::where([["isActive", true]])->orderBy('ordering', 'asc')->get(),
-            "contact" => $contact ? json_decode($contact->content) : null,
-            "meta" => $meta
+            "category" => $category,
+            "banner" => $meta
         ], 200);
     }
+
+    public function organizationPage(Request $request)
+    {
+        $lang = $request->header("Accept-Language");
+        $organization = SiteSetting::where("type", "ORGANIZATION")->first();
+        $organization = json_decode($organization->content);
+        $organization->des = $lang == "KHM" && !empty($organization->desKm) ? $organization->desKm : $organization->des;
+        $banner = PageBanner::where("pageTitle", "ORGANIZATION")->first();
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "organization" => $organization,
+            "banner" => $banner
+        ], 200);
+    }
+
+    public function historyPage(Request $request) {
+        $lang = $request->header("Accept-Language");
+        $history = History::where("isActive",1)->orderby("ordering")->get();
+        $history->each(function($q) use ($lang) {
+            $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title;
+            $q->summary = $lang == "KHM" && !empty($q->summaryKm) ? $q->summaryKm : $q->summary;
+        });
+        $banner = PageBanner::where("pageTitle", "HISTORY")->first();
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "history" => $history,
+            "banner" => $banner
+        ], 200);
+    }
+
+    public function teamPage(Request $request) {
+        $lang = $request->header("Accept-Language");
+        $team = Team::where("isActive",1)->orderby("ordering")->get();
+        $team->each(function($q) use ($lang) {
+            $q->name = $lang == "KHM" && !empty($q->nameKm) ? $q->nameKm : $q->name;
+            $q->position = $lang == "KHM" && !empty($q->positionKm) ? $q->positionKm : $q->position;
+            $q->experience = $lang == "KHM" && !empty($q->experienceKm) ? $q->experienceKm : $q->experience;
+        });
+        $banner = PageBanner::where("pageTitle", "TEAM")->first();
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "team" => $team,
+            "banner" => $banner
+        ], 200);
+    }
+
+    public function servicePage(Request $request, $id) {
+        $lang = $request->header("Accept-Language");
+        $service = Service::findOrFail($id);
+        $service->title = $lang == "KHM" && !empty($service->titleKm) ? $service->titleKm : $service->title;
+        $service->content = $lang == "KHM" && !empty($service->contentKm) ? $service->contentKm : $service->content;
+
+        $banner = PageBanner::where("pageTitle", "SERVICE")->first();
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "service" => $service,
+            "banner" => $banner
+        ], 200);
+    }
+
+    public function productsPage(Request $request) {
+        $lang = $request->header("Accept-Language");
+        $product = Product::where("status",1)->orderby("ordering")->get();
+        $product->each(function($q) use ($lang) {
+            $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title;
+            $q->type = $lang == "KHM" && !empty($q->typeKm) ? $q->typeKm : $q->type;
+            $q->country = $lang == "KHM" && !empty($q->countryKm) ? $q->countryKm : $q->country;
+            $q->gallery = json_decode($q->gallery);
+        });
+        $banner = PageBanner::where("pageTitle", "PRODUCT")->first();
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "products" => $product,
+            "banner" => $banner
+        ], 200);
+    }
+
+    public function productPage(Request $request,$id) {
+        $lang = $request->header("Accept-Language");
+        $product = Product::findOrFail($id);
+        $product->title = $lang == "KHM" && !empty($product->titleKm) ? $product->titleKm : $product->title;
+        $product->type = $lang == "KHM" && !empty($product->typeKm) ? $product->typeKm : $product->type;
+        $product->country = $lang == "KHM" && !empty($product->countryKm) ? $product->countryKm : $product->country;
+        $product->description = $lang == "KHM" && !empty($product->descriptionKm) ? $product->descriptionKm : $product->description;
+        $product->gallery = json_decode($product->gallery);
+        $banner = PageBanner::where("pageTitle", "PRODUCT")->first();
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "products" => $product,
+            "banner" => $banner
+        ], 200);
+    }
+
+    public function tradingPage(Request $request)
+    {
+        $lang = $request->header("Accept-Language");
+        $trading = SiteSetting::where("type", "TRADING")->first();
+        $trading = json_decode($trading->content);
+        $trading->subtitle = $lang == "KHM" && !empty($trading->subtitleKm) ? $trading->subtitleKm : $trading->subtitle;
+        $trading->title = $lang == "KHM" && !empty($trading->titleKm) ? $trading->titleKm : $trading->title;
+        $tradings = Trading::where("status",1)->orderby("ordering")->get();
+        $tradings->each(function($q) use ($lang) {
+            $q->step = $lang == "KHM" && !empty($q->stepKm) ? $q->stepKm : $q->step;
+            $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title;
+            $q->summary = $lang == "KHM" && !empty($q->summaryKm) ? $q->summaryKm : $q->summary;
+        });
+        $howTrade = SiteSetting::where("type", "HOWTRADE")->first();
+        $howTrade = json_decode($howTrade->content);
+        $howTrade->des = $lang == "KHM" && !empty($howTrade->desKm) ? $howTrade->desKm : $howTrade->des;
+        $howTrade->subtitle = $lang == "KHM" && !empty($howTrade->subtitleKm) ? $howTrade->subtitleKm : $howTrade->subtitle;
+        $howTrade->title = $lang == "KHM" && !empty($howTrade->titleKm) ? $howTrade->titleKm : $howTrade->title; 
+        $banner = PageBanner::where("pageTitle", "TRADING")->first();
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "trading" => $trading,
+            "tradings" => $tradings,
+            "howTrade" => $howTrade,
+            "banner" => $banner
+        ], 200);
+    }
+
     public function privacyPolicy()
     {
         $privacyPolicy = SiteSetting::where("type", "PRIVACY_POLICY")->first();
@@ -101,24 +327,33 @@ class WebPageController extends Controller
         ], 200);
     }
 
+    public function layouts(Request $request) {
+        $contact = SiteSetting::where("type", "CONTACT")->first();
+        $general = SiteSetting::where("type", "GENERAL")->first();
+        $service = Service::select("title","titleKm","id")->where("isActive", 1)->orderby("ordering")->get();
+        $contact = json_decode($contact->content);
+        $contact->phoneNumber = $contact->phoneNumber ? json_decode($contact->phoneNumber) : null;
+
+        return response()->json([
+            'contact' => $contact,
+            'general' => $general ? json_decode($general->content) : null,
+            'services' => $service,
+            'status' => 'success'
+        ],200);
+    }
+
     public function contactUs()
     {
         $contact = SiteSetting::where("type", "CONTACT")->first();
-        $aboutCompany = SiteSetting::where("type", "ABOUT_COMPANY")->first();
-        $pageBanners = PageBanner::where("isActive", true)->get();
+        $contact = json_decode($contact->content);
+        $contact->phoneNumber = json_decode($contact->phoneNumber);
         $meta = PageBanner::where("pageTitle", "ContactPage")->first();
-        $pageBanner = null;
-        foreach ($pageBanners as $page) {
-            $pageBanner[$page->pageTitle] = $page->image;
-        }
 
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
-            "contact" => $contact ? json_decode($contact->content) : null,
-            "aboutCompany" => $aboutCompany ? json_decode($aboutCompany->content) : null,
-            "pageBanner" => $pageBanner,
-            "meta" => $meta
+            "contact" => $contact,
+            "pageBanner" => $meta
         ], 200);
     }
 

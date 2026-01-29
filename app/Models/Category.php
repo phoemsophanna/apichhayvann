@@ -17,4 +17,8 @@ class Category extends Model
         "ordering",
         "status"
     ];
+
+    public function faq() {
+        return $this->hasMany(Faq::class, "mainId", "id");
+    }
 }

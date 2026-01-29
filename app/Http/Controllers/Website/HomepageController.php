@@ -14,78 +14,65 @@ use App\Models\Technology;
 use App\Models\Testimonial;
 use App\Models\WebHosting;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class HomepageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $whoWeAre = SiteSetting::where("type", "WHO_WE_ARE")->first();
-        $service = SiteSetting::where("type", "SERVICE")->first();
-        $whyChooseUs = SiteSetting::where("type", "WHY_CHOOSE_US")->first();
-        $project = SiteSetting::where("type", "PROJECT")->first();
-        $testimonial = SiteSetting::where("type", "TESTIMONIAL")->first();
-        $webHosting = SiteSetting::where("type", "WEB_HOSTING")->first();
-        $techNews = SiteSetting::where("type", "TECH_NEWS")->first();
-        $meta = PageBanner::where("pageTitle", "HomePage")->first();
+        $lang = $request->header("Accept-Language");
+        $homepage = SiteSetting::where("type", "HOMEPAGE")->first();
+        $homepage = json_decode($homepage->content);
+        $homepage->aboutCompany = $lang == "KHM" && !empty($homepage->aboutCompanyKm) ? $homepage->aboutCompanyKm : $homepage->aboutCompany;
+        $homepage->companyName = $lang == "KHM" && !empty($homepage->companyNameKm) ? $homepage->companyNameKm : $homepage->companyName;
+        $homepage->subtitle = $lang == "KHM" && !empty($homepage->subtitleKm) ? $homepage->subtitleKm : $homepage->subtitle;
+        $homepage->subtitleTwo = $lang == "KHM" && !empty($homepage->subtitleTwoKm) ? $homepage->subtitleTwoKm : $homepage->subtitleTwo;
+        $homepage->summary = $lang == "KHM" && !empty($homepage->summaryKm) ? $homepage->summaryKm : $homepage->summary ;
+        $homepage->title = $lang == "KHM" && !empty($homepage->titleKm) ? $homepage->titleKm : $homepage->title;
+
+        $howTrade = SiteSetting::where("type", "HOWTRADE")->first();
+        $howTrade = json_decode($howTrade->content);
+        $howTrade->des = $lang == "KHM" && !empty($howTrade->desKm) ? $howTrade->desKm : $howTrade->des;
+        $howTrade->subtitle = $lang == "KHM" && !empty($howTrade->subtitleKm) ? $howTrade->subtitleKm : $howTrade->subtitle;
+        $howTrade->title = $lang == "KHM" && !empty($howTrade->titleKm) ? $howTrade->titleKm : $howTrade->title;        
+
+        $news = News::select("id", "category_id", "title", "titleKm", "date", "image")->where("isActive", 1)->where("isDisplayHomepage", 1)->orderby("ordering")->limit(3)->get();
+        $news->each(function($query) use ($lang) {
+            $query->title = $lang == "KHM" && !empty($query->titleKm) ? $query->titleKm : $query->title;
+            $category = $query->category;
+            $category->each(function($q) use ($lang) {
+                $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title;
+                $q->makeHidden("titleKm");
+            });
+            $query->category = $category;
+            $query->date = Carbon::parse($query->date)->format("d.m.Y");
+            $query->makeHidden("titleKm");
+        });
 
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
-            "meta" => $meta,
-            "services" => Service::select("id", "title", "summary", "image")
-                ->where([['isDisplayHomepage', true], ['isActive', true]])
-                ->orderBy('ordering', 'asc')
-                ->get(),
-            "performances" => Performance::select("id", "title", "description", "image")->where([["isActive", true]])->orderBy('ordering', 'asc')->get(),
-            "projects" => Project::select("id", "title", "image", "websiteLink", "facebookLink", "instagramLink", "telegramLink", "appStore", "playStore")
-                ->where([['isDisplayHomepage', true], ["isActive", true]])
-                ->orderBy('ordering', 'asc')
-                ->get(),
-            "testimonials" => Testimonial::select("id", "reviewerName", "reviewerPosition", "comment", "reviewerProfile")
-                ->where([['isDisplayHomepage', true], ["isActive", true]])
-                ->orderBy('ordering', 'asc')
-                ->get(),
-            "hostingList" => WebHosting::select(
-                "id",
-                "type",
-                "pricePerYear",
-                "dataStorage",
-                "bandwidth",
-                "emailAccounts",
-                "database",
-                "domainAddOn",
-                "maxHourlyEmailSend",
-                "isFreeDomain",
-                "isMostPopular",
-                "isGoodSpeed"
-            )
-                ->where([['isDisplayHomepage', true], ["isActive", true]])
-                ->orderBy('ordering', 'asc')
-                ->get(),
-            "articles" => News::select("id", "title", "image", "summary", "created_at", "updated_at")
-                ->where([['isDisplayHomepage', true], ["isActive", true]])
-                ->orderBy('ordering', 'asc')
-                ->get(),
-            "technologies" => Technology::select("id", "title", "image")->where([["isActive", true]])->orderBy('ordering', 'asc')->get(),
-            "settings" => [
-                "whoWeAre" => $whoWeAre ? json_decode($whoWeAre->content) : null,
-                "service" => $service ? json_decode($service->content) : null,
-                "whyChooseUs" => $whyChooseUs ? json_decode($whyChooseUs->content) : null,
-                "project" => $project ? json_decode($project->content) : null,
-                "testimonial" => $testimonial ? json_decode($testimonial->content) : null,
-                "webHosting" => $webHosting ? json_decode($webHosting->content) : null,
-                "techNews" => $techNews ? json_decode($techNews->content) : null,
-            ]
+            "homepage" => $homepage,
+            "howTrade" => $howTrade,
+            "news" => $news 
         ], 200);
     }
 
-    public function sliders()
+    public function sliders(Request $request)
     {
-        $banners = Banner::select("id", "title", "subtitle", "description", "image", "linkLabel", "linkTo", "redirectNewTap")
+        $lang = $request->header("Accept-Language");
+        $banners = Banner::select("id", "title", "titleKm", "description", "descriptionKm", "image", "linkLabel", "linkLabelKm", "linkTo", "redirectNewTap")
             ->where([['isActive', true]])
             ->orderBy('ordering', 'asc')
             ->get();
-
+        
+        $banners->each(function($q) use ($lang){
+            $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title;
+            $q->description = $lang == "KHM" && !empty($q->descriptionKm) ? $q->descriptionKm : $q->description;
+            $q->linkLabel = $lang == "KHM" && !empty($q->linkLabelKm) ? $q->linkLabelKm : $q->linkLabel;
+            $q->makeHidden("titleKm","descriptionKm","linkLabelKm");
+        });
+        
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
