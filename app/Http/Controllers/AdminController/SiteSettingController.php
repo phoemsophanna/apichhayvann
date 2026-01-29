@@ -372,6 +372,7 @@ class SiteSettingController extends Controller
             "titlePopupKm" => $body->titlePopupKm ?: "",
             "summaryPopup" => $body->summaryPopup ?: "",
             "summaryPopupKm" => $body->summaryPopupKm ?: "",
+            "contactFormEmail" => $body->contactFormEmail ?: ""
         ];
     }
 
