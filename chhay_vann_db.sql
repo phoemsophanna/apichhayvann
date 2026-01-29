@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2026 at 07:47 AM
+-- Generation Time: Jan 29, 2026 at 04:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -113,6 +113,32 @@ INSERT INTO `careers` (`id`, `title`, `titleKm`, `des`, `desKm`, `content`, `con
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `career_applies`
+--
+
+CREATE TABLE `career_applies` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `firstname` varchar(255) DEFAULT NULL,
+  `lastname` varchar(255) DEFAULT NULL,
+  `phoneNumber` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `fileCv` varchar(255) DEFAULT NULL,
+  `message` text DEFAULT NULL,
+  `careerId` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `career_applies`
+--
+
+INSERT INTO `career_applies` (`id`, `firstname`, `lastname`, `phoneNumber`, `email`, `fileCv`, `message`, `careerId`, `created_at`, `updated_at`) VALUES
+(1, 'Phanna', 'Phoem', '+855 17843304', 'admin@gmail.com', NULL, 'Test', 1, '2026-01-29 02:19:37', '2026-01-29 02:19:37');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `categories`
 --
 
@@ -163,7 +189,8 @@ CREATE TABLE `currency_converts` (
 
 INSERT INTO `currency_converts` (`id`, `currency`, `type`, `subCurrency`, `rate`, `image`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Khmer Riel', 'KHR', '[{\"id\":2,\"image\":\"\\/currency\\/CamGoTech_PbEpk5obIP3q8AorcQ3Sz64NAemq41xd1E1cJxRB.png\",\"title\":\"US Dollar\",\"type\":\"USD\",\"rate\":\"1\"}]', '4050', '/currency/CamGoTech_Zg0T5H3gJ6YDixb8NmF5aScAvUAOlzjB16klaMSr.png', 1, '2026-01-11 21:09:38', '2026-01-26 20:30:14'),
-(2, 'US Dollar', 'USD', '[{\"id\":1,\"image\":\"\\/currency\\/CamGoTech_Zg0T5H3gJ6YDixb8NmF5aScAvUAOlzjB16klaMSr.png\",\"title\":\"Khmer Riel\",\"type\":\"KHR\",\"rate\":\"4090\"}]', '1', '/currency/CamGoTech_PbEpk5obIP3q8AorcQ3Sz64NAemq41xd1E1cJxRB.png', 1, '2026-01-12 00:08:38', '2026-01-12 00:08:38');
+(2, 'US Dollar', 'USD', '[{\"id\":1,\"image\":\"\\/currency\\/CamGoTech_Zg0T5H3gJ6YDixb8NmF5aScAvUAOlzjB16klaMSr.png\",\"title\":\"Khmer Riel\",\"type\":\"KHR\",\"rate\":\"4090\"}]', '1', '/currency/CamGoTech_PbEpk5obIP3q8AorcQ3Sz64NAemq41xd1E1cJxRB.png', 1, '2026-01-12 00:08:38', '2026-01-12 00:08:38'),
+(3, 'Chinese', 'CNY', '[]', '6.95', '/currency/CamGoTech_9yABhKnjys8XEP2VG3tFImFxwxHkDevtWnBEKVv1.jpg', 1, '2026-01-28 18:11:16', '2026-01-28 18:11:16');
 
 -- --------------------------------------------------------
 
@@ -297,7 +324,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (19, '2026_01_12_072217_create_products_table', 8),
 (20, '2026_01_13_020804_create_tradings_table', 9),
 (21, '2026_01_13_045646_create_categories_table', 10),
-(22, '2026_01_19_025951_create_permission_tables', 11);
+(22, '2026_01_19_025951_create_permission_tables', 11),
+(23, '2026_01_29_080213_create_career_applies_table', 12);
 
 -- --------------------------------------------------------
 
@@ -373,12 +401,31 @@ INSERT INTO `news` (`id`, `title`, `titleKm`, `summary`, `summaryKm`, `content`,
 CREATE TABLE `page_banners` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `image` varchar(255) DEFAULT NULL,
+  `type` varchar(191) DEFAULT NULL,
   `pageTitle` varchar(255) NOT NULL DEFAULT '0',
   `pageTitleKm` varchar(255) NOT NULL DEFAULT '0',
   `isActive` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `page_banners`
+--
+
+INSERT INTO `page_banners` (`id`, `image`, `type`, `pageTitle`, `pageTitleKm`, `isActive`, `created_at`, `updated_at`) VALUES
+(1, NULL, 'ABOUT', 'ABOUT', '0', 0, NULL, NULL),
+(2, NULL, 'ORGANIZATION', 'ORGANIZATION', '0', 0, NULL, NULL),
+(3, NULL, 'HISTORY', 'HISTORY', '0', 0, NULL, NULL),
+(4, NULL, 'TEAM', 'TEAM', '0', 0, NULL, NULL),
+(5, NULL, 'TestimonialPage', 'TestimonialPage', '0', 0, NULL, NULL),
+(6, NULL, 'ExchangePage', 'ExchangePage', '0', 0, NULL, NULL),
+(7, NULL, 'SERVICE', 'SERVICE', '0', 0, NULL, NULL),
+(8, NULL, 'PRODUCT', 'PRODUCT', '0', 0, NULL, NULL),
+(9, NULL, 'NEWS', 'NEWS', '0', 0, NULL, NULL),
+(10, NULL, 'CareerPage', 'CareerPage', '0', 0, NULL, NULL),
+(11, NULL, 'ContactPage', 'ContactPage', '0', 0, NULL, NULL),
+(12, NULL, 'FaqPage', 'FaqPage', '0', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -695,7 +742,7 @@ CREATE TABLE `services` (
 --
 
 INSERT INTO `services` (`id`, `title`, `titleKm`, `summary`, `summaryKm`, `content`, `contentKm`, `isDisplayHomepage`, `image`, `ordering`, `isActive`, `metaKeyword`, `metaDesc`, `created_at`, `updated_at`) VALUES
-(1, 'Money Tranfer', '', '', '', '<p>Demoralized by the charms pleasure the moment blinded by desired that they cannot foresee that pain and trouble that are bound to ensue equal blame belongs to those who fail in their which is the same as saying through shrinking foresee the pain and trouble idea of denouncings master-builder of human happiness no one rejects dislikes or avoids.</p>', '', 0, '/service/CamGoTech_jY4iDFSRK0clCcb1BEIaAFCntr7ozSK9MJKr7jRp.jpg', 1, 1, '', '', '2026-01-12 01:07:16', '2026-01-12 01:07:16');
+(1, 'Money Tranfer', 'ការផ្ទេរប្រាក់', '', '', '<p>Demoralized by the charms pleasure the moment blinded by desired that they cannot foresee that pain and trouble that are bound to ensue equal blame belongs to those who fail in their which is the same as saying through shrinking foresee the pain and trouble idea of denouncings master-builder of human happiness no one rejects dislikes or avoids.</p>', '', 0, '/service/CamGoTech_jY4iDFSRK0clCcb1BEIaAFCntr7ozSK9MJKr7jRp.jpg', 1, 1, '', '', '2026-01-12 01:07:16', '2026-01-12 01:07:16');
 
 -- --------------------------------------------------------
 
@@ -717,7 +764,7 @@ CREATE TABLE `site_settings` (
 
 INSERT INTO `site_settings` (`id`, `type`, `content`, `created_at`, `updated_at`) VALUES
 (1, 'HOMEPAGE', '{\"subtitle\":\"Welcome To\",\"subtitleKm\":\"\",\"companyName\":\"CHHAY VANN CO., LTD\",\"companyNameKm\":\"\",\"aboutCompany\":\"<p>It gives a complete and carefully structured account of the system, explaining its principles in detail while clearly expounding the teachings of the great explorer of truth, the master-builder of human understanding. Through thoughtful explanation and reasoned insight, it reveals how these teachings were formed and why they continue to influence human thought and progress. The text explores not only the surface ideas, but also the deeper foundations upon which the system is built, guiding the reader through its logic, purpose, and long-term significance.<\\/p>\",\"aboutCompanyKm\":\"\",\"subtitleTwo\":\"News & Research\",\"subtitleTwoKm\":\"\",\"title\":\"Latest Insights and Updates\",\"titleKm\":\"\",\"summary\":\"Discover the most competitive prices in the market, update.\",\"summaryKm\":\"\",\"thumbnail\":\"\"}', '2026-01-08 19:24:46', '2026-01-08 19:24:46'),
-(2, 'HOWTRADE', '{\"subtitle\":\"How to Trade\",\"subtitleKm\":\"\",\"des\":\"<p>Watch our trading videos to get the most from the markets and become a profitable trader.Watch our trading.<\\/p>\\n<p>Watch our trading videos to get the most from the markets and become a profitable trader.Watch our trading get the most from.<\\/p>\",\"desKm\":\"\",\"title\":\"\",\"titleKm\":\"\",\"linkVideo\":\"https:\\/\\/www.youtube.com\\/watch?v=i5OZQQWj5-I\",\"link\":\"\",\"thumbnail\":\"\\/site-setting\\/CamGoTech_skXi8AsOJEUumj8OCgwDse4ClVBL5McjzVECqvtJ.webp\"}', '2026-01-08 19:31:27', '2026-01-08 19:31:27'),
+(2, 'HOWTRADE', '{\"subtitle\":\"How to Trade\",\"subtitleKm\":\"\\u179a\\u1794\\u17c0\\u1794\\u1792\\u17d2\\u179c\\u17be\\u1796\\u17b6\\u178e\\u17b7\\u1787\\u17d2\\u1787\\u1780\\u1798\\u17d2\\u1798\",\"des\":\"<p>Watch our trading videos to get the most from the markets and become a profitable trader.Watch our trading.<\\/p>\\n<p>Watch our trading videos to get the most from the markets and become a profitable trader.Watch our trading get the most from.<\\/p>\",\"desKm\":\"\",\"title\":\"Easy to Follow Video\",\"titleKm\":\"\",\"linkVideo\":\"https:\\/\\/www.youtube.com\\/watch?v=i5OZQQWj5-I\",\"link\":\"\",\"thumbnail\":\"\\/site-setting\\/CamGoTech_skXi8AsOJEUumj8OCgwDse4ClVBL5McjzVECqvtJ.webp\"}', '2026-01-08 19:31:27', '2026-01-28 18:15:47'),
 (3, 'WHYCHOOSE', '{\"subtitle\":\"Why Choose Us\",\"subtitleKm\":\"\",\"title\":\"The Top Choice for Traders\",\"titleKm\":\"\",\"summary\":\"Discover the most competitive prices in the market, updated regularly for your advantage.\",\"summaryKm\":\"\",\"titleOne\":\"Friendly & Expert\",\"titleOneKm\":\"\",\"titleTwo\":\"Regulated & Secure\",\"titleTwoKm\":\"\",\"titleThree\":\"24\\/7 Support\",\"titleThreeKm\":\"\",\"titleFour\":\"Trusted Broker\",\"titleFourKm\":\"\",\"titleFive\":\"Global Market Access\",\"titleFiveKm\":\"\",\"titleSix\":\"24\\/6 Market Access\",\"titleSixKm\":\"\",\"desOne\":\"Chhayvann is a member of SBMA (Singapore Bullion Market Association)\",\"desOneKm\":\"\",\"desTwo\":\"Chhayvann mainly import and export London Bullion Market Association (LBMA) accredited refineries gold and silver bars\",\"desTwoKm\":\"\",\"desThree\":\"24 hours trading of precious metals\",\"desThreeKm\":\"\",\"desFour\":\"Wide range of products including Gold bar, Gold\\/Silver scrap, Gold\\/Silver dore, Gold\\/Silver granules and etc.\",\"desFourKm\":\"\",\"desFive\":\"Automatic price setting and order submission no need to monitor gold prices all the time\",\"desFiveKm\":\"\",\"desSix\":\"We use international reputable secured carriers such as Brinks, Malca-Amit, Loomis for shipment\",\"desSixKm\":\"\",\"image\":\"\\/site-setting\\/CamGoTech_3sC291QNOSM627TzSMs0WeBiAWhBY8Nkzfz07BTm.png\",\"image2\":\"\",\"image3\":\"\\/site-setting\\/CamGoTech_Hdl1JGTmyFmU1aX7sv0WjbL7KwTo9NaUuRUoF0eT.png\",\"image4\":\"\",\"image5\":\"\",\"image6\":\"\"}', '2026-01-08 20:52:02', '2026-01-08 23:43:36'),
 (4, 'ABOUTCOMPANY', '{\"subtitle\":\"About Us\",\"subtitleKm\":\"\",\"companyName\":\"CHHAY VANN CO., LTD\",\"companyNameKm\":\"\",\"aboutCompany\":\"<p>It is a long established fact that reader will be distracted by the readable content of a page when looking atlayout point of making here is that it has a more-or-less normal distribution all letters as opposed to using.<\\/p>\\n<p>It is a long established fact that reader will be distracted by the readable content of a page when looking atlayout point of making here is that it has a more-or-less normal distribution all letters as opposed to using.<\\/p>\",\"aboutCompanyKm\":\"\",\"titleVision\":\"Vision Statement\",\"titleVisionKm\":\"\",\"desVision\":\"<div class=\\\"text\\\">\\n<p>Impedit quo minus id quod maxime at perferendis facere possimus, omnis voluptas assumenda aut omnis quibus- dam dolorem fugiat.<\\/p>\\n<\\/div>\\n<ul class=\\\"list-item\\\">\\n<li>\\n<div class=\\\"text1\\\">\\n<p>Et harum quidem rerum facilis est expedita.<\\/p>\\n<\\/div>\\n<\\/li>\\n<li>\\n<div class=\\\"text1\\\">\\n<p>officiis debitis aut rerum.<\\/p>\\n<\\/div>\\n<\\/li>\\n<li>\\n<div class=\\\"text1\\\">\\n<p>officiis debitis aut rerum.<\\/p>\\n<\\/div>\\n<\\/li>\\n<li>\\n<div class=\\\"text1\\\">\\n<p>Temporibus autem quibusdam et aut.<\\/p>\\n<\\/div>\\n<\\/li>\\n<\\/ul>\",\"desVisionKm\":\"\",\"titleMission\":\"Our Mission\",\"titleMissionKm\":\"\",\"desMission\":\"<div class=\\\"text\\\">\\n<p>Impedit quo minus id quod maxime at perferendis facere possimus, omnis voluptas assumenda aut omnis quibus- dam dolorem fugiat.<\\/p>\\n<\\/div>\\n<ul class=\\\"list-item\\\">\\n<li>\\n<div class=\\\"text1\\\">\\n<p>Et harum quidem rerum facilis est expedita.<\\/p>\\n<\\/div>\\n<\\/li>\\n<li>\\n<div class=\\\"text1\\\">\\n<p>officiis debitis aut rerum.<\\/p>\\n<\\/div>\\n<\\/li>\\n<li>\\n<div class=\\\"text1\\\">\\n<p>officiis debitis aut rerum.<\\/p>\\n<\\/div>\\n<\\/li>\\n<li>\\n<div class=\\\"text1\\\">\\n<p>Temporibus autem quibusdam et aut.<\\/p>\\n<\\/div>\\n<\\/li>\\n<\\/ul>\",\"desMissionKm\":\"\",\"titleValue\":\"Our Value\",\"titleValueKm\":\"\",\"desValue\":\"<div class=\\\"text\\\">\\n<p>Impedit quo minus id quod maxime at perferendis facere possimus, omnis voluptas assumenda aut omnis quibus- dam dolorem fugiat.<\\/p>\\n<\\/div>\\n<ul class=\\\"list-item\\\">\\n<li>\\n<div class=\\\"text1\\\">\\n<p>Et harum quidem rerum facilis est expedita.<\\/p>\\n<\\/div>\\n<\\/li>\\n<li>\\n<div class=\\\"text1\\\">\\n<p>officiis debitis aut rerum.<\\/p>\\n<\\/div>\\n<\\/li>\\n<li>\\n<div class=\\\"text1\\\">\\n<p>officiis debitis aut rerum.<\\/p>\\n<\\/div>\\n<\\/li>\\n<li>\\n<div class=\\\"text1\\\">\\n<p>Temporibus autem quibusdam et aut.<\\/p>\\n<\\/div>\\n<\\/li>\\n<\\/ul>\",\"desValueKm\":\"\",\"subtitlePartner\":\"Our Partners\",\"subtitlePartnerKm\":\"\",\"titlePartner\":\"Partnering with Industry Leaders\",\"titlePartnerKm\":\"\",\"valuePartner\":\"15+\",\"subtitleAward\":\"Awards & Honors\",\"subtitleAwardKm\":\"\",\"titleAward\":\"Proud Moments of Achievement\",\"titleAwardKm\":\"\",\"summaryAward\":\"Discover the most competitive prices in the market, updated regularly for your advantage.\",\"summaryAwardKm\":\"\",\"thumbnail\":\"\\/site-setting\\/CamGoTech_U1oIwFtGDn1Z2XWlcYD155fMB7oe6z2yofIWt69W.webp\",\"image2\":\"\\/site-setting\\/CamGoTech_gtg45ZNfDOX6fKX0L2kOex1VAR4c57d6F0algQoV.webp\",\"image3\":\"\\/site-setting\\/CamGoTech_2qb4OWCVVk4BZGk0nfwc3ZPtC2VZYOHJ04alwm2b.webp\",\"image4\":\"\\/site-setting\\/CamGoTech_r0RGpoi6YZOYvosvtWim4fDaiEiW9YOUNJaw4pde.webp\",\"image5\":\"\\/site-setting\\/CamGoTech_7wO6EHHB02YMuIImLroYqJ9YWQSZHFbGxBsFPshH.webp\"}', '2026-01-08 23:58:44', '2026-01-09 00:05:08'),
 (5, 'ORGANIZATION', '{\"des\":\"<p><img src=\\\"http:\\/\\/127.0.0.1:8000\\/uploads\\/content\\/CamGoTech_eg95ssDxmWasNHy0jPDg3WkhcERahPhfn1ekelNP.jpg\\\" alt=\\\"\\\" width=\\\"1280\\\" height=\\\"1205\\\"><\\/p>\",\"desKm\":\"\"}', '2026-01-09 01:54:00', '2026-01-09 01:54:00'),
@@ -868,6 +915,12 @@ ALTER TABLE `banners`
 -- Indexes for table `careers`
 --
 ALTER TABLE `careers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `career_applies`
+--
+ALTER TABLE `career_applies`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1046,6 +1099,12 @@ ALTER TABLE `careers`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `career_applies`
+--
+ALTER TABLE `career_applies`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -1055,7 +1114,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `currency_converts`
 --
 ALTER TABLE `currency_converts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `exchange_rates`
@@ -1085,7 +1144,7 @@ ALTER TABLE `histories`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `news`
@@ -1097,7 +1156,7 @@ ALTER TABLE `news`
 -- AUTO_INCREMENT for table `page_banners`
 --
 ALTER TABLE `page_banners`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `partners`
