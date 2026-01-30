@@ -15,7 +15,7 @@ class OpenAccountController extends Controller
             'phoneNumber' => 'required|string',
             'date' => 'required|string',
             'nidNumber' => 'required|string',
-            'front' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'front' => 'required',
             'captcha' => 'required|string' 
         ]);
         
