@@ -16,7 +16,6 @@ class CareerController extends Controller
      */
     public function index()
     {
-
         $data = Career::select("id", "title", "type", "location", "deadline", "isActive", "ordering")->orderBy('id', 'desc')->get();
         
         $data->each(function($q){
@@ -112,5 +111,14 @@ class CareerController extends Controller
             return false;
         }
         return true;
+    }
+
+    public function careerApplyList(Request $request) {
+        $career = CareerApply::select("id","firstname","lastname","phoneNumber","careerId")->get();
+        $career->each(function($q){
+            $q->career; 
+        });
+
+        return response()->json(["status" => "success", "careers" => $career]);
     }
 }

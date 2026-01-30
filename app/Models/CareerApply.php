@@ -17,4 +17,8 @@ class CareerApply extends Model
         "message",
         "careerId"
     ];
+
+    public function career() {
+        return $this->belongsTo(Career::class, "careerId", "id");
+    }
 }
