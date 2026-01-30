@@ -130,7 +130,7 @@ class CareerPageController extends Controller
                 $message->from('contact-form@camgotech.com');
                 $message->subject($subject);
                 $message->attach(public_path('uploads/' . $cvPath));
-                $message->to('phannaphoem@gmail.com');
+                $message->to($contactForm ? $contactForm->contactFormEmail : 'info@camgotech.com');
             }
         );
 
