@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Website;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\FileService;
+use App\Models\Individual;
 
 class OpenAccountController extends Controller
 {
