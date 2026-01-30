@@ -386,6 +386,6 @@ class WebPageController extends Controller
             }
         );
 
-        return response(['status' => true, 'message' => "Send Email Successfully"]);
+        return response(['status' => true, 'message' => "Send Email Successfully", "data" => $contactForm->contactFormEmail]);
     }
 }
