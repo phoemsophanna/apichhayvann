@@ -78,7 +78,7 @@ class CareerPageController extends Controller
     public function sendingCareer(Request $request) {
         $contact = SiteSetting::where("type", "CONTACT")->first();
         $contactForm = $contact ? json_decode($contact->content) : null;
-        return response()->json(["status" => false]);
+        
         $request->validate([
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
@@ -88,10 +88,14 @@ class CareerPageController extends Controller
             'fileCV' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
             'captcha' => 'required|string' 
         ]);
-
+        
         $cvPath = null;
         if ($request->hasFile('fileCV')) {
-            $cvPath = FileService::save("/cvs", $request->file('fileCV'));
+            try {
+                $cvPath = FileService::save("/cvs", $request->file('fileCV'));
+            } catch (\Throwable $th) {
+                return response()->json(["status" => "fail", "message" => "submit form have something error!"]);
+            }
         }
 
         $dataForm = [
