@@ -373,7 +373,6 @@ class WebPageController extends Controller
         $individual->summary = $lang == "KHM" && !empty($individual->summaryKm) ? $individual->summaryKm : $individual->summary;
         $individual->privacy->each(function($q) use ($lang) {
             $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title;
-            $q->makeHidden("titleKm");
         });
         $meta = PageBanner::where("pageTitle", "Individual")->first();
 
