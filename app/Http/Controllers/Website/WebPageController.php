@@ -21,6 +21,7 @@ use App\Models\Team;
 use App\Models\Partner;
 use App\Models\Product;
 use App\Models\ExchangeRate;
+use App\Models\News;
 use App\Models\CurrencyConvert;
 use App\Models\Trading;
 use App\Models\PerformanceType;
@@ -330,6 +331,9 @@ class WebPageController extends Controller
     public function layouts(Request $request) {
         $contact = SiteSetting::where("type", "CONTACT")->first();
         $general = SiteSetting::where("type", "GENERAL")->first();
+        $general['teams'] = Team::where("isActive",1)->count();
+        $general['testimonels'] = Testimonial::where("isActive",1)->count();
+        $general['article'] = News::where("isActive",1)->count();
         $service = Service::select("title","titleKm","id")->where("isActive", 1)->orderby("ordering")->get();
         $contact = json_decode($contact->content);
         $contact->phoneNumber = $contact->phoneNumber ? json_decode($contact->phoneNumber) : null;

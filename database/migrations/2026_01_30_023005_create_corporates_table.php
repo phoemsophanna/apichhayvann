@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("certificateNumber")->nullable();
             $table->string("phone")->nullable();
             $table->string("email")->nullable();
-            $table->date("contactName")->nullable();
+            $table->string("contactName")->nullable();
             $table->string("file")->nullable();
             $table->json("privacy")->nullable();
             $table->timestamps();
