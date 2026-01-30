@@ -258,5 +258,6 @@ Route::group(['middleware' => [ 'cors'], 'prefix' => "submit-account-individual"
     Route::post("/", [OpenAccountController::class, "saveIndividual"]);
 });
 Route::get("/contact-us-page", [WebPageController::class, "contactUs"]);
+Route::get("/individual-page", [WebPageController::class, "individualPage"]);
 Route::get("/privacy-policy-page", [WebPageController::class, "privacyPolicy"]);
 Route::get("/term-service-page", [WebPageController::class, "termService"]);

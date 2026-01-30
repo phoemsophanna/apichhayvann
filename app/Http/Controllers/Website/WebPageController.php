@@ -363,6 +363,25 @@ class WebPageController extends Controller
         ], 200);
     }
 
+    public function individualPage(Request $request)
+    {
+        $lang = $request->header("Accept-Language");
+        $individual = SiteSetting::where("type", "INDIVIDUAL")->first();
+        $individual = json_decode($individual->content);
+        $individual->subtitle = $lang == "KHM" && !empty($individual->subtitleKm) ? $individual->subtitleKm : $individual->subtitle;
+        $individual->title = $lang == "KHM" && !empty($individual->titleKm) ? $individual->titleKm : $individual->title;
+        $individual->summary = $lang == "KHM" && !empty($individual->summaryKm) ? $individual->summaryKm : $individual->summary;
+
+        $meta = PageBanner::where("pageTitle", "Individual")->first();
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "individual" => $individual,
+            "pageBanner" => $meta
+        ], 200);
+    }
+
     public function sendingEmail(Request $request)
     {
         $contact = SiteSetting::where("type", "CONTACT")->first();
