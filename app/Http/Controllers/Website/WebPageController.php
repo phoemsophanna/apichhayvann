@@ -384,7 +384,7 @@ class WebPageController extends Controller
     public function corparatePage(Request $request)
     {
         $lang = $request->header("Accept-Language");
-        $corparate = SiteSetting::where("type", "INDIVIDUAL")->first();
+        $corparate = SiteSetting::where("type", "CORPORATE")->first();
         $corparate = json_decode($corparate->content);
         $corparate->subtitle = $lang == "KHM" && !empty($corparate->subtitleKm) ? $corparate->subtitleKm : $corparate->subtitle;
         $corparate->title = $lang == "KHM" && !empty($corparate->titleKm) ? $corparate->titleKm : $corparate->title;
