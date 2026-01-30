@@ -9,6 +9,7 @@ use App\Http\Controllers\Website\HomepageController;
 use App\Http\Controllers\Website\ProjectPageController;
 use App\Http\Controllers\Website\ServicePageController;
 use App\Http\Controllers\Website\WebPageController;
+use App\Http\Controllers\Website\OpenAccountController;
 use App\Http\Controllers\ApiStunnelController;
 use Illuminate\Support\Facades\Route;
 
