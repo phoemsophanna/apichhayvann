@@ -342,10 +342,16 @@ class WebPageController extends Controller
         ],200);
     }
 
-    public function contactUs()
+    public function contactUs(Request $request)
     {
+        $lang = $request->header("Accept-Language");
         $contact = SiteSetting::where("type", "CONTACT")->first();
         $contact = json_decode($contact->content);
+        $contact->address = $lang == "KHM" && !empty($contact->addressKm) ? $contact->addressKm : $contact->address;
+        $contact->subtitle = $lang == "KHM" && !empty($contact->subtitleKm) ? $contact->subtitleKm : $contact->subtitle;
+        $contact->title = $lang == "KHM" && !empty($contact->titleKm) ? $contact->titleKm : $contact->title;
+        $contact->titlePopup = $lang == "KHM" && !empty($contact->titlePopupKm) ? $contact->titlePopupKm : $contact->titlePopup;
+        $contact->summaryPopup = $lang == "KHM" && !empty($contact->summaryPopupKm) ? $contact->summaryPopupKm : $contact->summaryPopup;
         $contact->phoneNumber = json_decode($contact->phoneNumber);
         $meta = PageBanner::where("pageTitle", "ContactPage")->first();
 
@@ -367,11 +373,11 @@ class WebPageController extends Controller
         \Mail::send(
             'email',
             array(
-                'name' => $request->name,
+                'name' => $request->firstname + $request->lastname,
                 'email' => $email,
-                'number' => $request->number,
+                'number' => $request->phone,
                 'subject' => $subject,
-                'text' => $request->text,
+                'text' => $request->message,
             ),
             function ($message) use ($email, $subject, $contactForm) {
                 $message->from('contact-form@camgotech.com');
