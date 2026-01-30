@@ -45,7 +45,7 @@ class ProductController extends Controller
             "descriptionKm" => request("descriptionKm", null),
             "gallery" => $galleries,
             "type" => request("type", null),
-            "country" => request("country", 0),
+            "country" => request("country", null),
             "ordering" => request("ordering", 0),
             "status" => request("status", 1),
         ];
