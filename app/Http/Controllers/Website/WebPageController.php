@@ -331,6 +331,7 @@ class WebPageController extends Controller
     public function layouts(Request $request) {
         $contact = SiteSetting::where("type", "CONTACT")->first();
         $general = SiteSetting::where("type", "GENERAL")->first();
+        $general = json_decode($general->content);
         $general['teams'] = Team::where("isActive",1)->count();
         $general['testimonels'] = Testimonial::where("isActive",1)->count();
         $general['article'] = News::where("isActive",1)->count();
@@ -340,7 +341,7 @@ class WebPageController extends Controller
 
         return response()->json([
             'contact' => $contact,
-            'general' => $general ? json_decode($general->content) : null,
+            'general' => $general,
             'services' => $service,
             'status' => 'success'
         ],200);
