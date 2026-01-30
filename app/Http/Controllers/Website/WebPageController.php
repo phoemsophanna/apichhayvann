@@ -332,9 +332,9 @@ class WebPageController extends Controller
         $contact = SiteSetting::where("type", "CONTACT")->first();
         $general = SiteSetting::where("type", "GENERAL")->first();
         $general = json_decode($general->content);
-        $general['teams'] = Team::where("isActive",1)->count();
-        $general['testimonels'] = Testimonial::where("isActive",1)->count();
-        $general['article'] = News::where("isActive",1)->count();
+        $general->teams = Team::where("isActive",1)->count();
+        $general->testimonels = Testimonial::where("isActive",1)->count();
+        $general->article = News::where("isActive",1)->count();
         $service = Service::select("title","titleKm","id")->where("isActive", 1)->orderby("ordering")->get();
         $contact = json_decode($contact->content);
         $contact->phoneNumber = $contact->phoneNumber ? json_decode($contact->phoneNumber) : null;
