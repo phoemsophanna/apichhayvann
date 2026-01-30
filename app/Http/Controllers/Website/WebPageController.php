@@ -371,10 +371,6 @@ class WebPageController extends Controller
         $individual->subtitle = $lang == "KHM" && !empty($individual->subtitleKm) ? $individual->subtitleKm : $individual->subtitle;
         $individual->title = $lang == "KHM" && !empty($individual->titleKm) ? $individual->titleKm : $individual->title;
         $individual->summary = $lang == "KHM" && !empty($individual->summaryKm) ? $individual->summaryKm : $individual->summary;
-        $privacy = $individual->privacy;
-        $privacy->each(function($q) use ($lang){
-            $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title;
-        });
         $meta = PageBanner::where("pageTitle", "Individual")->first();
 
         return response()->json([
