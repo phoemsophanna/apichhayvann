@@ -387,7 +387,8 @@ class SiteSettingController extends Controller
     {
         return [
             "thumbnail" => $body->thumbnail ?: "",
-            "description" => $body->description ?: ""
+            "description" => $body->description ?: "",
+            "descriptionKm" => $body->descriptionKm ?: ""
         ];
     }
 }
