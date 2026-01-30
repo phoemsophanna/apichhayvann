@@ -38,6 +38,11 @@ class PageBannerController extends Controller
             'isActive' => request("isActive", true)
         ];
 
+        return response()->json([
+            'message' => $dataForm,
+            'status' => 'failed'
+        ], 200);
+
         $result = $this->_onSave($request->id, $dataForm);
 
         if (!$result) {
