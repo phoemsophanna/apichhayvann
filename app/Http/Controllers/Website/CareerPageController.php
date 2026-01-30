@@ -78,6 +78,7 @@ class CareerPageController extends Controller
     public function sendingCareer(Request $request) {
         $contact = SiteSetting::where("type", "CONTACT")->first();
         $contactForm = $contact ? json_decode($contact->content) : null;
+        return response()->json(["status" => false]);
         $request->validate([
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
