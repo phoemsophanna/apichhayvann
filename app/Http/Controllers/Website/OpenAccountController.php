@@ -54,8 +54,8 @@ class OpenAccountController extends Controller
 
         try {
             $result = Individual::create($dataForm);
-        } catch (\Throwable $th) {
-            return response()->json(["status" => "fail", "message" => "submit form have something error!"]);   
+        } catch (\Exception $th) {
+            return response()->json(["status" => "fail", "message" => $th->getMessage()]);   
         }
 
         return response()->json(['status' => "success", "message" => "Save is successfully!"]);
