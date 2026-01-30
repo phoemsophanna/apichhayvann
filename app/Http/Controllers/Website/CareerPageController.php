@@ -93,8 +93,8 @@ class CareerPageController extends Controller
         if ($request->hasFile('fileCV')) {
             try {
                 $cvPath = FileService::save("/cvs", $request->file('fileCV'));
-            } catch (\Throwable $th) {
-                return response()->json(["status" => "fail", "message" => "submit form have something error!"]);
+            } catch (\Exception $th) {
+                return response()->json(["status" => "fail", "message" => $th->getMessage()]);
             }
         }
 
