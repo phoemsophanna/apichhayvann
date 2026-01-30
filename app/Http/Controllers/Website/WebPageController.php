@@ -305,15 +305,16 @@ class WebPageController extends Controller
         ], 200);
     }
 
-    public function privacyPolicy()
+    public function privacyPolicy(Request $request)
     {
+        $lang = $request->header("Accept-Language");
         $privacyPolicy = SiteSetting::where("type", "PRIVACY_POLICY")->first();
-        $meta = PageBanner::where("pageTitle", "PrivacyPolicyPage")->first();
+        $privacyPolicy = json_decode($privacyPolicy->content);
+        $privacyPolicy->description = $lang == "KHM" && !empty($privacyPolicy->descriptionKm) ? $privacyPolicy->descriptionKm : $privacyPolicy->description;
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
-            "privacyPolicy" => $privacyPolicy ? json_decode($privacyPolicy->content) : null,
-            "meta" => $meta
+            "privacyPolicy" => $privacyPolicy
         ], 200);
     }
     public function termService()
