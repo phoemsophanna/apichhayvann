@@ -9,10 +9,9 @@ class PageBanner extends Model
 {
     use HasFactory;
     protected $fillable = [
+        "type",
         "pageTitle",
         "image",
         "isActive",
-        "metaKeyword",
-        "metaDesc",
     ];
 }

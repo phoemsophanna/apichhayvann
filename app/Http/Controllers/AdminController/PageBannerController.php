@@ -31,9 +31,8 @@ class PageBannerController extends Controller
     public function store(Request $request)
     {
         $dataForm = [
+            "type" => request("pageTitle", ""),
             "pageTitle" => request("pageTitle", ""),
-            "metaKeyword" => request("metaKeyword", ""),
-            "metaDesc" => request("metaDesc", ""),
             "image" => request("image", null),
             'isActive' => request("isActive", true)
         ];
