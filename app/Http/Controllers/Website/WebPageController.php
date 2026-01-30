@@ -373,7 +373,7 @@ class WebPageController extends Controller
         \Mail::send(
             'email',
             array(
-                'name' => $request->firstname + $request->lastname,
+                'name' => $request->firstname . $request->lastname,
                 'email' => $email,
                 'number' => $request->phone,
                 'subject' => $subject,
