@@ -260,6 +260,9 @@ Route::group(['middleware' => [ 'cors'], 'prefix' => "sending-email"], function(
 Route::group(['middleware' => [ 'cors'], 'prefix' => "submit-account-individual"], function() {
     Route::post("/", [OpenAccountController::class, "saveIndividual"]);
 });
+Route::group(['middleware' => [ 'cors'], 'prefix' => "submit-account-corporate"], function() {
+    Route::post("/", [OpenAccountController::class, "saveCorparate"]);
+});
 Route::get("/contact-us-page", [WebPageController::class, "contactUs"]);
 Route::get("/privacy-policy-page", [WebPageController::class, "privacyPolicy"]);
 Route::get("/term-service-page", [WebPageController::class, "termService"]);

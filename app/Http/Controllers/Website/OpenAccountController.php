@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Website;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\FileService;
-use App\Models\Individual;
+use App\Models\Corporate;
 
 class OpenAccountController extends Controller
 {
@@ -55,6 +55,46 @@ class OpenAccountController extends Controller
 
         try {
             $result = Individual::create($dataForm);
+        } catch (\Exception $th) {
+            return response()->json(["status" => "fail", "message" => $th->getMessage()]);   
+        }
+
+        return response()->json(['status' => "success", "message" => "Save is successfully!"]);
+    }
+
+    public function saveCorparate(Request $request) {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'contactName' => 'required|string|max:255',
+            'phone' => 'required|string',
+            'certNumber' => 'required|string',
+            'certFile' => 'required',
+            'captcha' => 'required|string' 
+        ]);
+        
+        $certFile = null;
+        if ($request->hasFile('certFile')) {
+            try {
+                $certFile = FileService::save("/corporate", $request->file('certFile'));
+            } catch (\Exception $th) {
+                return response()->json(["status" => "fail", "message" => $th->getMessage()]);
+            }
+        }
+
+        $privacy = $request->privacy ? json_encode($request->privacy) : json_encode([]);
+
+        $dataForm = [
+            "companyName" => $request->name,
+            "certificateNumber" => $request->certNumber,
+            "contactName" => $request->contactName,
+            "phone" => $request->phone,
+            "email" => $request->email,
+            "file" => $certFile,
+            "privacy" => $privacy
+        ];
+
+        try {
+            $result = Corporate::create($dataForm);
         } catch (\Exception $th) {
             return response()->json(["status" => "fail", "message" => $th->getMessage()]);   
         }
