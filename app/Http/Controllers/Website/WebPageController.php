@@ -381,6 +381,24 @@ class WebPageController extends Controller
         ], 200);
     }
 
+    public function corparatePage(Request $request)
+    {
+        $lang = $request->header("Accept-Language");
+        $corparate = SiteSetting::where("type", "INDIVIDUAL")->first();
+        $corparate = json_decode($corparate->content);
+        $corparate->subtitle = $lang == "KHM" && !empty($corparate->subtitleKm) ? $corparate->subtitleKm : $corparate->subtitle;
+        $corparate->title = $lang == "KHM" && !empty($corparate->titleKm) ? $corparate->titleKm : $corparate->title;
+        $corparate->summary = $lang == "KHM" && !empty($corparate->summaryKm) ? $corparate->summaryKm : $corparate->summary;
+        $meta = PageBanner::where("pageTitle", "Corporate")->first();
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "corparate" => $corparate,
+            "pageBanner" => $meta
+        ], 200);
+    }
+
     public function sendingEmail(Request $request)
     {
         $contact = SiteSetting::where("type", "CONTACT")->first();
