@@ -97,20 +97,27 @@ class RolePermissionSeeder extends Seeder
             // 'role-menu.create',
             // 'role-menu.edit',
             // 'role-menu.delete'
-            'application-form.view',
-            'application-form.edit'
+            // 'application-form.view',
+            // 'application-form.edit',
+            'application-form.delete',
+            'corporate-form.view',
+            'corporate-form.edit',
+            'corporate-form.delete',
+            'individual-form.view',
+            'individual-form.edit',
+            'individual-form.delete',
         ];
 
         foreach ($permissions as $perm) {
             Permission::firstOrCreate(['name' => $perm]);
         }
 
-        $admin = Role::firstOrCreate(['name' => 'admin']);
+        // $admin = Role::firstOrCreate(['name' => 'admin']);
         
-        $admin->givePermissionTo(Permission::all());
+        // $admin->givePermissionTo(Permission::all());
         // $cashier->givePermissionTo(['create sale']);
 
-        $user = User::find(1);
-        $user->assignRole('admin');
+        // $user = User::find(1);
+        // $user->assignRole('admin');
     }
 }
