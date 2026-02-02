@@ -133,4 +133,13 @@ class CareerController extends Controller
 
         return response()->json(["status" => "success", "application" => $application]);
     }
+
+    public function careerApplyDelete($id) {
+        $application = CareerApply::findOrFail($id);
+        $application->delete();
+        return response()->json([
+            'message' => 'Delete successfully.',
+            'status' => 'success'
+        ], 200);
+    }
 }

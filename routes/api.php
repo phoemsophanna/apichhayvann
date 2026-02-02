@@ -209,6 +209,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'careers'], function () {
     Route::delete("/delete/{id}", [Admin\CareerController::class, "destroy"])->middleware(["permission:career-menu.delete"]);
     Route::get("/application", [Admin\CareerController::class, "careerApplyList"])->middleware(["permission:application-form.view"]);
     Route::get("/application/detail", [Admin\CareerController::class, "careerApplyShow"])->middleware(["permission:application-form.edit"]);
+    Route::get("/application/delete/{id}", [Admin\CareerController::class, "careerApplyDelete"])->middleware(["permission:application-form.delete"]);
 });
 Route::group(['middleware' => 'api', 'prefix' => 'page-banners'], function () {
     Route::get("/", [Admin\PageBannerController::class, "index"]);
