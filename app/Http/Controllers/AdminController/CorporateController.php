@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
-class CareerController extends Controller
+class CorporateController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -118,15 +118,6 @@ class CareerController extends Controller
         $application = CareerApply::select("id","firstname","lastname","phoneNumber","careerId")->get();
         $application->each(function($q){
             $q->career; 
-        });
-
-        return response()->json(["status" => "success", "application" => $application]);
-    }
-
-    public function careerApplyShow(Request $request) {
-        $application = CareerApply::findOrFail($request->id);
-        $application->each(function($q){
-            $q->career;
         });
 
         return response()->json(["status" => "success", "application" => $application]);
