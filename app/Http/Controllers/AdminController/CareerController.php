@@ -115,11 +115,11 @@ class CareerController extends Controller
     }
 
     public function careerApplyList(Request $request) {
-        $career = CareerApply::select("id","firstname","lastname","phoneNumber","careerId")->get();
-        $career->each(function($q){
+        $application = CareerApply::select("id","firstname","lastname","phoneNumber","careerId")->get();
+        $application->each(function($q){
             $q->career; 
         });
 
-        return response()->json(["status" => "success", "careers" => $career]);
+        return response()->json(["status" => "success", "application" => $career]);
     }
 }
