@@ -120,6 +120,6 @@ class CareerController extends Controller
             $q->career; 
         });
 
-        return response()->json(["status" => "success", "application" => $career]);
+        return response()->json(["status" => "success", "application" => $application]);
     }
 }
