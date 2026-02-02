@@ -125,9 +125,7 @@ class CareerController extends Controller
 
     public function careerApplyShow(Request $request) {
         $application = CareerApply::findOrFail($request->id);
-        $application->each(function($q){
-            $q->career;
-        });
+        $application->career;
 
         return response()->json(["status" => "success", "application" => $application]);
     }
