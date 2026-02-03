@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Controller;
 use App\Models\Image;
+use App\Services\FileService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
