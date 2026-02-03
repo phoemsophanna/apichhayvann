@@ -90,11 +90,11 @@ class ExchangeRateController extends Controller
     }
 
     public function importFromExcel(Request $request) {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
             ExchangeRate::truncate();
             $exchanges = $request->exchanges;
-            
+
             foreach ($exchanges as $query) {
                 ExchangeRate::create([
                     "image" => $query['image'] ?? null,
