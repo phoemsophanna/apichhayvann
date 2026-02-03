@@ -94,20 +94,17 @@ class ExchangeRateController extends Controller
             DB::beginTransaction();
             ExchangeRate::truncate();
             $exchanges = $request->exchanges;
-            return response()->json([
-                'data' => $exchanges
-            ]);
-            $exchanges->each(function($query){
-                $data = [
-                    "image" => $query->image,
-                    'from' => $query->from,
-                    'to' => $query->to,
-                    'buy' => $query->buy,
-                    'sell' => $query->sell
-                ];
+            
+            foreach ($exchanges as $query) {
+                ExchangeRate::create([
+                    "image" => $query['image'] ?? null,
+                    "from"  => $query['from'],
+                    "to"    => $query['to'],
+                    "buy"   => $query['buy'],
+                    "sell"  => $query['sell']
+                ]);
+            }
 
-                ExchangeRate::create($data);
-            });
             DB::commit();
         } catch (Exception $error) {
             return response()->json([
