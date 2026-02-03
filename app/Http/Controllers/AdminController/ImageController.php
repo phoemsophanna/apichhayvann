@@ -28,7 +28,7 @@ class ImageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
         DB::beginTransaction();
         try {
@@ -39,7 +39,7 @@ class ImageController extends Controller
                     if ($image != null) {
                         Image::create([
                             'image' => $image || "",
-                            'type' => "EXCHANGE"
+                            'type' => $req->type
                         ]);
                     }
                 }
