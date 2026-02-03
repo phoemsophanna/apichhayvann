@@ -71,6 +71,7 @@ class CorporateController extends Controller
     public function show(Request $request)
     {
         $model = Corporate::findOrFail($request->id);
+        $model->create_at = Carbon::parse($model->created_at)->format("d F Y");
         return response()->json([
             'message' => 'Get detail success.',
             'status' => 'success',
