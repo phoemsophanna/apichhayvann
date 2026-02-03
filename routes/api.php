@@ -72,6 +72,11 @@ Route::group(['middleware' => 'api', 'prefix' => 'exchanges'], function () {
     Route::post("/import", [Admin\ExchangeRateController::class, "importFromExcel"])->middleware(["permission:exchange-menu.create"]);;
 });
 
+Route::group(['middleware' => 'api', 'prefix' => 'uploadImages'], function(){
+    Route::get("/", [Admin\ImageController::class, "index"]);
+    Route::post("/", [Admin\ImageController::class, "store"]);
+});
+
 Route::group(['middleware' => 'api', 'prefix' => 'currencies'], function () {
     Route::get("/", [Admin\CurrencyConvertController::class, "index"]);
     Route::post("/", [Admin\CurrencyConvertController::class, "store"])->middleware(["permission:currency-menu.create|permission:currency-menu.edit"]);

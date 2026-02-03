@@ -13,7 +13,7 @@ class FileService
         if ($imageFile != null) {
             $path = public_path('uploads') . $destination;
             $name = $imageFile->hashName();
-            $fileName = "CamGoTech_" . $name;
+            $fileName = "Chhayvann_" . $name;
 
             if ($imageFile->move($path, $fileName)) {
                 FileService::delete($temperatureFile);
