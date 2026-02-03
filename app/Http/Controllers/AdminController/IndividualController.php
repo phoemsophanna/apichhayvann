@@ -72,6 +72,7 @@ class IndividualController extends Controller
     {
         $model = Individual::findOrFail($request->id);
         $model->create_at = Carbon::parse($model->created_at)->format("d F Y");
+        $model->date = Carbon::parse($model->date)->format("d F Y");
         $model->privacy = json_decode($model->privacy);
         return response()->json([
             'message' => 'Get detail success.',
