@@ -98,6 +98,7 @@ class SiteSettingController extends Controller
             "summary" => $body->summary ?: "",
             "summaryKm" => $body->summaryKm ?: "",
             "keyword" => $body->keyword ?: "",
+            "onlineTrading" => $body->onlineTrading ?: "",
             "logo_header" => $body->logo_header ?: "",
             "logo_footer" => $body->logo_footer ?: ""
         ];
