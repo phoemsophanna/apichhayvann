@@ -93,7 +93,7 @@ class CorporateController extends Controller
      */
     public function destroy(string $id)
     {
-        $model = Career::findOrFail($id);
+        $model = Corporate::findOrFail($id);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',
