@@ -7,6 +7,7 @@ use App\Models\Image;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class ImageController extends Controller
 {
