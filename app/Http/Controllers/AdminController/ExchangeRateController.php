@@ -101,7 +101,8 @@ class ExchangeRateController extends Controller
                     "from"  => $query['from'],
                     "to"    => $query['to'],
                     "buy"   => $query['buy'],
-                    "sell"  => $query['sell']
+                    "sell"  => $query['sell'],
+                    "status" => 1
                 ]);
             }
 
