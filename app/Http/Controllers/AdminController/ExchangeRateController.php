@@ -7,6 +7,7 @@ use App\Models\ExchangeRate;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class ExchangeRateController extends Controller
 {
@@ -86,6 +87,35 @@ class ExchangeRateController extends Controller
             'message' => 'Delete successfully.',
             'status' => 'success'
         ], 200);
+    }
+
+    public function importFromExcel(Request $request) {
+        try {
+            DB::beginTransaction();
+            ExchangeRate::truncate();
+            $exchanges = $request->exchanges;
+            $exchanges->each(function($query){
+                $data = [
+                    "image" => $query->image,
+                    'from' => $query->from,
+                    'to' => $query->to,
+                    'buy' => $query->buy,
+                    'sell' => $query->sell
+                ];
+
+                ExchangeRate::create($data);
+            });
+            DB::commit();
+        } catch (Exception $error) {
+            return response()->json([
+                'message' => $error->getMessage(),
+                'status' => 'fail'
+            ]);
+        }
+        return response()->json([
+            'message' => 'Import exchange rate successfully!',
+            "status" => 'success'
+        ]);
     }
 
     private function _onSave($id, $data)
