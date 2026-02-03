@@ -38,9 +38,6 @@ class ImageController extends Controller
                 $files = $req->file('galleries');
                 foreach ($files as $file) {
                     $image = FileService::save("/images", $file);
-                    return response()->json([
-                        "image" => $image
-                    ]);
                     if ($image != null) {
                         Image::create([
                             'image' => $image,
