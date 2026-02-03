@@ -92,7 +92,7 @@ class ExchangeRateController extends Controller
     public function importFromExcel(Request $request) {
         DB::beginTransaction();
         try {
-            ExchangeRate::truncate();
+            ExchangeRate::query()->delete();
             $exchanges = $request->exchanges;
 
             foreach ($exchanges as $query) {
