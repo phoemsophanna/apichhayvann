@@ -69,6 +69,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'exchanges'], function () {
     Route::post("/", [Admin\ExchangeRateController::class, "store"])->middleware(["permission:exchange-menu.create|permission:exchange-menu.edit"]);
     Route::get("/detail", [Admin\ExchangeRateController::class, "show"])->middleware(["permission:exchange-menu.edit"]);
     Route::delete("/delete/{id}", [Admin\ExchangeRateController::class, "destroy"])->middleware(["permission:exchange-menu.delete"]);;
+    Route::post("/import", [Admin\ExchangeRateController::class, "importFromExcel"])->middleware(["permission:exchange-menu.create"]);;
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'currencies'], function () {
