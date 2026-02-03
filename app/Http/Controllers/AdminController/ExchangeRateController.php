@@ -94,6 +94,9 @@ class ExchangeRateController extends Controller
             DB::beginTransaction();
             ExchangeRate::truncate();
             $exchanges = $request->exchanges;
+            return response()->json([
+                'data' => $exchanges
+            ]);
             $exchanges->each(function($query){
                 $data = [
                     "image" => $query->image,
