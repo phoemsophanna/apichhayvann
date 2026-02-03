@@ -4,7 +4,7 @@ namespace App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Controller;
 use App\Models\Career;
-use App\Models\CareerApply;
+use App\Models\Corporate;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -17,10 +17,10 @@ class CorporateController extends Controller
      */
     public function index()
     {
-        $data = Career::select("id", "title", "type", "location", "deadline", "isActive", "ordering")->orderBy('id', 'desc')->get();
+        $data = Corporate::select("id", "companyName", "contactName", "phone", "created_at")->orderBy('id', 'desc')->get();
         
         $data->each(function($q){
-            $q->deadline = Carbon::parse($q->deadline)->format("F d Y");
+            $q->create_at = Carbon::parse($q->created_at)->format("d F Y");
         });
 
         return response()->json([
@@ -70,7 +70,7 @@ class CorporateController extends Controller
      */
     public function show(Request $request)
     {
-        $model = Career::findOrFail($request->id);
+        $model = Corporate::findOrFail($request->id);
         return response()->json([
             'message' => 'Get detail success.',
             'status' => 'success',
@@ -112,14 +112,5 @@ class CorporateController extends Controller
             return false;
         }
         return true;
-    }
-
-    public function careerApplyList(Request $request) {
-        $application = CareerApply::select("id","firstname","lastname","phoneNumber","careerId")->get();
-        $application->each(function($q){
-            $q->career; 
-        });
-
-        return response()->json(["status" => "success", "application" => $application]);
     }
 }

@@ -211,6 +211,12 @@ Route::group(['middleware' => 'api', 'prefix' => 'careers'], function () {
     Route::get("/application/detail", [Admin\CareerController::class, "careerApplyShow"])->middleware(["permission:application-form.edit"]);
     Route::delete("/application/delete/{id}", [Admin\CareerController::class, "careerApplyDelete"])->middleware(["permission:application-form.delete"]);
 });
+Route::group(['middleware' => 'api', 'prefix' => 'corporates'], function () {
+    Route::get("/", [Admin\CorporateController::class, "index"]);
+    Route::post("/", [Admin\CorporateController::class, "store"])->middleware(["permission:corporate-form.edit"]);
+    Route::get("/detail", [Admin\CorporateController::class, "show"])->middleware(["permission:corporate-form.view"]);
+    Route::delete("/delete/{id}", [Admin\CorporateController::class, "destroy"])->middleware(["permission:corporate-form.delete"]);
+});
 Route::group(['middleware' => 'api', 'prefix' => 'page-banners'], function () {
     Route::get("/", [Admin\PageBannerController::class, "index"]);
     Route::post("/", [Admin\PageBannerController::class, "store"]);
