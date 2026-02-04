@@ -75,6 +75,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'exchanges'], function () {
 Route::group(['middleware' => 'api', 'prefix' => 'uploadImages'], function(){
     Route::get("/", [Admin\ImageController::class, "index"]);
     Route::post("/", [Admin\ImageController::class, "store"]);
+    Route::delete("/delete/{id}", [Admin\ImageController::class, "destroy"]);
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'currencies'], function () {
