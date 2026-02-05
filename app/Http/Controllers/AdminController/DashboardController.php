@@ -5,6 +5,9 @@ namespace App\Http\Controllers\AdminController;
 use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Career;
+use App\Models\Corporate;
+use App\Models\Individual;
 use App\Models\ProductOrder;
 use Illuminate\Http\Request;
 
@@ -12,83 +15,54 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $totalOrder = ProductOrder::count();
-        $newOrder = ProductOrder::where("orderStatus", "PENDING")->count();
-
-        $totalProduct = Product::where("isActive", true)->count();
-        $orderSuccess = ProductOrder::where("orderStatus", "COMPLETE")->get();
-        $productSold = 0;
-        foreach ($orderSuccess as $order) {
-            $orderItems = OrderItem::where("orderId", $order->id)->get();
-            foreach ($orderItems as $item) {
-                $productSold = $productSold + $item->quantity;
-            }
-        }
-
         return response()->json([
             'message' => 'Get Brand detail success.',
             'status' => 'success',
             'model' => [
                 [
                     "id" => 1,
-                    "feaIcon" => "package",
+                    "feaIcon" => "briefcase",
                     "feaIconClass" => "primary",
-                    "label" => "Total Product",
+                    "label" => "Total Job Applications",
                     "badgeClass" => "",
                     "icon" => "ri-arrow-down-s-line",
                     "percentage" => "",
-                    "caption" => "All active products",
+                    "caption" => "All Job Applications",
                     "subCounter" => [[
                         "id" => 1,
-                        "counter" => Product::where("isActive", true)->count(),
+                        "counter" => Career::count(),
                         "suffix" => "",
                         "separator" => ","
                     ]],
                 ],
                 [
                     "id" => 2,
-                    "feaIcon" => "dollar-sign",
-                    "feaIconClass" => "dark",
-                    "label" => "Product Sold",
+                    "feaIcon" => "user",
+                    "feaIconClass" => "warning",
+                    "label" => "Corporate Account",
                     "badgeClass" => "",
                     "icon" => "",
                     "percentage" => '',
-                    "caption" => "Products have been sold.",
+                    "caption" => "Corporate Account",
                     "subCounter" => [[
                         "id" => 1,
-                        "counter" => $productSold,
+                        "counter" => Corporate::count(),
                         "suffix" => "",
                         "separator" => ","
                     ]],
                 ],
                 [
                     "id" => 3,
-                    "feaIcon" => "shopping-bag",
+                    "feaIcon" => "user",
                     "feaIconClass" => "info",
-                    "label" => "Total Order",
+                    "label" => "Individual Account",
                     "badgeClass" => "",
                     "icon" => "ri-arrow-up-s-line",
                     "percentage" => "",
-                    "caption" => "All customer order",
+                    "caption" => "All Individual Account",
                     "subCounter" => [[
                         "id" => 1,
-                        "counter" => $totalOrder,
-                        "suffix" => "",
-                        "separator" => ","
-                    ]],
-                ],
-                [
-                    "id" => 4,
-                    "feaIcon" => "clock",
-                    "feaIconClass" => "warning",
-                    "label" => "New Orders",
-                    "badgeClass" => "success",
-                    "icon" => "",
-                    "percentage" => ($totalOrder > 0 ? number_format(($newOrder / $totalOrder) * 100, 2)  : "0.00") . " %",
-                    "caption" => "New order product",
-                    "subCounter" => [[
-                        "id" => 1,
-                        "counter" => $newOrder,
+                        "counter" => Individual::count(),
                         "suffix" => "",
                         "separator" => ","
                     ]],
