@@ -118,6 +118,8 @@ Route::group([
     Route::delete("/delete/{id}", [API\UserController::class, "destroy"])->middleware(["permission:user-management.delete"]);
 });
 
+Route::get("/dashboard", [Admin\DashboardController::class, "index"])->middleware("api");
+
 Route::group(['middleware' => 'api', 'prefix' => 'services'], function () {
     Route::get("/", [Admin\ServiceController::class, "index"]);
     Route::post("/", [Admin\ServiceController::class, "store"])->middleware(["permission:service-menu.create|permission:service-menu.edit"]);
