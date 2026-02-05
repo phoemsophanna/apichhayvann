@@ -118,7 +118,7 @@ Route::group([
     Route::delete("/delete/{id}", [API\UserController::class, "destroy"])->middleware(["permission:user-management.delete"]);
 });
 
-Route::get("/dashboard", [Admin\DashboardController::class, "index"])->middleware("auth");
+Route::get("/dashboard", [Admin\DashboardController::class, "index"])->middleware("api");
 
 Route::group(['middleware' => 'api', 'prefix' => 'services'], function () {
     Route::get("/", [Admin\ServiceController::class, "index"]);
