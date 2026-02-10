@@ -50,7 +50,7 @@ class WebPageController extends Controller
     {
         $lang = $request->header("Accept-Language");
         $exchange = ExchangeRate::where([["status", 1]])->get();
-        $currency = CurrencyConvert::where([["status", 1]])->orderBy('ordering', 'asc')->get();
+        $currency = CurrencyConvert::where([["status", 1]])->orderBy('ordering', 'desc')->get();
         $currency->each(function($q){
             $q->subCurrency = json_decode($q->subCurrency);
             $q['date'] = Carbon::parse($q->updated_at)->format('j M Y, g:i a');
