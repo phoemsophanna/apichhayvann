@@ -16,7 +16,7 @@ class CurrencyConvertController extends Controller
     public function index()
     {
 
-        $data = CurrencyConvert::select("id", "currency", "type", "rate", "image", "status")->orderBy('id', 'desc')->get();
+        $data = CurrencyConvert::select("id", "currency", "type", "rate", "image", "status")->orderBy('ordering', 'desc')->get();
 
         return response()->json([
             'message' => 'Get list success.',
