@@ -14,6 +14,7 @@ class CurrencyConvert extends Model
         "subCurrency",
         "rate",
         "image",
+        "ordering",
         "status"
     ];
 }

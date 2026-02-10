@@ -36,6 +36,7 @@ class CurrencyConvertController extends Controller
             "image" => request("image", null),
             "type" => request("type", ""),
             "rate" => request("rate", ""),
+            "ordering" => request("ordering", 0),
             "subCurrency" => $subCurrency,
             "status" => request("status", 1)
         ];
