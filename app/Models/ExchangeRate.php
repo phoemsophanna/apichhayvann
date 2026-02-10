@@ -14,6 +14,7 @@ class ExchangeRate extends Model
         "sell",
         "buy",
         "image",
+        "ordering",
         "status"
     ];
 }
