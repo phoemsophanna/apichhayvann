@@ -393,7 +393,7 @@ class WebPageController extends Controller
         $path = storage_path('logs/price.log');
         $data = [];
 
-        foreach (tailLog($path, 120) as $line) {
+        foreach ($this->tailLog($path, 120) as $line) {
             if (preg_match('/\{.*\}/', $line, $match)) {
                 $json = json_decode($match[0], true);
                 if ($json) {
@@ -403,6 +403,24 @@ class WebPageController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    private static function tailLog($file, $lines = 100) {
+        $buffer = '';
+        $f = fopen($file, 'rb');
+        fseek($f, -1, SEEK_END);
+
+        for ($i = 0; $i < $lines; $i++) {
+            while (fread($f, 1) !== "\n") {
+                fseek($f, -2, SEEK_CUR);
+                if (ftell($f) <= 1) break;
+            }
+            $buffer = fgets($f) . $buffer;
+            fseek($f, -1, SEEK_CUR);
+        }
+
+        fclose($f);
+        return explode("\n", trim($buffer));
     }
 
     public function corparatePage(Request $request)
