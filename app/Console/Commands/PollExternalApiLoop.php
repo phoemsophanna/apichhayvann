@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Services\TradingApiService;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class PollExternalApiLoop extends Command
 {
@@ -30,10 +31,11 @@ class PollExternalApiLoop extends Command
         while (true) {
             $data = $service->fetch();
             if ($data) {
-                Cache::put('external_latest', [
+                Cache::put('external_latest', $data, 2);
+                Log::channel('price')->info(json_encode([
+                    'time'  => now()->format('H:i'),
                     'data' => $data,
-                    'cached_at' => now(),
-                ], now()->addHours(2));
+                ]));
             }
             sleep(1);
         }

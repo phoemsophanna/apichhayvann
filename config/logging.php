@@ -65,6 +65,13 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'price' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/price.log'),
+            'level' => 'info',
+            'days' => 1,
+        ],
+
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),

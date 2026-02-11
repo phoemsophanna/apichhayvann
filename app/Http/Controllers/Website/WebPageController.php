@@ -390,12 +390,19 @@ class WebPageController extends Controller
 
     public function tradingApiData()
     {
-        $cached = Cache::get('external_latest');
-        $data = Cache::get('external_latest');
-        if ($cached && $cached['cached_at']->lte(now()->subHour())) {
-            $data = $cached['data'];
+        $path = storage_path('logs/price.log');
+        $data = [];
+
+        foreach (tailLog($path, 120) as $line) {
+            if (preg_match('/\{.*\}/', $line, $match)) {
+                $json = json_decode($match[0], true);
+                if ($json) {
+                    $data[] = $json;
+                }
+            }
         }
-        return response()->json(['data' => $data]);
+
+        return response()->json($data);
     }
 
     public function corparatePage(Request $request)
