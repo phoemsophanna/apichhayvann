@@ -30,7 +30,10 @@ class PollExternalApiLoop extends Command
         while (true) {
             $data = $service->fetch();
             if ($data) {
-                Cache::put('external_latest', $data, 2);
+                Cache::put('external_latest', [
+                    'data' => $data,
+                    'cached_at' => now(),
+                ], now()->addHours(2));
             }
             sleep(1);
         }
