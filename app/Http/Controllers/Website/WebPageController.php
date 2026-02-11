@@ -26,7 +26,6 @@ use App\Models\CurrencyConvert;
 use App\Models\Trading;
 use App\Models\PerformanceType;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
 
 class WebPageController extends Controller
@@ -391,19 +390,8 @@ class WebPageController extends Controller
 
     public function tradingApiData()
     {
-        $data = [];
-        $path = storage_path('logs/price.log');
-        $lines = File::lines($path);    
-
-        foreach ($lines as $line) {
-            [$time, $json] = explode(',', $line, 2);
-            $data[] = [
-                'time' => $time,
-                'data' => json_decode($json, true)
-            ];
-        }
-
-        return response()->json($data);
+        $data = Cache::get('external_latest');
+        return response()->json(['data' => $data]);
     }
 
     public function corparatePage(Request $request)
