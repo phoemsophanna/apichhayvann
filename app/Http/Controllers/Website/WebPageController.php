@@ -25,6 +25,7 @@ use App\Models\News;
 use App\Models\CurrencyConvert;
 use App\Models\Trading;
 use App\Models\PerformanceType;
+use App\Models\PriceHistory;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 
@@ -390,8 +391,12 @@ class WebPageController extends Controller
 
     public function tradingApiData()
     {
+        $graph = PriceHistory::where('pair', 'XAUUSD')
+            ->where('recorded_at', '>=', now()->subHours(2))
+            ->orderBy('recorded_at')
+            ->get();
         $data = Cache::get('external_latest');
-        return response()->json(['data' => $data]);
+        return response()->json(['data' => $data, 'graph' => $graph]);
     }
 
     public function corparatePage(Request $request)
