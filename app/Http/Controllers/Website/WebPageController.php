@@ -25,6 +25,7 @@ use App\Models\News;
 use App\Models\CurrencyConvert;
 use App\Models\Trading;
 use App\Models\PerformanceType;
+use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 
 class WebPageController extends Controller
@@ -385,6 +386,12 @@ class WebPageController extends Controller
             "individual" => $individual,
             "pageBanner" => $meta
         ], 200);
+    }
+
+    public function tradingApiData()
+    {
+        $data = Cache::get('external_latest');
+        return response()->json(['data' => $data]);
     }
 
     public function corparatePage(Request $request)

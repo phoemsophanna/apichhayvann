@@ -21,6 +21,11 @@ return [
         'scheme' => 'https',
     ],
 
+    'external' => [
+        'url' => env("EXTERNAL_API_URL"),
+        'key' => env("EXTERNAL_API_KEY"),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
