@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use App\Models\PriceHistory;
 
 class SaveGraphData extends Command
 {
@@ -24,7 +25,7 @@ class SaveGraphData extends Command
     /**
      * Execute the console command.
      */
-    public function handle(TradingApiService $service)
+    public function handle()
     {
         while (true) {
             $data = Cache::put('external_latest');
