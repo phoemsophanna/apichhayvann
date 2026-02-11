@@ -391,7 +391,7 @@ class WebPageController extends Controller
     public function tradingApiData()
     {
         $cached = Cache::get('external_latest');
-
+        $data = null;
         if ($cached && $cached['cached_at']->lte(now()->subHour())) {
             $data = $cached['data'];
         }
