@@ -390,7 +390,7 @@ class WebPageController extends Controller
 
     public function tradingApiData()
     {
-        $path = storage_path('logs/price.log');
+        $path = storage_path('logs/price-' . now()->format('Y-m-d') . '.log');
         $data = [];
 
         foreach ($this->tailLog($path, 120) as $line) {
