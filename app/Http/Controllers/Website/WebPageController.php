@@ -26,6 +26,7 @@ use App\Models\CurrencyConvert;
 use App\Models\Trading;
 use App\Models\PerformanceType;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
 
 class WebPageController extends Controller
@@ -390,37 +391,27 @@ class WebPageController extends Controller
 
     public function tradingApiData()
     {
-        function readLastLines($file, $numLines = 500) {
-            $lines = [];
-            $f = fopen($file, 'rb');
-            if (!$f) return [];
+        $path = storage_path('logs/price-' . now()->format('Y-m-d') . '.log');
+        $data = [];
 
-            $cursor = -1;
-            fseek($f, $cursor, SEEK_END);
+        if (File::exists($path)) {
+            $lines = File::lines($path);
 
-            while (count($lines) < $numLines) {
-                $char = fgetc($f);
-                if ($char === "\n") {
-                    $line = fgets($f);
-                    if ($line) {
-                        array_unshift($lines, trim($line));
+            foreach ($lines as $line) {
+                $line = trim($line);
+                if (empty($line)) continue;
+
+                $pos = strpos($line, 'local.INFO:');
+                if ($pos !== false) {
+                    $jsonPart = trim(substr($line, $pos + strlen('local.INFO:')));
+                    $decoded = json_decode($jsonPart, true);
+
+                    if ($decoded) {
+                        $data[] = $decoded;
                     }
                 }
-                $cursor--;
-                if (fseek($f, $cursor, SEEK_END) === -1) break;
             }
-
-            fclose($f);
-            return $lines;
         }
-
-        $path = storage_path('logs/price-' . now()->format('Y-m-d') . '.log');
-        $lines = readLastLines($path, 200);
-
-        $data = array_map(function($line){
-            [$time, $price] = explode(',', $line);
-            return ['time'=>$time, 'price'=>(float)$price];
-        }, $lines);
 
         return response()->json($data);
     }
