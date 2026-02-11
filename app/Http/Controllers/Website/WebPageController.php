@@ -390,37 +390,39 @@ class WebPageController extends Controller
 
     public function tradingApiData()
     {
-        $path = storage_path('logs/price-' . now()->format('Y-m-d') . '.log');
-        $data = [];
+        function readLastLines($file, $numLines = 500) {
+            $lines = [];
+            $f = fopen($file, 'rb');
+            if (!$f) return [];
 
-        foreach ($this->tailLog($path, 120) as $line) {
-            if (preg_match('/\{.*\}/', $line, $match)) {
-                $json = json_decode($match[0], true);
-                if ($json) {
-                    $data[] = $json;
+            $cursor = -1;
+            fseek($f, $cursor, SEEK_END);
+
+            while (count($lines) < $numLines) {
+                $char = fgetc($f);
+                if ($char === "\n") {
+                    $line = fgets($f);
+                    if ($line) {
+                        array_unshift($lines, trim($line));
+                    }
                 }
+                $cursor--;
+                if (fseek($f, $cursor, SEEK_END) === -1) break;
             }
+
+            fclose($f);
+            return $lines;
         }
+
+        $path = storage_path('logs/price-' . now()->format('Y-m-d') . '.log');
+        $lines = readLastLines($path, 200);
+
+        $data = array_map(function($line){
+            [$time, $price] = explode(',', $line);
+            return ['time'=>$time, 'price'=>(float)$price];
+        }, $lines);
 
         return response()->json($data);
-    }
-
-    private static function tailLog($file, $lines = 100) {
-        $buffer = '';
-        $f = fopen($file, 'rb');
-        fseek($f, -1, SEEK_END);
-
-        for ($i = 0; $i < $lines; $i++) {
-            while (fread($f, 1) !== "\n") {
-                fseek($f, -2, SEEK_CUR);
-                if (ftell($f) <= 1) break;
-            }
-            $buffer = fgets($f) . $buffer;
-            fseek($f, -1, SEEK_CUR);
-        }
-
-        fclose($f);
-        return explode("\n", trim($buffer));
     }
 
     public function corparatePage(Request $request)
