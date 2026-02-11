@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Services\TradingApiService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 
 class PollExternalApiLoop extends Command
 {
