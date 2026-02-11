@@ -28,7 +28,7 @@ class SaveGraphData extends Command
     public function handle()
     {
         while (true) {
-            $data = Cache::put('external_latest');
+            $data = Cache::get('external_latest');
             if (!$data) {
                 sleep(15);
                 continue;
