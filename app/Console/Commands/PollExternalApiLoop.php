@@ -32,12 +32,26 @@ class PollExternalApiLoop extends Command
             $data = $service->fetch();
             if ($data) {
                 Cache::put('external_latest', $data, 2);
-                Log::channel('price')->info(json_encode([
-                    'time'  => now()->format('H:i'),
-                    'data' => $data,
-                ]));
             }
             sleep(1);
+        }
+
+        while (true) {
+            $data = $service->fetch();
+            $line = now()->format('H:i') . ',' . json_encode($data) . "\n";
+            File::append(storage_path('logs/price.log'), $line);
+
+            // optional: keep only last 2 hours
+            $lines = File::lines(storage_path('logs/price.log'));
+            $keep = [];
+            foreach($lines as $line) {
+                [$time, $json] = explode(',', $line, 2);
+                if(\Carbon\Carbon::createFromFormat('H:i', $time)->gt(now()->subHours(2))) {
+                    $keep[] = $line;
+                }
+            }
+            File::put(storage_path('logs/price.log'), implode("\n", $keep)."\n");
+            sleep(30);
         }
     }
 }

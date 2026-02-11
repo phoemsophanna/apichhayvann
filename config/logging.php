@@ -65,11 +65,10 @@ return [
             'replace_placeholders' => true,
         ],
 
-        'price' => [
-            'driver' => 'daily',
+       'price' => [
+            'driver' => 'single',
             'path' => storage_path('logs/price.log'),
             'level' => 'info',
-            'days' => 1,
         ],
 
         'daily' => [

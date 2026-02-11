@@ -391,26 +391,16 @@ class WebPageController extends Controller
 
     public function tradingApiData()
     {
-        $path = storage_path('logs/price-' . now()->format('Y-m-d') . '.log');
         $data = [];
+        $path = storage_path('logs/price.log');
+        $lines = File::lines($path);    
 
-        if (File::exists($path)) {
-            $lines = File::lines($path);
-
-            foreach ($lines as $line) {
-                $line = trim($line);
-                if (empty($line)) continue;
-
-                $pos = strpos($line, 'local.INFO:');
-                if ($pos !== false) {
-                    $jsonPart = trim(substr($line, $pos + strlen('local.INFO:')));
-                    $decoded = json_decode($jsonPart, true);
-
-                    if ($decoded) {
-                        $data[] = $decoded;
-                    }
-                }
-            }
+        foreach ($lines as $line) {
+            [$time, $json] = explode(',', $line, 2);
+            $data[] = [
+                'time' => $time,
+                'data' => json_decode($json, true)
+            ];
         }
 
         return response()->json($data);
