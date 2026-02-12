@@ -391,12 +391,17 @@ class WebPageController extends Controller
 
     public function tradingApiData()
     {
+        $data = Cache::get('external_latest');
+        return response()->json(['data' => $data]);
+    }
+
+    public function tradingGraphData() {
         $graph = PriceHistory::where('pair', 'XAUUSD')
             ->where('recorded_at', '>=', now()->subHours(2))
             ->orderBy('recorded_at')
             ->get();
-        $data = Cache::get('external_latest');
-        return response()->json(['data' => $data, 'graph' => $graph]);
+
+        return response()->json(['graph' => $graph]);
     }
 
     public function corparatePage(Request $request)
