@@ -32,9 +32,4 @@ class PriceUpdated implements ShouldBroadcastNow
     {
         return new Channel('xauusd');
     }
-
-    public function broadcastAs(): array
-    {
-        return 'price.updated';
-    }
 }
