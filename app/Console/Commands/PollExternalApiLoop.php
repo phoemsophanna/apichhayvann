@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Services\TradingApiService;
 use Illuminate\Support\Facades\Cache;
+use App\Events\PriceUpdated;
 
 class PollExternalApiLoop extends Command
 {
@@ -31,6 +32,7 @@ class PollExternalApiLoop extends Command
             $data = $service->fetch();
             if ($data) {
                 Cache::put('external_latest', $data, 2);
+                broadcast(new PriceUpdated($data));
             }
             sleep(1);
         }
