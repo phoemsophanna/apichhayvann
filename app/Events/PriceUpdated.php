@@ -31,4 +31,9 @@ class PriceUpdated
     {
         return new Channel('xauusd');
     }
+
+    public function broadcastAs(): string
+    {
+        return 'price.updated';
+    }
 }
