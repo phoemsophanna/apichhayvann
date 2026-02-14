@@ -56,7 +56,7 @@ return [
             'options' => [
                 'host' => env('REVERB_HOST', '0.0.0.0'),
                 'port' => env('REVERB_PORT', 8080),
-                'scheme' => env('REVERB_SCHEME'),
+                'scheme' => env('REVERB_SCHEME', 'https'),
             ],
         ],
 
