@@ -14,6 +14,7 @@ use App\Models\Technology;
 use App\Models\Testimonial;
 use App\Models\WebHosting;
 use Illuminate\Http\Request;
+use App\Events\PriceUpdated;
 use Carbon\Carbon;
 
 class HomepageController extends Controller
@@ -23,6 +24,7 @@ class HomepageController extends Controller
         $lang = $request->header("Accept-Language");
         $homepage = SiteSetting::where("type", "HOMEPAGE")->first();
         $homepage = json_decode($homepage->content);
+        broadcast(new PriceUpdated(["status" => "hello"]));
         $homepage->aboutCompany = $lang == "KHM" && !empty($homepage->aboutCompanyKm) ? $homepage->aboutCompanyKm : $homepage->aboutCompany;
         $homepage->companyName = $lang == "KHM" && !empty($homepage->companyNameKm) ? $homepage->companyNameKm : $homepage->companyName;
         $homepage->subtitle = $lang == "KHM" && !empty($homepage->subtitleKm) ? $homepage->subtitleKm : $homepage->subtitle;
