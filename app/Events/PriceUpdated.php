@@ -28,7 +28,7 @@ class PriceUpdated implements ShouldBroadcastNow
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
+    public function broadcastOn(): Channel
     {
         return new Channel('xauusd');
     }
