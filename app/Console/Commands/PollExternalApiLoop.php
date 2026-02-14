@@ -33,10 +33,14 @@ class PollExternalApiLoop extends Command
             $data = $service->fetch();
             if ($data) {
                 Cache::put('external_latest', $data, 2);
-                $graph = PriceHistory::where('pair', 'XAUUSD')
+                $graph = Cache::remember('xauusd_graph', 2, function() {
+                    return PriceHistory::where('pair', 'XAUUSD')
                         ->where('recorded_at', '>=', now()->subHours(2))
-                        ->orderBy('recorded_at')
-                        ->get();
+                        ->orderBy('recorded_at', 'desc')
+                        ->limit(500)
+                        ->get(['bid','ask','recorded_at'])
+                        ->reverse();
+                });
                 broadcast(new PriceUpdated(["data" => $data, "graph" => $graph]));
             }
             sleep(1);
