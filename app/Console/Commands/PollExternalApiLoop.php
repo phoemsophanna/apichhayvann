@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Services\TradingApiService;
 use Illuminate\Support\Facades\Cache;
 use App\Events\PriceUpdated;
+use App\Models\PriceHistory;
 
 class PollExternalApiLoop extends Command
 {
@@ -32,7 +33,11 @@ class PollExternalApiLoop extends Command
             $data = $service->fetch();
             if ($data) {
                 Cache::put('external_latest', $data, 2);
-                broadcast(new PriceUpdated($data));
+                $graph = PriceHistory::where('pair', 'XAUUSD')
+                        ->where('recorded_at', '>=', now()->subHours(2))
+                        ->orderBy('recorded_at')
+                        ->get();
+                broadcast(new PriceUpdated(["data" => $data, "graph" => $graph]));
             }
             sleep(1);
         }
