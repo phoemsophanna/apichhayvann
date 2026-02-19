@@ -69,8 +69,8 @@ class OpenAccountController extends Controller
     private static function sendingIndividual($data) {
         $contact = SiteSetting::where("type", "CONTACT")->first();
         $contactForm = $contact ? json_decode($contact->content) : null;
-
-        Log::alert("File {json_encode($data)}");
+        $dataForm = json_encode($data);
+        Log::alert("File {$dataForm}");
         $email = $data->email;
         $subject = "Register Individual Account";
         $front = $data->front;
