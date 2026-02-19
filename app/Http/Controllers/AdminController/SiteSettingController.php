@@ -72,6 +72,9 @@ class SiteSettingController extends Controller
             case 'CORPORATE':
                 $item = $this->_corporate($req);
                 break;
+            case 'POPUP':
+                $item = $this->_popup($req);
+                break;
             default:
                 $item = [];
                 break;
@@ -100,7 +103,8 @@ class SiteSettingController extends Controller
             "keyword" => $body->keyword ?: "",
             "onlineTrading" => $body->onlineTrading ?: "",
             "logo_header" => $body->logo_header ?: "",
-            "logo_footer" => $body->logo_footer ?: ""
+            "logo_footer" => $body->logo_footer ?: "",
+            "popup_thumbnail" => $body->popup_thumbnail ?: ""
         ];
     }
 
@@ -373,7 +377,14 @@ class SiteSettingController extends Controller
             "titlePopupKm" => $body->titlePopupKm ?: "",
             "summaryPopup" => $body->summaryPopup ?: "",
             "summaryPopupKm" => $body->summaryPopupKm ?: "",
-            "contactFormEmail" => $body->contactFormEmail ?: ""
+            "contactFormEmail" => $body->contactFormEmail ?: "",
+            "sendingIndividual" => $body->sendingIndividual ?: "",
+            "sendingCorporate" => $body->sendingCorporate ?: "",
+            "sendingCareer" => $body->sendingCareer ?: "",
+            "whatsapp" => $body->whatsapp ?: "",
+            "messenger" => $body->messenger ?: "",
+            "line" => $body->line ?: "",
+            "working3" => $body->working3 ?: "",
         ];
     }
 
@@ -384,6 +395,14 @@ class SiteSettingController extends Controller
             "description" => $body->description ?: ""
         ];
     }
+
+    private function _popup(Request $body)
+    {
+        return [
+            "thumbnail" => $body->thumbnail ?: ""
+        ];
+    }
+
     private function _privacyPolicy(Request $body)
     {
         return [

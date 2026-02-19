@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\FileService;
 use App\Models\Corporate;
+use App\Models\SiteSetting;
 
 class OpenAccountController extends Controller
 {
@@ -55,12 +56,38 @@ class OpenAccountController extends Controller
 
         try {
             $result = Individual::create($dataForm);
+            $this->sendingIndividual($dataForm);
         } catch (\Exception $th) {
             return response()->json(["status" => "fail", "message" => $th->getMessage()]);   
         }
 
         return response()->json(['status' => "success", "message" => "Save is successfully!"]);
     }
+
+    public static function sendingIndividual($data) {
+        $contact = SiteSetting::where("type", "CONTACT")->first();
+        $contactForm = $contact ? json_decode($contact->content) : null;
+
+        $email = $data->email;
+        $subject = "Register Individual Account";
+
+        \Mail::send(
+            'email',
+            array(
+                'name' => $request->firstname . ' ' . $request->lastname,
+                'email' => $email,
+                'number' => $request->phoneNumber,
+                'subject' => $subject,
+                'text' => $request->message,
+            ),
+            function ($message) use ($email, $subject, $contactForm, $cvPath) {
+                $message->from('contact-form@camgotech.com');
+                $message->subject($subject);
+                $message->attach(public_path('uploads/' . $cvPath));
+                $message->to($contactForm ? $contactForm->contactFormEmail : 'info@camgotech.com');
+            }
+        );
+    } 
 
     public function saveCorparate(Request $request) {
         $request->validate([
