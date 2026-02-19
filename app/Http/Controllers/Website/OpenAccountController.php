@@ -137,7 +137,7 @@ class OpenAccountController extends Controller
         $contactForm = $contact ? json_decode($contact->content) : null;
 
         $email = $data->email;
-        $subject = "Register Corporate Account Company Name " . $data->name;
+        $subject = "Register Corporate Account Company Name " . $data->companyName;
         $certFile = $data->file;
 
         \Mail::send(
