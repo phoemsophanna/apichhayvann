@@ -77,7 +77,7 @@ class OpenAccountController extends Controller
             array(
                 'name' => $data->firstname . ' ' . $data->lastname,
                 'email' => $email,
-                'number' => $data->phoneNumber,
+                'number' => $data->phone,
                 'subject' => $subject,
                 'text' => 'National ID' . $data->nidNumber,
             ),
