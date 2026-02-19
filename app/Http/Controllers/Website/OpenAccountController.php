@@ -8,6 +8,7 @@ use App\Services\FileService;
 use App\Models\Corporate;
 use App\Models\Individual;
 use App\Models\SiteSetting;
+use Illuminate\Support\Facades\Log;
 
 class OpenAccountController extends Controller
 {
@@ -72,6 +73,8 @@ class OpenAccountController extends Controller
         $email = $data->email;
         $subject = "Register Individual Account";
         $front = $data->front;
+
+        Log::alert("File {$data->front}");
 
         \Mail::send(
             'email',
