@@ -56,7 +56,7 @@ class OpenAccountController extends Controller
 
         try {
             $result = Individual::create($dataForm);
-            $this->sendingIndividual($dataForm);
+            $this->sendingIndividual((object)$dataForm);
         } catch (\Exception $th) {
             return response()->json(["status" => "fail", "message" => $th->getMessage()]);   
         }
@@ -64,7 +64,7 @@ class OpenAccountController extends Controller
         return response()->json(['status' => "success", "message" => "Save is successfully!"]);
     }
 
-    public static function sendingIndividual($data) {
+    private static function sendingIndividual($data) {
         $contact = SiteSetting::where("type", "CONTACT")->first();
         $contactForm = $contact ? json_decode($contact->content) : null;
 
@@ -74,17 +74,17 @@ class OpenAccountController extends Controller
         \Mail::send(
             'email',
             array(
-                'name' => $request->firstname . ' ' . $request->lastname,
+                'name' => $data->firstname . ' ' . $data->lastname,
                 'email' => $email,
-                'number' => $request->phoneNumber,
+                'number' => $data->phoneNumber,
                 'subject' => $subject,
-                'text' => $request->message,
+                'text' => 'National ID' . $data->nidNumber,
             ),
             function ($message) use ($email, $subject, $contactForm, $cvPath) {
                 $message->from('contact-form@camgotech.com');
                 $message->subject($subject);
-                $message->attach(public_path('uploads/' . $cvPath));
-                $message->to($contactForm ? $contactForm->contactFormEmail : 'info@camgotech.com');
+                $message->attach(public_path('uploads/' . $front));
+                $message->to($contactForm ? $contactForm->sendingIndividual : 'info@camgotech.com');
             }
         );
     } 
@@ -122,10 +122,36 @@ class OpenAccountController extends Controller
 
         try {
             $result = Corporate::create($dataForm);
+            $this->sendingCorporate((object)$dataForm);
         } catch (\Exception $th) {
             return response()->json(["status" => "fail", "message" => $th->getMessage()]);   
         }
 
         return response()->json(['status' => "success", "message" => "Save is successfully!"]);
     }
+
+    private static function sendingCorporate($data) {
+        $contact = SiteSetting::where("type", "CONTACT")->first();
+        $contactForm = $contact ? json_decode($contact->content) : null;
+
+        $email = $data->email;
+        $subject = "Register Corporate Account Company Name " . $data->name;
+
+        \Mail::send(
+            'email',
+            array(
+                'name' => $data->contactName,
+                'email' => $email,
+                'number' => $data->phone,
+                'subject' => $subject,
+                'text' => 'Register Corporate Account',
+            ),
+            function ($message) use ($email, $subject, $contactForm, $cvPath) {
+                $message->from('contact-form@camgotech.com');
+                $message->subject($subject);
+                $message->attach(public_path('uploads/' . $certFile));
+                $message->to($contactForm ? $contactForm->sendingCorporate : 'info@camgotech.com');
+            }
+        );
+    } 
 }
