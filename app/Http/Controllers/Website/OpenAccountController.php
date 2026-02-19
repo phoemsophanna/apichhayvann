@@ -70,7 +70,7 @@ class OpenAccountController extends Controller
         $contact = SiteSetting::where("type", "CONTACT")->first();
         $contactForm = $contact ? json_decode($contact->content) : null;
 
-        Log::alert("File");
+        Log::alert("File {$data->front}");
         $email = $data->email;
         $subject = "Register Individual Account";
         $front = $data->front;
