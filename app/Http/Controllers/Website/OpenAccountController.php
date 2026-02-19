@@ -71,6 +71,7 @@ class OpenAccountController extends Controller
 
         $email = $data->email;
         $subject = "Register Individual Account";
+        $front = $data->front;
 
         \Mail::send(
             'email',
@@ -81,7 +82,7 @@ class OpenAccountController extends Controller
                 'subject' => $subject,
                 'text' => 'National ID' . $data->nidNumber,
             ),
-            function ($message) use ($email, $subject, $contactForm, $cvPath) {
+            function ($message) use ($email, $subject, $contactForm, $front) {
                 $message->from('contact-form@camgotech.com');
                 $message->subject($subject);
                 $message->attach(public_path('uploads/' . $front));
@@ -137,6 +138,7 @@ class OpenAccountController extends Controller
 
         $email = $data->email;
         $subject = "Register Corporate Account Company Name " . $data->name;
+        $certFile = $data->certFile;
 
         \Mail::send(
             'email',
@@ -147,7 +149,7 @@ class OpenAccountController extends Controller
                 'subject' => $subject,
                 'text' => 'Register Corporate Account',
             ),
-            function ($message) use ($email, $subject, $contactForm, $cvPath) {
+            function ($message) use ($email, $subject, $contactForm, $certFile) {
                 $message->from('contact-form@camgotech.com');
                 $message->subject($subject);
                 $message->attach(public_path('uploads/' . $certFile));
