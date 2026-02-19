@@ -293,10 +293,10 @@ Route::get("/term-service-page", [WebPageController::class, "termService"]);
 Route::get("/trading-api", [WebPageController::class, "tradingApiData"]);
 Route::get("/trading-graph", [WebPageController::class, "tradingGraphData"]);
 
-Route::get('/push-price', function() {
-    broadcast(new App\Events\PriceUpdated([
-        'bid' => 2345.21,
-        'ask' => 2345.45
-    ]));
-    return "Sent!";
-});
+// Route::get('/push-price', function() {
+//     broadcast(new App\Events\PriceUpdated([
+//         'bid' => 2345.21,
+//         'ask' => 2345.45
+//     ]));
+//     return "Sent!";
+// });
