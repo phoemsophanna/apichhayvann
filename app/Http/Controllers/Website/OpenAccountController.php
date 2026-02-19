@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\FileService;
 use App\Models\Corporate;
+use App\Models\Individual;
 use App\Models\SiteSetting;
 
 class OpenAccountController extends Controller
