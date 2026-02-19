@@ -69,11 +69,9 @@ class OpenAccountController extends Controller
     private static function sendingIndividual($data) {
         $contact = SiteSetting::where("type", "CONTACT")->first();
         $contactForm = $contact ? json_decode($contact->content) : null;
-        $dataForm = json_encode($data);
-        Log::alert("File {$dataForm}");
         $email = $data->email;
         $subject = "Register Individual Account";
-        $front = $data->front;
+        $front = $data->frontCard;
 
         \Mail::send(
             'email',
@@ -140,7 +138,7 @@ class OpenAccountController extends Controller
 
         $email = $data->email;
         $subject = "Register Corporate Account Company Name " . $data->name;
-        $certFile = $data->certFile;
+        $certFile = $data->file;
 
         \Mail::send(
             'email',
