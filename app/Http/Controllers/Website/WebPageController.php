@@ -403,7 +403,7 @@ class WebPageController extends Controller
                 SUBSTRING_INDEX(GROUP_CONCAT(bid ORDER BY recorded_at ASC), ',', 1) as open,
                 SUBSTRING_INDEX(GROUP_CONCAT(bid ORDER BY recorded_at DESC), ',', 1) as close,
                 FLOOR(UNIX_TIMESTAMP(recorded_at) / 60) * 60 as time_bucket,
-                recorded_at as real_time
+                MAX(recorded_at) as real_time
             ")
             ->where('recorded_at', '>', now()->subHours(2))
             ->groupBy('pair', 'time_bucket')
