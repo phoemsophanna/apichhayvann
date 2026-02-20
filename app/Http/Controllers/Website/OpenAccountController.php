@@ -142,7 +142,7 @@ class OpenAccountController extends Controller
 
         \Mail::send(
             'email',
-            array(
+            array(  
                 'name' => $data->contactName,
                 'email' => $email,
                 'number' => $data->phone,

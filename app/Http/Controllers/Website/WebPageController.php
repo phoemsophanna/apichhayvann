@@ -397,7 +397,7 @@ class WebPageController extends Controller
 
     public function tradingGraphData() {
         $graph = PriceHistory::where('pair', 'XAUUSD')
-            ->where('recorded_at', '>=', now()->subHours(2))
+            ->where('recorded_at', '>=', now()->subHours(1))
             ->orderBy('recorded_at')
             ->get();
 
