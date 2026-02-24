@@ -17,7 +17,7 @@ class ExchangeRateController extends Controller
     public function index()
     {
 
-        $data = ExchangeRate::select("id", "from", "to", "buy", "sell", "status", "image")->orderBy('ordering', 'desc')->get();
+        $data = ExchangeRate::select("id", "from", "to", "buy", "sell", "status", "image", "ordering", "isMultiply")->orderBy('ordering', 'desc')->get();
 
         return response()->json([
             'message' => 'Get list success.',
