@@ -61,7 +61,8 @@ class WebPageController extends Controller
                                 'from', `from`,
                                 'to', `to`,
                                 'sell', sell,
-                                'buy', buy
+                                'buy', buy,
+                                'isMultiply', isMultiply
                             )
                         ) AS items
                     ")
