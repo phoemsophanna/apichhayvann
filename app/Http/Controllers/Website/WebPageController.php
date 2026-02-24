@@ -53,7 +53,7 @@ class WebPageController extends Controller
         $lang = $request->header("Accept-Language");
         $exchange = ExchangeRate::where([["status", 1]])->orderBy('ordering', 'desc')->get();
         $convert = ExchangeRate::selectRaw("
-            id, from,
+            id as mainId, from as mainFrom,
             JSON_ARRAYAGG(JSON_OBJECT('id', id, 'from', from, 'to', to, 'sell', sell, 'buy', buy))
         ")->where([["status", 1]])->groupBy("from")->orderBy('ordering', 'desc')->get();
         $currency = CurrencyConvert::where([["status", 1]])->orderBy('ordering', 'desc')->get();
