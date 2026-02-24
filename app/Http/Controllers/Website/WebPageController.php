@@ -52,6 +52,10 @@ class WebPageController extends Controller
     {
         $lang = $request->header("Accept-Language");
         $exchange = ExchangeRate::where([["status", 1]])->orderBy('ordering', 'desc')->get();
+        $convert = ExchangeRate::selectRaw("
+            id, from,
+            JSON_ARRAYAGG(JSON_OBJECT('id', id, 'from', from, 'to', to, 'sell', sell, 'buy', buy))
+        ")->where([["status", 1]])->orderBy('ordering', 'desc')->get();
         $currency = CurrencyConvert::where([["status", 1]])->orderBy('ordering', 'desc')->get();
         $currency->each(function($q){
             $q->subCurrency = json_decode($q->subCurrency);
@@ -71,6 +75,7 @@ class WebPageController extends Controller
             "message" => "Load data success",
             "exchange" => $exchange,
             "currency" => $currency,
+            "convert" => $convert,
             "service" => $service,
             "banner" => $meta
         ], 200);
