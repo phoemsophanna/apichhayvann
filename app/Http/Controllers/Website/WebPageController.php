@@ -75,7 +75,7 @@ class WebPageController extends Controller
                                 ) AS items
                             ")
                             ->groupBy('to')
-                    )
+                    )->orderBy('ordering', 'asc')
                     ->get();
         $currency = CurrencyConvert::where([["status", 1]])->orderBy('ordering', 'desc')->get();
         $currency->each(function($q){
