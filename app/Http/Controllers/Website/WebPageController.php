@@ -53,9 +53,18 @@ class WebPageController extends Controller
         $lang = $request->header("Accept-Language");
         $exchange = ExchangeRate::where([["status", 1]])->orderBy('ordering', 'desc')->get();
         $convert = ExchangeRate::selectRaw("
-            id as mainId, from as mainFrom,
-            JSON_ARRAYAGG(JSON_OBJECT('id', id, 'from', from, 'to', to, 'sell', sell, 'buy', buy))
-        ")->where([["status", 1]])->groupBy("from")->orderBy('ordering', 'desc')->get();
+            id AS mainId,
+            `from` AS mainFrom,
+            JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'id', id,
+                    'from', `from`,
+                    'to', `to`,
+                    'sell', sell,
+                    'buy', buy
+                )
+            ) AS items
+        ")->where([["status", 1]])->groupBy(`from`)->orderBy('ordering', 'desc')->get();
         $currency = CurrencyConvert::where([["status", 1]])->orderBy('ordering', 'desc')->get();
         $currency->each(function($q){
             $q->subCurrency = json_decode($q->subCurrency);
