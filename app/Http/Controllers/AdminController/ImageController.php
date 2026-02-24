@@ -75,7 +75,7 @@ class ImageController extends Controller
         ], 200);
     }
 
-    public function uploadImage() {
+    public function uploadImage(Request $req) {
         try {
             $file = $req->file('image');
             $destination = "/images";
