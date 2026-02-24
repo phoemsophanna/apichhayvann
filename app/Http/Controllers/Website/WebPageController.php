@@ -52,33 +52,27 @@ class WebPageController extends Controller
     {
         $lang = $request->header("Accept-Language");
         $exchange = ExchangeRate::where([["status", 1]])->orderBy('ordering', 'desc')->get();
-        $convert = ExchangeRate::where('status', 1)
-                    ->selectRaw("
-                        `from` AS mainFrom,
-                        JSON_ARRAYAGG(
-                            JSON_OBJECT(
-                                'id', id, 'from', `from`, 'to', `to`, 
-                                'sell', sell, 'buy', buy, 'isTo', '0', 'isMultiply', isMultiply
-                            )
-                        ) AS items
-                    ")
+        $fromGroups = ExchangeRate::where('status', 1)
+                    ->selectRaw("`from` AS mainFrom, JSON_ARRAYAGG(JSON_OBJECT('id', id, 'from', `from`, 'to', `to`, 'sell', sell, 'buy', buy, 'isTo', 0, 'isMultiply', isMultiply)) AS items")
                     ->groupBy('from')
-                    ->orderBy('ordering', 'asc')
-                    ->union(
-                        ExchangeRate::where('status', 1)
-                            ->selectRaw("
-                                `to` AS mainFrom,
-                                JSON_ARRAYAGG(
-                                    JSON_OBJECT(
-                                        'id', id, 'from', `from`, 'to', `to`, 
-                                        'sell', sell, 'buy', buy, 'isTo', '1', 'isMultiply', isMultiply
-                                    )
-                                ) AS items
-                            ")
-                            ->groupBy('to')
-                            ->orderBy('ordering', 'asc')
-                    )
                     ->get();
+        $toGroups = ExchangeRate::where('status', 1)
+                    ->selectRaw("`to` AS mainFrom, JSON_ARRAYAGG(JSON_OBJECT('id', id, 'from', `from`, 'to', `to`, 'sell', sell, 'buy', buy, 'isTo', 1, 'isMultiply', isMultiply)) AS items")
+                    ->groupBy('to')
+                    ->get();
+        $convert = $fromGroups->concat($toGroups)
+                    ->groupBy('mainFrom')
+                    ->map(function ($group, $key) {
+                        $mergedItems = $group->flatMap(function ($item) {
+                            return json_decode($item->items);
+                        });
+
+                        return [
+                            'mainFrom' => $key,
+                            'items' => $mergedItems->values()
+                        ];
+                    })
+                    ->values();
         $currency = CurrencyConvert::where([["status", 1]])->orderBy('ordering', 'desc')->get();
         $currency->each(function($q){
             $q->subCurrency = json_decode($q->subCurrency);
