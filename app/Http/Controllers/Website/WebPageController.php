@@ -57,17 +57,25 @@ class WebPageController extends Controller
                         `from` AS mainFrom,
                         JSON_ARRAYAGG(
                             JSON_OBJECT(
-                                'id', id,
-                                'from', `from`,
-                                'to', `to`,
-                                'sell', sell,
-                                'buy', buy,
-                                'isMultiply', isMultiply
+                                'id', id, 'from', `from`, 'to', `to`, 
+                                'sell', sell, 'buy', buy, 'isTo', '0', 'isMultiply', isMultiply
                             )
                         ) AS items
                     ")
                     ->groupBy('from')
-                    ->orderBy('ordering', 'asc')
+                    ->union(
+                        ExchangeRate::where('status', 1)
+                            ->selectRaw("
+                                `to` AS mainFrom,
+                                JSON_ARRAYAGG(
+                                    JSON_OBJECT(
+                                        'id', id, 'from', `from`, 'to', `to`, 
+                                        'sell', sell, 'buy', buy, 'isTo', '1', 'isMultiply', isMultiply
+                                    )
+                                ) AS items
+                            ")
+                            ->groupBy('to')
+                    )
                     ->get();
         $currency = CurrencyConvert::where([["status", 1]])->orderBy('ordering', 'desc')->get();
         $currency->each(function($q){
