@@ -105,7 +105,7 @@ class ExchangeRateController extends Controller
                     "buy"   => $query['buy'],
                     "sell"  => $query['sell'],
                     "isMultiply" => $query['isMultiply'],
-                    "ordering" => $query['ordering'],
+                    "ordering" => isset($query['ordering']) ? $query['ordering'] : 0,
                     "status" => 1
                 ]);
             }
