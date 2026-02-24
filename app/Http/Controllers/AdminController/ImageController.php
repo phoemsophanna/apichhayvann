@@ -5,10 +5,12 @@ namespace App\Http\Controllers\AdminController;
 use App\Http\Controllers\Controller;
 use App\Models\Image;
 use App\Services\FileService;
+use Illuminate\Http\UploadedFile;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class ImageController extends Controller
 {
@@ -62,12 +64,41 @@ class ImageController extends Controller
         ], 200);
     }
 
+    public function uploadImage() {
+        try {
+            $file = $req->file('image');
+            $destination = "/images";
+            $path = public_path('uploads') . $destination;
+            $extension = $file->getClientOriginalExtension();
+            $fileName = "Chhayvann_" . $req->type . '.' . $extension;
+            if($file->move($path, $fileName)) {
+                Image::create([
+                    'image' => "$destination/$fileName",
+                    'type' => $req->type
+                ]);
+            }
+        } catch (\Exception $error) {
+            return response()->json(["status" => "fail", "message" => $error->getMessage()]);
+        }
+
+        return response()->json([
+            "status" => "success",
+            "data" => Image::get()
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
         $model = Image::findOrFail($id);
+        if($model) {
+            $path = public_path('uploads') . $destination . $model->image;
+            if(File::exists($path)){
+                File::delete($path);
+            }
+        }
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',
