@@ -29,6 +29,17 @@ class ImageController extends Controller
         ], 200);
     }
 
+    public function getImage() {
+        $data = Image::select("id", "type", "image")
+            ->where("type", "!=", "EXCHANGE")->orderBy('id', 'desc')->get();
+
+        return response()->json([
+            'message' => 'Get Image list success.',
+            'status' => 'success',
+            'data' => $data
+        ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

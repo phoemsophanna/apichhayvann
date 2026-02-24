@@ -76,6 +76,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'uploadImages'], function(){
     Route::get("/", [Admin\ImageController::class, "index"]);
     Route::post("/", [Admin\ImageController::class, "store"]);
     Route::post("/image", [Admin\ImageController::class, "uploadImage"]);
+    Route::get("/image", [Admin\ImageController::class, "getImage"]);
     Route::delete("/delete/{id}", [Admin\ImageController::class, "destroy"]);
 });
 
