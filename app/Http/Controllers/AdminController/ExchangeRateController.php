@@ -38,6 +38,7 @@ class ExchangeRateController extends Controller
             "buy" => request("buy", ""),
             "image" => request("image", null),
             "ordering" => request("ordering", 0),
+            "isMultiply" => request("isMultiply", 1),
             "status" => request("status", 1)
         ];
 
@@ -103,6 +104,7 @@ class ExchangeRateController extends Controller
                     "to"    => $query['to'],
                     "buy"   => $query['buy'],
                     "sell"  => $query['sell'],
+                    "isMultiply" => $query['isMultiply'],
                     "ordering" => $query['ordering'],
                     "status" => 1
                 ]);
