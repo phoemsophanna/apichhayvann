@@ -58,7 +58,7 @@ class WebPageController extends Controller
                     ->orderBy('ordering', 'asc')
                     ->get();
         $toGroups = ExchangeRate::where('status', 1)
-                    ->selectRaw("`to` AS mainFrom, JSON_ARRAYAGG(JSON_OBJECT('id', id, 'from', `from`, 'to', `to`, 'sell', sell, 'buy', buy, 'isTo', 1, 'isMultiply', isMultiply)) AS items")
+                    ->selectRaw("`to` AS mainFrom, JSON_ARRAYAGG(JSON_OBJECT('id', id, 'from', `to`, 'to', `to`, 'sell', sell, 'buy', buy, 'isTo', 1, 'isMultiply', isMultiply)) AS items")
                     ->groupBy('to')
                     ->orderBy('ordering', 'asc')
                     ->get();
