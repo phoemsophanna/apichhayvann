@@ -20,6 +20,7 @@ class ImageController extends Controller
     public function index(Request $request)
     {
         $data = Image::select("id", "type", "image")
+            ->where("type", "EXCHANGE")
             ->orderBy('id', 'desc')->get();
 
         return response()->json([
