@@ -106,7 +106,7 @@ class ImageController extends Controller
     {
         $model = Image::findOrFail($id);
         if($model) {
-            $path = public_path('uploads') . $destination . $model->image;
+            $path = public_path('uploads') . $model->image;
             if(File::exists($path)){
                 File::delete($path);
             }
