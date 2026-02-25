@@ -51,7 +51,7 @@ class WebPageController extends Controller
     public function exchangePage(Request $request)
     {
         $lang = $request->header("Accept-Language");
-        $exchange = ExchangeRate::where([["status", 1]])->orderBy('ordering', 'desc')->get();
+        $exchange = ExchangeRate::where([["status", 1]])->orderBy('ordering', 'asc')->get();
         $fromGroups = ExchangeRate::where('status', 1)
                     ->selectRaw("`from` AS mainFrom, JSON_ARRAYAGG(JSON_OBJECT('id', id, 'from', `from`, 'to', `to`, 'sell', sell, 'buy', buy, 'isTo', 0, 'isMultiply', isMultiply)) AS items")
                     ->groupBy('from')
