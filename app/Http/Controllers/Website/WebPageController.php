@@ -27,6 +27,7 @@ use App\Models\Trading;
 use App\Models\PerformanceType;
 use App\Models\PriceHistory;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 use Carbon\Carbon;
 
 class WebPageController extends Controller
@@ -419,22 +420,57 @@ class WebPageController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    public function tradingGraphData() {
-        $data = PriceHistory::selectRaw("
-                pair,
-                MIN(bid) as low, 
-                MAX(bid) as high, 
-                SUBSTRING_INDEX(GROUP_CONCAT(bid ORDER BY recorded_at ASC), ',', 1) as open,
-                SUBSTRING_INDEX(GROUP_CONCAT(bid ORDER BY recorded_at DESC), ',', 1) as close,
-                FLOOR(UNIX_TIMESTAMP(recorded_at) / 60) * 60 as time_bucket,
-                MAX(recorded_at) as real_time
-            ")
-            ->where('recorded_at', '>', now()->subHours(2))
-            ->groupBy('pair', 'time_bucket')
-            ->orderBy('time_bucket', 'asc')
-            ->get();
+    public function tradingGraphData()
+    {
+        $from = now()->subHours(2)->timestamp;
+        $to   = now()->timestamp;
 
-        return response()->json(['graph' => $data]);
+        $rows = Redis::zrangebyscore(
+            'price_history_xauusd',
+            $from,
+            $to
+        );
+
+        $ticks = array_map(function ($row) {
+            return json_decode($row, true);
+        }, $rows);
+
+        $buckets = [];
+
+        foreach ($ticks as $tick) {
+
+            $time = strtotime($tick['recorded_at']);
+
+            $bucket = floor($time / 60) * 60;
+
+            if (!isset($buckets[$bucket])) {
+
+                $buckets[$bucket] = [
+                    'pair' => $tick['pair'],
+                    'time_bucket' => $bucket,
+                    'real_time' => $tick['recorded_at'],
+                    'open' => $tick['bid'],
+                    'high' => $tick['bid'],
+                    'low' => $tick['bid'],
+                    'close' => $tick['bid'],
+                ];
+
+            }
+
+            $buckets[$bucket]['high'] = max($buckets[$bucket]['high'], $tick['bid']);
+            $buckets[$bucket]['low']  = min($buckets[$bucket]['low'], $tick['bid']);
+            $buckets[$bucket]['close'] = $tick['bid'];
+        }
+
+        $result = array_values($buckets);
+
+        usort($result, function ($a, $b) {
+            return $a['time_bucket'] <=> $b['time_bucket'];
+        });
+
+        return response()->json([
+            'graph' => $result
+        ]);
     }
 
     public function corparatePage(Request $request)
