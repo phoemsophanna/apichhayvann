@@ -385,6 +385,9 @@ class WebPageController extends Controller
         $contact->title = $lang == "KHM" && !empty($contact->titleKm) ? $contact->titleKm : $contact->title;
         $contact->titlePopup = $lang == "KHM" && !empty($contact->titlePopupKm) ? $contact->titlePopupKm : $contact->titlePopup;
         $contact->summaryPopup = $lang == "KHM" && !empty($contact->summaryPopupKm) ? $contact->summaryPopupKm : $contact->summaryPopup;
+        $contact->working1 = $lang == "KHM" && !empty($contact->working1_Km) ? $contact->working1_Km : $contact->working1;
+        $contact->working2 = $lang == "KHM" && !empty($contact->working2_Km) ? $contact->working2_Km : $contact->working2;
+        $contact->working3 = $lang == "KHM" && !empty($contact->working3_Km) ? $contact->working3_Km : $contact->working3;
         $contact->phoneNumber = json_decode($contact->phoneNumber);
         $meta = PageBanner::where("pageTitle", "ContactPage")->first();
 
