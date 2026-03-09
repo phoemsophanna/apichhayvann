@@ -385,6 +385,9 @@ class SiteSettingController extends Controller
             "messenger" => $body->messenger ?: "",
             "line" => $body->line ?: "",
             "working3" => $body->working3 ?: "",
+            "working3_Km" => $body->working3_Km ?: "",
+            'working1_Km' => $body->working1_Km ?: "",
+            'working2_Km' => $body->working2_Km ?: "",
         ];
     }
 
