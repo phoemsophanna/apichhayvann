@@ -476,6 +476,59 @@ class WebPageController extends Controller
         ]);
     }
 
+    public function tradingGraphData2()
+    {
+        $from = now()->subHours(2)->timestamp;
+        $to   = now()->timestamp;
+
+        $rows = Redis::zrangebyscore(
+            'price_history_xagusd',
+            $from,
+            $to
+        );
+
+        $ticks = array_map(function ($row) {
+            return json_decode($row, true);
+        }, $rows);
+
+        $buckets = [];
+
+        foreach ($ticks as $tick) {
+
+            $time = strtotime($tick['recorded_at']);
+
+            $bucket = floor($time / 60) * 60;
+
+            if (!isset($buckets[$bucket])) {
+
+                $buckets[$bucket] = [
+                    'pair' => $tick['pair'],
+                    'time_bucket' => $bucket,
+                    'real_time' => $tick['recorded_at'],
+                    'open' => $tick['bid'],
+                    'high' => $tick['bid'],
+                    'low' => $tick['bid'],
+                    'close' => $tick['bid'],
+                ];
+
+            }
+
+            $buckets[$bucket]['high'] = max($buckets[$bucket]['high'], $tick['bid']);
+            $buckets[$bucket]['low']  = min($buckets[$bucket]['low'], $tick['bid']);
+            $buckets[$bucket]['close'] = $tick['bid'];
+        }
+
+        $result = array_values($buckets);
+
+        usort($result, function ($a, $b) {
+            return $a['time_bucket'] <=> $b['time_bucket'];
+        });
+
+        return response()->json([
+            'graph' => $result
+        ]);
+    }
+
     public function corparatePage(Request $request)
     {
         $lang = $request->header("Accept-Language");

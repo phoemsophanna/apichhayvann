@@ -34,9 +34,7 @@ class SaveGraphData extends Command
             $data = Cache::get('external_latest');
 
             if ($data) {
-
                 foreach ($data as $item) {
-
                     if ($item['PAIR'] === 'XAUUSD') {
 
                         $timestamp = now()->timestamp;
@@ -56,7 +54,29 @@ class SaveGraphData extends Command
                             now()->subHours(2)->timestamp
                         );
                     }
+
+                    if ($item['PAIR'] === 'XAGUSD') {
+
+                        $timestamp = now()->timestamp;
+
+                        $record = json_encode([
+                            'pair' => $item['PAIR'],
+                            'bid'  => $item['BID'],
+                            'ask'  => $item['ASK'],
+                            'recorded_at' => now()->toDateTimeString()
+                        ]);
+
+                        Redis::zadd('price_history_xagusd', $timestamp, $record);
+
+                        Redis::zremrangebyscore(
+                            'price_history_xagusd',
+                            0,
+                            now()->subHours(2)->timestamp
+                        );
+                    }
                 }
+
+                
             }
 
             $sleepTime = 1000000 - ((microtime(true) - $startTime) * 1000000);
