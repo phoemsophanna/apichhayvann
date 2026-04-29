@@ -7,6 +7,7 @@ use App\Services\TradingApiService;
 use Illuminate\Support\Facades\Cache;
 use App\Events\PriceUpdated;
 use App\Models\PriceHistory;
+use Illuminate\Support\Facades\Log;
 
 class PollExternalApiLoop extends Command
 {
@@ -31,6 +32,7 @@ class PollExternalApiLoop extends Command
     {
         while (true) {
             $data = $service->fetch();
+            \Log::info('API DATA:', ['data' => $data]);
             if ($data) {
                 Cache::put('external_latest', $data, 2);
                 broadcast(new PriceUpdated($data));
