@@ -54,15 +54,45 @@ class WebPageController extends Controller
         $lang = $request->header("Accept-Language");
         $exchange = ExchangeRate::where([["status", 1]])->orderBy('ordering', 'asc')->get();
         $fromGroups = ExchangeRate::where('status', 1)
-                    ->selectRaw("`from` AS mainFrom, JSON_ARRAYAGG(JSON_OBJECT('id', id, 'from', `from`, 'to', `to`, 'sell', sell, 'buy', buy, 'isTo', 0, 'isMultiply', isMultiply, 'date', created_at)) AS items")
-                    ->groupBy('from')
-                    ->orderBy('ordering', 'asc')
-                    ->get();
+                        ->selectRaw("
+                            `from` AS mainFrom,
+                            MIN(ordering) as ordering,
+                            JSON_ARRAYAGG(
+                                JSON_OBJECT(
+                                    'id', id,
+                                    'from', `from`,
+                                    'to', `to`,
+                                    'sell', sell,
+                                    'buy', buy,
+                                    'isTo', 0,
+                                    'isMultiply', isMultiply,
+                                    'date', created_at
+                                )
+                            ) AS items
+                        ")
+                        ->groupBy('from')
+                        ->orderBy('ordering', 'asc')
+                        ->get();
         $toGroups = ExchangeRate::where('status', 1)
-                    ->selectRaw("`to` AS mainFrom, JSON_ARRAYAGG(JSON_OBJECT('id', id, 'from', `from`, 'to', `from`, 'sell', sell, 'buy', buy, 'isTo', 1, 'isMultiply', isMultiply, 'date', created_at)) AS items")
-                    ->groupBy('to')
-                    ->orderBy('ordering', 'asc')
-                    ->get();
+                        ->selectRaw("
+                            `to` AS mainFrom,
+                            MIN(ordering) as ordering,
+                            JSON_ARRAYAGG(
+                                JSON_OBJECT(
+                                    'id', id,
+                                    'from', `from`,
+                                    'to', `from`,
+                                    'sell', sell,
+                                    'buy', buy,
+                                    'isTo', 1,
+                                    'isMultiply', isMultiply,
+                                    'date', created_at
+                                )
+                            ) AS items
+                        ")
+                        ->groupBy('to')
+                        ->orderBy('ordering', 'asc')
+                        ->get();
         $convert = $fromGroups->concat($toGroups)
                     ->groupBy('mainFrom')
                     ->map(function ($group, $key) {
