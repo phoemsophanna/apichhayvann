@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class SaveGraphData extends Command
 {
@@ -27,25 +28,21 @@ class SaveGraphData extends Command
      */
     public function handle()
     {
-        while (true) {
+        $data = Cache::get('external_latest');
 
-            $startTime = microtime(true);
-
-            $data = Cache::get('external_latest');
-
-            if ($data) {
+        if ($data) {
+            try {
                 foreach ($data as $item) {
+                    $timestamp = now()->timestamp;
+
+                    $record = json_encode([
+                        'pair' => $item['PAIR'],
+                        'bid'  => $item['BID'],
+                        'ask'  => $item['ASK'],
+                        'recorded_at' => now()->toDateTimeString()
+                    ]);
+
                     if ($item['PAIR'] === 'XAUUSD') {
-
-                        $timestamp = now()->timestamp;
-
-                        $record = json_encode([
-                            'pair' => $item['PAIR'],
-                            'bid'  => $item['BID'],
-                            'ask'  => $item['ASK'],
-                            'recorded_at' => now()->toDateTimeString()
-                        ]);
-
                         Redis::zadd('price_history_xauusd', $timestamp, $record);
 
                         Redis::zremrangebyscore(
@@ -56,16 +53,6 @@ class SaveGraphData extends Command
                     }
 
                     if ($item['PAIR'] === 'XAGUSD') {
-
-                        $timestamp = now()->timestamp;
-
-                        $record = json_encode([
-                            'pair' => $item['PAIR'],
-                            'bid'  => $item['BID'],
-                            'ask'  => $item['ASK'],
-                            'recorded_at' => now()->toDateTimeString()
-                        ]);
-
                         Redis::zadd('price_history_xagusd', $timestamp, $record);
 
                         Redis::zremrangebyscore(
@@ -75,14 +62,9 @@ class SaveGraphData extends Command
                         );
                     }
                 }
-
-                
-            }
-
-            $sleepTime = 1000000 - ((microtime(true) - $startTime) * 1000000);
-
-            if ($sleepTime > 0) {
-                usleep($sleepTime);
+            } catch (Exception $th) {
+                Log::info('Error: ' . $error->getMessage());
+                return false;
             }
         }
     }
