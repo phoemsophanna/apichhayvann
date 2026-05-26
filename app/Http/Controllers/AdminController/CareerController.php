@@ -117,7 +117,7 @@ class CareerController extends Controller
     public function careerApplyList(Request $request) {
         $application = CareerApply::select("id","firstname","lastname","phoneNumber","careerId","created_at")->get();
         $application->each(function($q){
-            $q->create_at = Carbon::parse($q->create_at)->format("d F Y");
+            $q->create_at = Carbon::parse($q->created_at)->format("d F Y");
             $q->career; 
         });
 
