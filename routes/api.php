@@ -276,6 +276,7 @@ Route::get("/article-detail/{id}", [ArticlePageController::class, "show"]);
 Route::get("/testimonial-page", [WebPageController::class, "testimonialPage"]);
 Route::get("/web-hosting-page", [WebPageController::class, "webHostingPage"]);
 Route::get("/about-us-page", [WebPageController::class, "aboutUsPage"]);
+Route::get("/team-detail/{id}", [WebPageController::class, "teamDetailPage"]);
 Route::get("/faq-page", [WebPageController::class, "faqPage"]);
 Route::get("/individual-page", [WebPageController::class, "individualPage"]);
 Route::get("/corparate-page", [WebPageController::class, "corparatePage"]);

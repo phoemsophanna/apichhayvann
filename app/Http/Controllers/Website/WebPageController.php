@@ -270,14 +270,13 @@ class WebPageController extends Controller
         ], 200);
     }
 
-    public function teamDetailPage(Request $request) {
+    public function teamDetailPage(Request $request, $id) {
         $lang = $request->header("Accept-Language");
-        $team = Team::where("isActive",1)->orderby("ordering")->get();
-        $team->each(function($q) use ($lang) {
-            $q->name = $lang == "KHM" && !empty($q->nameKm) ? $q->nameKm : $q->name;
-            $q->position = $lang == "KHM" && !empty($q->positionKm) ? $q->positionKm : $q->position;
-            $q->experience = $lang == "KHM" && !empty($q->experienceKm) ? $q->experienceKm : $q->experience;
-        });
+        $team = Team::findOrFail($id);
+        $team->name = $lang == "KHM" && !empty($team->nameKm) ? $team->nameKm : $team->name;
+        $team->position = $lang == "KHM" && !empty($team->positionKm) ? $team->positionKm : $team->position;
+        $team->experience = $lang == "KHM" && !empty($team->experienceKm) ? $team->experienceKm : $team->experience;
+        $team->description = $lang == "KHM" && !empty($team->descriptionKm) ? $team->descriptionKm : $team->description;
         $banner = PageBanner::where("pageTitle", "TEAM")->first();
         return response()->json([
             "status" => "success",
