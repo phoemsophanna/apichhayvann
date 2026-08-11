@@ -37,6 +37,8 @@ class TeamController extends Controller
             "positionKm" => request("positionKm", null),
             "experience" => request("experience", null),
             "experienceKm" => request("experienceKm", null),
+            "description" => request("description", null),
+            "descriptionKm" => request("descriptionKm", null),
             "facebook" => request("facebook", null),
             "telegram" => request("telegram", null),
             "linkedin" => request("linkedin", null),

@@ -15,6 +15,8 @@ class Team extends Model
         "positionKm",
         "experience",
         "experienceKm",
+        "description",
+        "descriptionKm",
         "facebook",
         "telegram",
         "linkedin",

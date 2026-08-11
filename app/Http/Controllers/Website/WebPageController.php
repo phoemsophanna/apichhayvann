@@ -259,12 +259,30 @@ class WebPageController extends Controller
         });
         $settings = SiteSetting::where("type", "HISTORY")->first();
         $settings = json_decode($settings->content);
+        $settings->history_description_eng = $lang == "KHM" && !empty($settings->history_description_km) ? $settings->history_description_km : $settings->history_description_eng;
         $banner = PageBanner::where("pageTitle", "HISTORY")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
             "history" => $history,
             "settings" => $settings,
+            "banner" => $banner
+        ], 200);
+    }
+
+    public function teamDetailPage(Request $request) {
+        $lang = $request->header("Accept-Language");
+        $team = Team::where("isActive",1)->orderby("ordering")->get();
+        $team->each(function($q) use ($lang) {
+            $q->name = $lang == "KHM" && !empty($q->nameKm) ? $q->nameKm : $q->name;
+            $q->position = $lang == "KHM" && !empty($q->positionKm) ? $q->positionKm : $q->position;
+            $q->experience = $lang == "KHM" && !empty($q->experienceKm) ? $q->experienceKm : $q->experience;
+        });
+        $banner = PageBanner::where("pageTitle", "TEAM")->first();
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "team" => $team,
             "banner" => $banner
         ], 200);
     }
