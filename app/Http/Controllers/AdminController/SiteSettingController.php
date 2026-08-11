@@ -69,6 +69,9 @@ class SiteSettingController extends Controller
             case 'INDIVIDUAL':
                 $item = $this->_individual($req);
                 break;
+            case 'HISTORY':
+                $item = $this->_history($req);
+                break;
             case 'CORPORATE':
                 $item = $this->_corporate($req);
                 break;
@@ -329,6 +332,15 @@ class SiteSettingController extends Controller
             "description" => $body->description ?: ""
         ];
     }
+
+    private function _history(Request $body)
+    {
+        return [
+            "history_description_eng" => $body->history_description_eng ?: "",
+            "history_description_km" => $body->history_description_km ?: ""
+        ];
+    }
+
     private function _testimonial(Request $body)
     {
         return [
