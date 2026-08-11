@@ -257,11 +257,14 @@ class WebPageController extends Controller
             $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title;
             $q->summary = $lang == "KHM" && !empty($q->summaryKm) ? $q->summaryKm : $q->summary;
         });
+        $settings = SiteSetting::where("type", "HISTORY")->first();
+        $settings = json_decode($settings->content);
         $banner = PageBanner::where("pageTitle", "HISTORY")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
             "history" => $history,
+            "settings" => $settings,
             "banner" => $banner
         ], 200);
     }
