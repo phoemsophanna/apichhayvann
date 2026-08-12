@@ -277,12 +277,15 @@ class WebPageController extends Controller
         $team->position = $lang == "KHM" && !empty($team->positionKm) ? $team->positionKm : $team->position;
         $team->experience = $lang == "KHM" && !empty($team->experienceKm) ? $team->experienceKm : $team->experience;
         $team->description = $lang == "KHM" && !empty($team->descriptionKm) ? $team->descriptionKm : $team->description;
+        $sites = SiteSetting::where("type", "TEAMPAGE")->first();
+        $sites = json_decode($sites->content);
         $banner = PageBanner::where("pageTitle", "TEAM")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
             "team" => $team,
-            "banner" => $banner
+            "banner" => $banner,
+            "sites" => $sites
         ], 200);
     }
 
@@ -294,12 +297,15 @@ class WebPageController extends Controller
             $q->position = $lang == "KHM" && !empty($q->positionKm) ? $q->positionKm : $q->position;
             $q->experience = $lang == "KHM" && !empty($q->experienceKm) ? $q->experienceKm : $q->experience;
         });
+        $sites = SiteSetting::where("type", "TEAMPAGE")->first();
+        $sites = json_decode($sites->content);
         $banner = PageBanner::where("pageTitle", "TEAM")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
             "team" => $team,
-            "banner" => $banner
+            "banner" => $banner,
+            "sites" => $sites
         ], 200);
     }
 

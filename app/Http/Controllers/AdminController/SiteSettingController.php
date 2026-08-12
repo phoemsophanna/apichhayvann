@@ -66,6 +66,9 @@ class SiteSettingController extends Controller
             case 'GENERAL':
                 $item = $this->_general($req);
                 break;
+            case 'TEAMPAGE':
+                $item = $this->_teampage($req);
+                break;
             case 'INDIVIDUAL':
                 $item = $this->_individual($req);
                 break;
@@ -108,6 +111,13 @@ class SiteSettingController extends Controller
             "logo_header" => $body->logo_header ?: "",
             "logo_footer" => $body->logo_footer ?: "",
             "popup_thumbnail" => $body->popup_thumbnail ?: ""
+        ];
+    }
+
+    private function _teampage(Request $body) {
+        return [
+            "background" => $body->background ?: "",
+			"backgroundCover" => $body->backgroundCover ?: "",
         ];
     }
 
