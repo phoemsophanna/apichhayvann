@@ -102,6 +102,13 @@ Route::group(['middleware' => 'api', 'prefix' => 'tradings'], function () {
     Route::delete("/delete/{id}", [Admin\TradingController::class, "destroy"]);
 });
 
+Route::group(['middleware' => 'api', 'prefix' => 'cards'], function () {
+    Route::get("/", [Admin\CardController::class, "index"]);
+    Route::post("/", [Admin\CardController::class, "store"]);
+    Route::get("/detail", [Admin\CardController::class, "show"]);
+    Route::delete("/delete/{id}", [Admin\CardController::class, "destroy"]);
+});
+
 Route::group(['middleware' => 'api', 'prefix' => 'categories'], function () {
     Route::get("/", [Admin\CategoryController::class, "index"]);
     Route::post("/", [Admin\CategoryController::class, "store"]);
