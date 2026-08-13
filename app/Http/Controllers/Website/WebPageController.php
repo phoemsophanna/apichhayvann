@@ -316,7 +316,7 @@ class WebPageController extends Controller
         $banner = PageBanner::where("pageTitle", "PLATFORM")->first();
         $services = Card::where("status", 1)->orderby("ordering", "desc")->get();
         $services->each(function($query) use ($lang){
-            $query->title = $lang == "KHM" && !empty($query->title_km) ? $query->title_km : "";
+            $query->title = $lang == "KHM" && !empty($query->title_km) ? $query->title_km : $query->title_eng;
         });
         $mobile_steps = Trading::where("status", 1)->where("type", "MOBILE")->orderby("ordering", "desc")->get();
         $mobile_steps->each(function($query) use ($lang){
