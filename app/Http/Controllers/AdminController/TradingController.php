@@ -16,7 +16,7 @@ class TradingController extends Controller
     public function index()
     {
 
-        $data = Trading::select("id", "title", "step", "summary", "type", "status", "ordering")->orderBy('id', 'desc')->get();
+        $data = Trading::select("id", "image", "title", "step", "summary", "type", "status", "ordering")->orderBy('id', 'desc')->get();
 
         return response()->json([
             'message' => 'Get list success.',

@@ -51,6 +51,9 @@ class SiteSettingController extends Controller
             case 'CONTACT':
                 $item = $this->_contact($req);
                 break;
+            case 'PLATFORM':
+                $item = $this->_platform($req);
+                break;
             case 'TRADING':
                 $item = $this->_trading($req);
                 break;
@@ -118,6 +121,35 @@ class SiteSettingController extends Controller
         return [
             "background" => $body->background ?: "",
 			"backgroundCover" => $body->backgroundCover ?: "",
+        ];
+    }
+
+    private function _platform(Request $body) 
+    {
+        return [
+            "title" => $body->title ?: "",
+            "titleKm" => $body->titleKm ?: "",
+            "description" => $body->description ?: "",
+            "descriptionKm" => $body->descriptionKm ?: "",
+            "image" => $body->image ?: "",
+            "service_title_eng" => $body->service_title_eng ?: "",
+            "service_title_km" => $body->service_title_km ?: "",
+            "image2" => $body->image2 ?: "",
+            "platform1" => $body->platform1 ?: "",
+            "link" => $body->link ?: "",
+            "platform2" => $body->platform2 ?: "",
+            "link2" => $body->link2 ?: "",
+            "platform3" => $body->platform3 ?: "",
+            "link3" => $body->link3 ?: "",
+            "phoneNumber" => $body->phoneNumber ?: "",
+            "whatsapp" => $body->whatsapp ?: "",
+            "linkedin" => $body->linkedin ?: "",
+            "guide_title_eng" => $body->guide_title_eng ?: "",
+            "guide_title_km" => $body->guide_title_km ?: "",
+            "video_title_eng" => $body->video_title_eng ?: "",
+            "video_title_km" => $body->video_title_km ?: "",
+            "video_thumbnail" => $body->video_thumbnail ?: "",
+            "video_link" => $body->video_link ?: ""
         ];
     }
 
