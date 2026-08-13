@@ -3,20 +3,19 @@
 namespace App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Controller;
-use App\Models\Trading;
+use App\Models\Card;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class TradingController extends Controller
+class CardController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-        $data = Trading::select("id", "title", "step", "summary", "status", "ordering")->orderBy('id', 'desc')->get();
+        $data = Card::select("id", "icon", "title_eng", "status", "ordering")->orderBy('id', 'desc')->get();
 
         return response()->json([
             'message' => 'Get list success.',
@@ -31,14 +30,11 @@ class TradingController extends Controller
     public function store(Request $request)
     {
         $dataForm = [
-            "step" => request("step", ""),
-            "stepKm" => request("stepKm", ""),
-            "title" => request("title", ""),
-            "titleKm" => request("titleKm", ""),
-            "image" => request("image", null),
-            "summary" => request("summary", ""),
-            "summaryKm" => request("summaryKm", ""),
-            "type" => request("type", "MOBILE"),
+            "title_eng" => request("title_eng", 0),
+            "title_km" => request("title_km", 0),
+            "description_eng" => request("description_eng", 0),
+            "description_km" => request("description_km", 0),
+            "icon" => request("icon", 0),
             "ordering" => request("ordering", 0),
             'status' => request("status", 1)
         ];
@@ -63,7 +59,7 @@ class TradingController extends Controller
      */
     public function show(Request $request)
     {
-        $model = Trading::findOrFail($request->id);
+        $model = Card::findOrFail($request->id);
         return response()->json([
             'message' => 'Get detail success.',
             'status' => 'success',
@@ -84,7 +80,7 @@ class TradingController extends Controller
      */
     public function destroy(string $id)
     {
-        $model = Trading::findOrFail($id);
+        $model = Card::findOrFail($id);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',
@@ -96,9 +92,9 @@ class TradingController extends Controller
     {
         try {
             if ($id) {
-                Trading::where('id', $id)->update($data);
+                Card::where('id', $id)->update($data);
             } else {
-                Trading::create($data);
+                Card::create($data);
             }
         } catch (Exception $error) {
             Log::info('Error: ' . $error->getMessage());

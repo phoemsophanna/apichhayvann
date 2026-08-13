@@ -16,31 +16,27 @@ class OpenAccountController extends Controller
         $request->validate([
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'email' => 'required|email',
             'phoneNumber' => 'required|string',
-            'date' => 'required|string',
-            'nidNumber' => 'required|string',
-            'front' => 'required',
             'captcha' => 'required|string' 
         ]);
         
-        $front = null;
-        if ($request->hasFile('front')) {
-            try {
-                $front = FileService::save("/individual", $request->file('front'));
-            } catch (\Exception $th) {
-                return response()->json(["status" => "fail", "message" => $th->getMessage()]);
-            }
-        }
+        // $front = null;
+        // if ($request->hasFile('front')) {
+        //     try {
+        //         $front = FileService::save("/individual", $request->file('front'));
+        //     } catch (\Exception $th) {
+        //         return response()->json(["status" => "fail", "message" => $th->getMessage()]);
+        //     }
+        // }
 
-        $back = null;
-        if ($request->hasFile('back')) {
-            try {
-                $back = FileService::save("/individual", $request->file('back'));
-            } catch (\Exception $th) {
-                return response()->json(["status" => "fail", "message" => $th->getMessage()]);
-            }
-        }
+        // $back = null;
+        // if ($request->hasFile('back')) {
+        //     try {
+        //         $back = FileService::save("/individual", $request->file('back'));
+        //     } catch (\Exception $th) {
+        //         return response()->json(["status" => "fail", "message" => $th->getMessage()]);
+        //     }
+        // }
 
         $privacy = $request->privacy ? json_encode($request->privacy) : json_encode([]);
 

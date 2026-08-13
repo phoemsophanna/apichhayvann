@@ -5,18 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Trading extends Model
+class Card extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        "step",
-        "stepKm",
-        "title",
-        "titleKm",
-        "summary",
-        "summaryKm",
-        "image",
-        "type",
+        "title_eng",
+        "title_km",
+        "description_eng",
+        "description_km",
+        "icon",
         "ordering",
         "status"
     ];
