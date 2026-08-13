@@ -287,6 +287,7 @@ Route::get("/team-detail/{id}", [WebPageController::class, "teamDetailPage"]);
 Route::get("/faq-page", [WebPageController::class, "faqPage"]);
 Route::get("/individual-page", [WebPageController::class, "individualPage"]);
 Route::get("/corparate-page", [WebPageController::class, "corparatePage"]);
+Route::get("/platform", [WebPageController::class, "platformPage"]);
 Route::get("/layout", [WebPageController::class, "layouts"]);
 Route::group(['middleware' => [ 'cors'], 'prefix' => "sending-email"], function() {
     Route::post("/", [WebPageController::class, "sendingEmail"]);
