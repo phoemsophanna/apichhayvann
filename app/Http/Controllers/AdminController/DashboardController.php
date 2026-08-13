@@ -36,30 +36,14 @@ class DashboardController extends Controller
                     ]],
                 ],
                 [
-                    "id" => 2,
-                    "feaIcon" => "user",
-                    "feaIconClass" => "warning",
-                    "label" => "Corporate Account",
-                    "badgeClass" => "",
-                    "icon" => "",
-                    "percentage" => '',
-                    "caption" => "Corporate Account",
-                    "subCounter" => [[
-                        "id" => 1,
-                        "counter" => Corporate::count(),
-                        "suffix" => "",
-                        "separator" => ","
-                    ]],
-                ],
-                [
                     "id" => 3,
                     "feaIcon" => "user",
                     "feaIconClass" => "info",
-                    "label" => "Individual Account",
+                    "label" => "Open Account",
                     "badgeClass" => "",
                     "icon" => "ri-arrow-up-s-line",
                     "percentage" => "",
-                    "caption" => "All Individual Account",
+                    "caption" => "All Open Account",
                     "subCounter" => [[
                         "id" => 1,
                         "counter" => Individual::count(),

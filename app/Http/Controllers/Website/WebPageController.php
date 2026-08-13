@@ -25,6 +25,7 @@ use App\Models\News;
 use App\Models\CurrencyConvert;
 use App\Models\Trading;
 use App\Models\PerformanceType;
+use App\Models\Card;
 use App\Models\PriceHistory;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
@@ -286,6 +287,35 @@ class WebPageController extends Controller
             "team" => $team,
             "banner" => $banner,
             "sites" => $sites
+        ], 200);
+    }
+
+    public function platformPage(Request $request, $id) {
+        $lang = $request->header("Accept-Language");
+        $sites = SiteSetting::where("type", "PLATFORM")->first();
+        $sites = json_decode($sites->content);
+        $banner = PageBanner::where("pageTitle", "PLATFORM")->first();
+        $services = Card::where("status", 1)->orderby("ordering", "desc")->get();
+        $services->each(function($query) use ($lang){
+            $query->title = $lang == "KHM" && !empty($query->title_km) ? $query->title_km : "";
+        });
+        $mobile_steps = Trading::where("status", 1)->where("type", "MOBILE")->orderby("ordering", "desc")->get();
+        $mobile_steps->each(function($query) use ($lang){
+            $query->title = $lang == "KHM" && !empty($query->titleKm) ? $query->titleKm : $query->title;
+            $query->summary = $lang == "KHM" && !empty($query->summaryKm) ? $query->summaryKm : $query->summary;
+        });
+        $pc_steps = Trading::where("status", 1)->where("type", "PC")->orderby("ordering", "desc")->get();
+        $pc_steps->each(function($query) use ($lang){
+            $query->title = $lang == "KHM" && !empty($query->titleKm) ? $query->titleKm : $query->title;
+            $query->summary = $lang == "KHM" && !empty($query->summaryKm) ? $query->summaryKm : $query->summary;
+        });
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "banner" => $banner,
+            "sites" => $sites,
+            "mobile_steps" => $mobile_steps,
+            "pc_steps" => $pc_steps
         ], 200);
     }
 

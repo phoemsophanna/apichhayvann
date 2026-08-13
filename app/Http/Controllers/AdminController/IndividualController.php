@@ -17,7 +17,7 @@ class IndividualController extends Controller
      */
     public function index()
     {
-        $data = Individual::select("id", "firstname", "lastname", "phone", "nidNumber", "created_at")->orderBy('id', 'desc')->get();
+        $data = Individual::select("id", "firstname", "lastname", "phone", "email", "created_at")->orderBy('id', 'desc')->get();
         
         $data->each(function($q){
             $q->create_at = Carbon::parse($q->created_at)->format("d F Y");
