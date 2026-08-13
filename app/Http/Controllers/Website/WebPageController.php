@@ -334,6 +334,7 @@ class WebPageController extends Controller
             "banner" => $banner,
             "sites" => $sites,
             "mobile_steps" => $mobile_steps,
+            "services" => $services,
             "pc_steps" => $pc_steps
         ], 200);
     }
