@@ -290,7 +290,7 @@ class WebPageController extends Controller
         ], 200);
     }
 
-    public function platformPage(Request $request, $id) {
+    public function platformPage(Request $request) {
         $lang = $request->header("Accept-Language");
         $sites = SiteSetting::where("type", "PLATFORM")->first();
         $sites = json_decode($sites->content);
