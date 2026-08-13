@@ -298,6 +298,10 @@ class WebPageController extends Controller
             ? $sites->titleKm
             : $sites->title;
 
+        $sites->label = $lang == "KHM" && !empty($sites->labelKm)
+            ? $sites->labelKm
+            : $sites->label;
+
         $sites->description = $lang == "KHM" && !empty($sites->descriptionKm)
             ? $sites->descriptionKm 
             : $sites->description; 
