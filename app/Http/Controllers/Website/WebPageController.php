@@ -294,6 +294,25 @@ class WebPageController extends Controller
         $lang = $request->header("Accept-Language");
         $sites = SiteSetting::where("type", "PLATFORM")->first();
         $sites = json_decode($sites->content);
+        $sites->title = $lang == "KHM" && !empty($sites->titleKm)
+            ? $sites->titleKm
+            : $sites->title;
+
+        $sites->description = $lang == "KHM" && !empty($sites->descriptionKm)
+            ? $sites->descriptionKm 
+            : $sites->description; 
+
+        $sites->guide_title = $lang == "KHM" && !empty($sites->guide_title_km)
+            ? $sites->guide_title_km
+            : $sites->guide_title_eng;
+
+        $sites->service_title = $lang == "KHM" && !empty($sites->service_title_km)
+            ? $sites->service_title_km
+            : $sites->service_title_eng;
+
+        $sites->video_title = $lang == "KHM" && !empty($sites->video_title_km)
+            ? $sites->video_title_km
+            : $sites->video_title_eng;
         $banner = PageBanner::where("pageTitle", "PLATFORM")->first();
         $services = Card::where("status", 1)->orderby("ordering", "desc")->get();
         $services->each(function($query) use ($lang){
