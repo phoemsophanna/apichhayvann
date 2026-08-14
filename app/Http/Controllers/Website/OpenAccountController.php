@@ -66,8 +66,7 @@ class OpenAccountController extends Controller
         $contact = SiteSetting::where("type", "CONTACT")->first();
         $contactForm = $contact ? json_decode($contact->content) : null;
         $email = $data->email;
-        $subject = "Register Individual Account";
-        $front = $data->frontCard;
+        $subject = "Register Open Account";
 
         \Mail::send(
             'email',
@@ -75,13 +74,10 @@ class OpenAccountController extends Controller
                 'name' => $data->firstname . ' ' . $data->lastname,
                 'email' => $email,
                 'number' => $data->phone,
-                'subject' => $subject,
-                'text' => 'National ID' . $data->nidNumber,
             ),
             function ($message) use ($email, $subject, $contactForm, $front) {
                 $message->from('contact-form@camgotech.com');
                 $message->subject($subject);
-                $message->attach(public_path('uploads/' . $front));
                 $message->to($contactForm ? $contactForm->sendingIndividual : 'info@camgotech.com');
             }
         );
