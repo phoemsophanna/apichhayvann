@@ -23,6 +23,12 @@ class Team extends Model
         "phone",
         "email",
         "image",
+        "slug",
+        "seo_title_eng",
+        "seo_title_km",
+        "seo_description_eng",
+        "seo_description_km",
+        "keywords",
         "ordering",
         "isActive",
     ];
