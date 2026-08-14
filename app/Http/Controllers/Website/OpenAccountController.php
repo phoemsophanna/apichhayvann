@@ -20,7 +20,7 @@ class OpenAccountController extends Controller
             'captcha' => 'required|string' 
         ]);
         
-        // $front = null;
+        $front = null;
         // if ($request->hasFile('front')) {
         //     try {
         //         $front = FileService::save("/individual", $request->file('front'));
@@ -29,7 +29,7 @@ class OpenAccountController extends Controller
         //     }
         // }
 
-        // $back = null;
+        $back = null;
         // if ($request->hasFile('back')) {
         //     try {
         //         $back = FileService::save("/individual", $request->file('back'));
