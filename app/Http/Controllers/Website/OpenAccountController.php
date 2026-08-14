@@ -75,7 +75,7 @@ class OpenAccountController extends Controller
                 'email' => $email,
                 'number' => $data->phone,
             ),
-            function ($message) use ($email, $subject, $contactForm, $front) {
+            function ($message) use ($email, $subject, $contactForm) {
                 $message->from('contact-form@camgotech.com');
                 $message->subject($subject);
                 $message->to($contactForm ? $contactForm->sendingIndividual : 'info@camgotech.com');
