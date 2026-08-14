@@ -40,7 +40,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td style="width: 150px;">Subject</td>
-                                                        <th>: {{$subject}}</th>
+                                                        <th>: {{isset($subject) ? $subject : ""}}</th>
                                                     </tr>
                                                 </tbody>
                                             </table>
