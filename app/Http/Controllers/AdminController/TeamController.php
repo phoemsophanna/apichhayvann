@@ -7,6 +7,7 @@ use App\Models\Team;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class TeamController extends Controller
 {
