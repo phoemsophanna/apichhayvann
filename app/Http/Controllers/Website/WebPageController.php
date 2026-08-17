@@ -398,11 +398,12 @@ class WebPageController extends Controller
 
     public function seoSiteSetting(Request $request) {
         $lang = $request->header("Accept-Language");
-        $sites = SiteSetting::where("type", $request->page)->first();
-        $sites = json_decode($sites->content);
+        // $sites = SiteSetting::where("type", $request->page)->first();
+        // $sites = json_decode($sites->content);
         return response()->json([
             "status" => "success",
-            "sites" => $sites
+            // "sites" => $sites
+            "page" => $request->page
         ], 200);
     }
 
