@@ -44,7 +44,7 @@ class TeamController extends Controller
             "linkedin" => request("linkedin", null),
             "email" => request("email", null),
             "image" => request("image", null),
-            "slug" => request("slug", ""),
+            "slug" => Str::slug($request->title),
             "seo_title_eng" => request("seo_title_eng", ""),
             "seo_title_km" => request("seo_title_km", ""),
             "seo_description_eng" => request("seo_description_eng", ""),
