@@ -64,6 +64,22 @@ class CareerPageController extends Controller
         ], 200);
     }
 
+    public function seo(Request $request, $slug)
+    {
+        $lang = $request->header("Accept-Language");
+        $career = Career::where("slug", $slug)->first();
+        $career->title = $lang == "KHM" && !empty($career->titleKm) ? $career->titleKm : $career->title;
+        $career->location = $lang == "KHM" && !empty($career->locationKm) ? $career->locationKm : $career->location;
+        $career->des = $lang == "KHM" && !empty($career->desKm) ? $career->desKm : $career->des;
+        $career->content = $lang == "KHM" && !empty($career->contentKm) ? $career->contentKm : $career->content;
+        $career->deadline = Carbon::parse($career->deadline)->format("F d, Y");
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "sites" => $career,
+        ], 200);
+    }
+
     public static function save($data){
         try {
             $result = CareerApply::create($data);

@@ -277,6 +277,7 @@ Route::get("/project-detail/{id}", [ProjectPageController::class, "show"]);
 Route::get("/project-list", [ProjectPageController::class, "list"]);
 Route::get("/career-page", [CareerPageController::class, "index"]);
 Route::get("/career-detail/{slug}", [CareerPageController::class, "show"]);
+Route::get("/career-seo-detail/{slug}", [CareerPageController::class, "seo"]);
 Route::post("/career-apply", [CareerPageController::class, "sendingCareer"]);
 Route::get("/article-page", [ArticlePageController::class, "index"]);
 Route::get("/article-detail/{slug}", [ArticlePageController::class, "show"]);
