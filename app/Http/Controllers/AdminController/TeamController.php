@@ -44,6 +44,12 @@ class TeamController extends Controller
             "linkedin" => request("linkedin", null),
             "email" => request("email", null),
             "image" => request("image", null),
+            "slug" => request("slug", ""),
+            "seo_title_eng" => request("seo_title_eng", ""),
+            "seo_title_km" => request("seo_title_km", ""),
+            "seo_description_eng" => request("seo_description_eng", ""),
+            "seo_description_km" => request("seo_description_km", ""),
+            "keywords" => request("keywords", ""),
             "ordering" => request("ordering", 0),
             "isActive" => request("isActive", 1)
         ];
