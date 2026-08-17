@@ -37,10 +37,10 @@ class CareerPageController extends Controller
         ], 200);
     }
 
-    public function show(Request $request, $id)
+    public function show(Request $request, $slug)
     {
         $lang = $request->header("Accept-Language");
-        $career = Career::find($id);
+        $career = Career::where("slug", $slug)->first();
         $career->title = $lang == "KHM" && !empty($career->titleKm) ? $career->titleKm : $career->title;
         $career->location = $lang == "KHM" && !empty($career->locationKm) ? $career->locationKm : $career->location;
         $career->des = $lang == "KHM" && !empty($career->desKm) ? $career->desKm : $career->des;

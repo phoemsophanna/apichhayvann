@@ -271,9 +271,9 @@ class WebPageController extends Controller
         ], 200);
     }
 
-    public function teamDetailPage(Request $request, $id) {
+    public function teamDetailPage(Request $request, $slug) {
         $lang = $request->header("Accept-Language");
-        $team = Team::findOrFail($id);
+        $team = Team::where("slug", $slug)->first();
         $team->name = $lang == "KHM" && !empty($team->nameKm) ? $team->nameKm : $team->name;
         $team->position = $lang == "KHM" && !empty($team->positionKm) ? $team->positionKm : $team->position;
         $team->experience = $lang == "KHM" && !empty($team->experienceKm) ? $team->experienceKm : $team->experience;
@@ -406,9 +406,9 @@ class WebPageController extends Controller
         ], 200);
     }
 
-    public function productPage(Request $request,$id) {
+    public function productPage(Request $request,$slug) {
         $lang = $request->header("Accept-Language");
-        $product = Product::findOrFail($id);
+        $product = Product::where("slug", $slug)->first();
         $product->title = $lang == "KHM" && !empty($product->titleKm) ? $product->titleKm : $product->title;
         $product->type = $lang == "KHM" && !empty($product->typeKm) ? $product->typeKm : $product->type;
         $product->country = $lang == "KHM" && !empty($product->countryKm) ? $product->countryKm : $product->country;

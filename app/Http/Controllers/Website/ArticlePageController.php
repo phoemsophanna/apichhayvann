@@ -47,11 +47,11 @@ class ArticlePageController extends Controller
         ], 200);
     }
 
-    public function show(Request $request,$id)
+    public function show(Request $request,$slug)
     {
         $lang = $request->header("Accept-Language");
         $articles = News::select("id", "title", "titleKm", "image", "summary", "summaryKm", "category_id", "date")->where([["isActive", true], ["id", "!=", $id]])->orderBy("id", "desc")->limit(8)->get();
-        $article = News::find($id);
+        $article = News::where("slug", $slug)->first();
         $article->title = $lang == "KHM" && !empty($article->titleKm) ? $article->titleKm : $article->title;
         $article->content = $lang == "KHM" && !empty($article->contentKm) ? $article->contentKm : $article->content;
         $article->date = Carbon::parse($article->date)->format("d.m.Y");
