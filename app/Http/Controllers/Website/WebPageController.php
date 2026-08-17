@@ -396,6 +396,16 @@ class WebPageController extends Controller
         ], 200);
     }
 
+    public function seoSiteSetting(Request $request) {
+        $lang = $request->header("Accept-Language");
+        $sites = SiteSetting::where("type", $request->page)->first();
+        $sites = json_decode($sites->content);
+        return response()->json([
+            "status" => "success",
+            "sites" => $sites
+        ], 200);
+    }
+
     public function productPage(Request $request,$id) {
         $lang = $request->header("Accept-Language");
         $product = Product::findOrFail($id);
