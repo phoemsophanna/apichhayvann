@@ -24,7 +24,7 @@ class ProductController extends Controller
             ->orderBy('id', 'asc')->get();
         $data->each(function($q) {
             $gallery = json_decode($q->gallery);
-            $q->image = $gallery[0];
+            $q->images = $gallery[0];
         });
         return response()->json([
             'message' => 'Get Product list success.',
