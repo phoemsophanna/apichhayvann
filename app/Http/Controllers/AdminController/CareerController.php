@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class CareerController extends Controller
 {
@@ -42,6 +43,12 @@ class CareerController extends Controller
             "desKm" => request("desKm", ""),
             "content" => request("content", ""),
             "contentKm" => request("contentKm", ""),
+            "slug" => Str::slug($request->title),
+            "seo_title_eng" => request("seo_title_eng", ""),
+            "seo_title_km" => request("seo_title_km", ""),
+            "seo_description_eng" => request("seo_description_eng", ""),
+            "seo_description_km" => request("seo_description_km", ""),
+            "keywords" => request("keywords", ""),
             "type" => request("type", ""),
             "deadline" => request("deadline", ""),
             "location" => request("location", ""),

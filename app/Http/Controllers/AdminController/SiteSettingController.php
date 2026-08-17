@@ -84,6 +84,9 @@ class SiteSettingController extends Controller
             case 'POPUP':
                 $item = $this->_popup($req);
                 break;
+            case 'GOLD':
+                $item = $this->_gold($req);
+                break;
             default:
                 $item = [];
                 break;
@@ -119,14 +122,40 @@ class SiteSettingController extends Controller
 
     private function _teampage(Request $body) {
         return [
+            // SEO
+            "seo_title_eng" => $body->seo_title_eng ?: "",
+			"seo_title_km" => $body->seo_title_km ?: "",
+			"seo_description_eng" => $body->seo_description_eng ?: "",
+			"seo_description_km" => $body->seo_description_km ?: "",
+			"seo_keywords" => $body->seo_keywords ?: "",
+            // END
             "background" => $body->background ?: "",
 			"backgroundCover" => $body->backgroundCover ?: "",
+        ];
+    }
+
+    private function _gold(Request $body) {
+        return [
+            // SEO
+            "seo_title_eng" => $body->seo_title_eng ?: "",
+			"seo_title_km" => $body->seo_title_km ?: "",
+			"seo_description_eng" => $body->seo_description_eng ?: "",
+			"seo_description_km" => $body->seo_description_km ?: "",
+			"seo_keywords" => $body->seo_keywords ?: "",
+            // END
         ];
     }
 
     private function _platform(Request $body) 
     {
         return [
+            // SEO
+            "seo_title_eng" => $body->seo_title_eng ?: "",
+			"seo_title_km" => $body->seo_title_km ?: "",
+			"seo_description_eng" => $body->seo_description_eng ?: "",
+			"seo_description_km" => $body->seo_description_km ?: "",
+			"seo_keywords" => $body->seo_keywords ?: "",
+            // END
             "title" => $body->title ?: "",
             "titleKm" => $body->titleKm ?: "",
             "description" => $body->description ?: "",
@@ -159,6 +188,13 @@ class SiteSettingController extends Controller
     private function _aboutCompany(Request $body)
     {
         return [
+            // SEO
+            "seo_title_eng" => $body->seo_title_eng ?: "",
+			"seo_title_km" => $body->seo_title_km ?: "",
+			"seo_description_eng" => $body->seo_description_eng ?: "",
+			"seo_description_km" => $body->seo_description_km ?: "",
+			"seo_keywords" => $body->seo_keywords ?: "",
+            // END
             "subtitle" => $body->subtitle ?: "",
             "subtitleKm" => $body->subtitleKm ?: "",
             "companyName" => $body->companyName ?: "",
@@ -199,6 +235,11 @@ class SiteSettingController extends Controller
     private function _homepage(Request $body) 
     {
         return [
+            "seo_title_eng" => $body->seo_title_eng ?: "",
+			"seo_title_km" => $body->seo_title_km ?: "",
+			"seo_description_eng" => $body->seo_description_eng ?: "",
+			"seo_description_km" => $body->seo_description_km ?: "",
+			"seo_keywords" => $body->seo_keywords ?: "",
             "subtitle" => $body->subtitle ?: "",
             "subtitleKm" => $body->subtitleKm ?: "",
             "companyName" => $body->companyName ?: "",
@@ -228,6 +269,13 @@ class SiteSettingController extends Controller
     private function _career(Request $body) 
     {
         return [
+            // SEO
+            "seo_title_eng" => $body->seo_title_eng ?: "",
+			"seo_title_km" => $body->seo_title_km ?: "",
+			"seo_description_eng" => $body->seo_description_eng ?: "",
+			"seo_description_km" => $body->seo_description_km ?: "",
+			"seo_keywords" => $body->seo_keywords ?: "",
+            // END
             "subtitle" => $body->subtitle ?: "",
             "subtitleKm" => $body->subtitleKm ?: "",
             "title" => $body->title ?: "",
@@ -240,6 +288,13 @@ class SiteSettingController extends Controller
     private function _individual(Request $body) 
     {
         return [
+            // SEO
+            "seo_title_eng" => $body->seo_title_eng ?: "",
+			"seo_title_km" => $body->seo_title_km ?: "",
+			"seo_description_eng" => $body->seo_description_eng ?: "",
+			"seo_description_km" => $body->seo_description_km ?: "",
+			"seo_keywords" => $body->seo_keywords ?: "",
+            // END
             "subtitle" => $body->subtitle ?: "",
             "subtitleKm" => $body->subtitleKm ?: "",
             "title" => $body->title ?: "",
@@ -279,6 +334,13 @@ class SiteSettingController extends Controller
 
     private function _organization(Request $body) {
         return [
+            // SEO
+            "seo_title_eng" => $body->seo_title_eng ?: "",
+			"seo_title_km" => $body->seo_title_km ?: "",
+			"seo_description_eng" => $body->seo_description_eng ?: "",
+			"seo_description_km" => $body->seo_description_km ?: "",
+			"seo_keywords" => $body->seo_keywords ?: "",
+            // END
             "des" => $body->des ?: "",
             "desKm" => $body->desKm ?: "",
         ];
@@ -316,6 +378,13 @@ class SiteSettingController extends Controller
     private function _service(Request $body)
     {
         return [
+            // SEO
+            "seo_title_eng" => $body->seo_title_eng ?: "",
+			"seo_title_km" => $body->seo_title_km ?: "",
+			"seo_description_eng" => $body->seo_description_eng ?: "",
+			"seo_description_km" => $body->seo_description_km ?: "",
+			"seo_keywords" => $body->seo_keywords ?: "",
+            // END
             "title" => $body->title ?: "",
             "titleKm" => $body->titleKm ?: "",
             "summary" => $body->summary ?: "",
@@ -381,6 +450,13 @@ class SiteSettingController extends Controller
     private function _history(Request $body)
     {
         return [
+            // SEO
+            "seo_title_eng" => $body->seo_title_eng ?: "",
+			"seo_title_km" => $body->seo_title_km ?: "",
+			"seo_description_eng" => $body->seo_description_eng ?: "",
+			"seo_description_km" => $body->seo_description_km ?: "",
+			"seo_keywords" => $body->seo_keywords ?: "",
+            // END
             "history_description_eng" => $body->history_description_eng ?: "",
             "history_description_km" => $body->history_description_km ?: ""
         ];
@@ -410,6 +486,13 @@ class SiteSettingController extends Controller
     private function _contact(Request $body)
     {
         return [
+            // SEO
+            "seo_title_eng" => $body->seo_title_eng ?: "",
+			"seo_title_km" => $body->seo_title_km ?: "",
+			"seo_description_eng" => $body->seo_description_eng ?: "",
+			"seo_description_km" => $body->seo_description_km ?: "",
+			"seo_keywords" => $body->seo_keywords ?: "",
+            // END
             'email1' => $body->email1 ?: "",
             'email2' => $body->email2 ?: "",
             'working1' => $body->working1 ?: "",

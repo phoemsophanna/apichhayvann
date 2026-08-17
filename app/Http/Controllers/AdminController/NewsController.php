@@ -7,6 +7,7 @@ use App\Models\News;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
@@ -39,6 +40,12 @@ class NewsController extends Controller
             "contentKm" => request("contentKm", ""),
             "date" => request("date", ""),
             "category_id" => request("category_id", ""),
+            "slug" => Str::slug($request->title),
+            "seo_title_eng" => request("seo_title_eng", ""),
+            "seo_title_km" => request("seo_title_km", ""),
+            "seo_description_eng" => request("seo_description_eng", ""),
+            "seo_description_km" => request("seo_description_km", ""),
+            "keywords" => request("keywords", ""),
             "metaKeyword" => request("metaKeyword", ""),
             "metaDesc" => request("metaDesc", ""),
             "isDisplayHomepage" => request("isDisplayHomepage", false),

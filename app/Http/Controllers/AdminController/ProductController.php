@@ -10,6 +10,7 @@ use App\Models\ProductOption;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -44,6 +45,12 @@ class ProductController extends Controller
             "description" => request("description", null),
             "descriptionKm" => request("descriptionKm", null),
             "gallery" => $galleries,
+            "slug" => Str::slug($request->title),
+            "seo_title_eng" => request("seo_title_eng", ""),
+            "seo_title_km" => request("seo_title_km", ""),
+            "seo_description_eng" => request("seo_description_eng", ""),
+            "seo_description_km" => request("seo_description_km", ""),
+            "keywords" => request("keywords", ""),
             "type" => request("type", null),
             "country" => request("country", null),
             "ordering" => request("ordering", 0),

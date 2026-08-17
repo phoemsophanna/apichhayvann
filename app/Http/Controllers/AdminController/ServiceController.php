@@ -7,6 +7,7 @@ use App\Models\Service;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ServiceController extends Controller
 {
@@ -40,6 +41,12 @@ class ServiceController extends Controller
             "contentKm" => request("contentKm", ""),
             "metaKeyword" => request("metaKeyword", ""),
             "metaDesc" => request("metaDesc", ""),
+            "slug" => Str::slug($request->title),
+            "seo_title_eng" => request("seo_title_eng", ""),
+            "seo_title_km" => request("seo_title_km", ""),
+            "seo_description_eng" => request("seo_description_eng", ""),
+            "seo_description_km" => request("seo_description_km", ""),
+            "keywords" => request("keywords", ""),
             "isDisplayHomepage" => request("isDisplayHomepage", false),
             "ordering" => request("ordering", 0),
             'isActive' => request("isActive", true)
