@@ -284,6 +284,7 @@ Route::get("/testimonial-page", [WebPageController::class, "testimonialPage"]);
 Route::get("/web-hosting-page", [WebPageController::class, "webHostingPage"]);
 Route::get("/about-us-page", [WebPageController::class, "aboutUsPage"]);
 Route::get("/team-detail/{slug}", [WebPageController::class, "teamDetailPage"]);
+Route::get("/team-seo-detail/{slug}", [WebPageController::class, "teamSeoDetailPage"]);
 Route::get("/faq-page", [WebPageController::class, "faqPage"]);
 Route::get("/individual-page", [WebPageController::class, "individualPage"]);
 Route::get("/corparate-page", [WebPageController::class, "corparatePage"]);

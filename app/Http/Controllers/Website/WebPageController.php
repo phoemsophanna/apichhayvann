@@ -290,6 +290,20 @@ class WebPageController extends Controller
         ], 200);
     }
 
+    public function teamSeoDetailPage(Request $request, $slug) {
+        $lang = $request->header("Accept-Language");
+        $team = Team::where("slug", $slug)->first();
+        $team->name = $lang == "KHM" && !empty($team->nameKm) ? $team->nameKm : $team->name;
+        $team->position = $lang == "KHM" && !empty($team->positionKm) ? $team->positionKm : $team->position;
+        $team->experience = $lang == "KHM" && !empty($team->experienceKm) ? $team->experienceKm : $team->experience;
+        $team->description = $lang == "KHM" && !empty($team->descriptionKm) ? $team->descriptionKm : $team->description;
+        return response()->json([
+            "status" => "success",
+            "message" => "Load data success",
+            "sites" => $team
+        ], 200);
+    }
+
     public function platformPage(Request $request) {
         $lang = $request->header("Accept-Language");
         $sites = SiteSetting::where("type", "PLATFORM")->first();
