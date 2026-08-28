@@ -62,7 +62,9 @@ class WebPageController extends Controller
                                 JSON_OBJECT(
                                     'id', id,
                                     'from', `from`,
+                                    'fromKm', `fromKm`,
                                     'to', `to`,
+                                    'toKm', `toKm`,
                                     'sell', sell,
                                     'buy', buy,
                                     'isTo', 0,
