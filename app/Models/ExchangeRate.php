@@ -10,7 +10,9 @@ class ExchangeRate extends Model
     use HasFactory;
     protected $fillable = [
         "from",
+        "fromKm",
         "to",
+        "toKm",
         "sell",
         "buy",
         "image",

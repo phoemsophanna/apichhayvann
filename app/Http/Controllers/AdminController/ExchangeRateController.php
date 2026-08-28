@@ -33,7 +33,9 @@ class ExchangeRateController extends Controller
     {
         $dataForm = [
             "from" => request("from", ""),
+            "fromKm" => request("fromKm", ""),
             "to" => request("to", ""),
+            "toKm" => request("toKm", ""),
             "sell" => request("sell", ""),
             "buy" => request("buy", ""),
             "image" => request("image", null),
@@ -101,7 +103,9 @@ class ExchangeRateController extends Controller
                 ExchangeRate::create([
                     "image" => $query['image'] ?? null,
                     "from"  => $query['from'],
+                    "fromKm"  => $query['fromKm'],
                     "to"    => $query['to'],
+                    "toKm"    => $query['toKm'],
                     "buy"   => $query['buy'],
                     "sell"  => $query['sell'],
                     "isMultiply" => $query['isMultiply'],
