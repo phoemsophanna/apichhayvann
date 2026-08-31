@@ -502,7 +502,7 @@ class WebPageController extends Controller
         $service = Service::select("title","titleKm","id")->where("isActive", 1)->orderby("ordering")->get();
         $contact = json_decode($contact->content);
         $contact->phoneNumber = $contact->phoneNumber ? json_decode($contact->phoneNumber) : null;
-
+        $general->faq = Faq::where("isActive", 1)->count();
         return response()->json([
             'contact' => $contact,
             'general' => $general,
