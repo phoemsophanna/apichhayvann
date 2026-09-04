@@ -11,6 +11,7 @@ use App\Models\Project;
 use App\Models\Service;
 use App\Models\SiteSetting;
 use App\Models\Technology;
+use App\Models\TradingVideo;
 use App\Models\Testimonial;
 use App\Models\WebHosting;
 use Illuminate\Http\Request;
@@ -38,6 +39,8 @@ class HomepageController extends Controller
         $howTrade->subtitle = $lang == "KHM" && !empty($howTrade->subtitleKm) ? $howTrade->subtitleKm : $howTrade->subtitle;
         $howTrade->title = $lang == "KHM" && !empty($howTrade->titleKm) ? $howTrade->titleKm : $howTrade->title;        
 
+        $videoTrade = TradingVideo::where("status", 1)->orderby("ordering", "asc")->get();
+
         $news = News::select("id", "category_id", "title", "titleKm", "date", "image")->where("isActive", 1)->where("isDisplayHomepage", 1)->orderby("ordering")->limit(3)->get();
         $news->each(function($query) use ($lang) {
             $query->title = $lang == "KHM" && !empty($query->titleKm) ? $query->titleKm : $query->title;
@@ -56,6 +59,7 @@ class HomepageController extends Controller
             "message" => "Load data success",
             "homepage" => $homepage,
             "howTrade" => $howTrade,
+            "videTradde" => $videoTrade,
             "news" => $news 
         ], 200);
     }
