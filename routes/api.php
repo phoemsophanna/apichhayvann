@@ -116,6 +116,13 @@ Route::group(['prefix' => 'trading-video'], function () {
     Route::delete("/delete/{id}", [Admin\TradingVideoController::class, "destroy"]);
 });
 
+Route::group(['prefix' => 'qr-code'], function (){
+    Route::get("/", [Admin\QRCodeController::class, "index"]);
+    Route::post("/", [Admin\QRCodeController::class, "store"]);
+    Route::get("/detail", [Admin\QRCodeController::class, "show"]);
+    Route::delete("/delete/{id}", [Admin\QRCodeController::class, "destroy"]);
+});
+
 Route::group(['middleware' => 'api', 'prefix' => 'categories'], function () {
     Route::get("/", [Admin\CategoryController::class, "index"]);
     Route::post("/", [Admin\CategoryController::class, "store"]);
