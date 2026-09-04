@@ -109,6 +109,13 @@ Route::group(['prefix' => 'cards'], function () {
     Route::delete("/delete/{id}", [Admin\CardController::class, "destroy"]);
 });
 
+Route::group(['prefix' => 'trading-video'], function () {
+    Route::get("/", [Admin\TradingVideoController::class, "index"]);
+    Route::post("/", [Admin\TradingVideoController::class, "store"]);
+    Route::get("/detail", [Admin\TradingVideoController::class, "show"]);
+    Route::delete("/delete/{id}", [Admin\TradingVideoController::class, "destroy"]);
+});
+
 Route::group(['middleware' => 'api', 'prefix' => 'categories'], function () {
     Route::get("/", [Admin\CategoryController::class, "index"]);
     Route::post("/", [Admin\CategoryController::class, "store"]);
