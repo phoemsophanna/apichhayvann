@@ -30,6 +30,13 @@ class TradingVideoController extends Controller
     public function store(Request $request)
     {
         $dataForm = [
+            "subtitle_eng" => request("subtitle_eng", ""),
+            "subtitle_km" => request("subtitle_km", ""),
+            "title_eng" => request("title_eng", ""),
+            "title_km" => request("title_km", ""),
+            "des_eng" => request("des_eng", ""),
+            "des_km" => request("des_km", ""),
+            "link" => request("link", ""),
             "videoLink" => request("videoLink", ""),
             "image" => request("image", ""),
             "ordering" => request("ordering", 0),

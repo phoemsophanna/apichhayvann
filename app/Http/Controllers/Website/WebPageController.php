@@ -54,6 +54,9 @@ class WebPageController extends Controller
     {
         $lang = $request->header("Accept-Language");
         $exchange = ExchangeRate::where([["status", 1]])->orderBy('ordering', 'asc')->get();
+        $exchangeLastUpdated = ExchangeRate::where('status', 1)
+                ->orderBy('updated_at', 'desc')
+                ->first();
         $fromGroups = ExchangeRate::where('status', 1)
                         ->selectRaw("
                             `from` AS mainFrom,
@@ -130,6 +133,7 @@ class WebPageController extends Controller
             "currency" => $currency,
             "convert" => $convert,
             "service" => $service,
+            "exchangeLastUpdated" => $exchangeLastUpdated,
             "banner" => $meta
         ], 200);
     }
