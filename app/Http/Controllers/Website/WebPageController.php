@@ -513,7 +513,7 @@ class WebPageController extends Controller
             'contact' => $contact,
             'general' => $general,
             'services' => $service,
-            'history' => $history->history_description_eng,
+            'history' => $history,
             'status' => 'success'
         ],200);
     }
