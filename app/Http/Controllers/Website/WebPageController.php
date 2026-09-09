@@ -502,6 +502,7 @@ class WebPageController extends Controller
         $history = json_decode($history->content);
         $general = SiteSetting::where("type", "GENERAL")->first();
         $general = json_decode($general->content);
+        $general->history = $history->history_description_eng;
         $general->teams = Team::where("isActive",1)->count();
         $general->testimonels = Testimonial::where("isActive",1)->count();
         $general->article = News::where("isActive",1)->count();
@@ -513,7 +514,6 @@ class WebPageController extends Controller
             'contact' => $contact,
             'general' => $general,
             'services' => $service,
-            'history' => $history,
             'status' => 'success'
         ],200);
     }
