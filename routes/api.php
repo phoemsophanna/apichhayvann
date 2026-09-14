@@ -36,7 +36,7 @@ Route::group([
     Route::put('/change-password', [API\AuthController::class, 'changeAuth']);
 });
 
-Route::group(['middleware' => 'api', 'prefix' => 'partners'], function () {
+Route::group(['middleware' => 'api', 'prefix' => 'partner'], function () {
     Route::get("/", [Admin\PartnerController::class, "index"]);
     Route::post("/", [Admin\PartnerController::class, "store"]);
     Route::get("/detail", [Admin\PartnerController::class, "show"])->middleware(["permission:partners-menu.edit"]);
