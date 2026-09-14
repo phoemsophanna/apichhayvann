@@ -36,11 +36,11 @@ Route::group([
     Route::put('/change-password', [API\AuthController::class, 'changeAuth']);
 });
 
-Route::group(['middleware' => 'api', 'prefix' => 'partner'], function () {
+Route::group(['middleware' => 'api', 'prefix' => 'partners'], function () {
     Route::get("/", [Admin\PartnerController::class, "index"]);
     Route::post("/", [Admin\PartnerController::class, "store"]);
-    Route::get("/detail", [Admin\PartnerController::class, "show"])->middleware(["permission:partners-menu.edit"]);
-    Route::delete("/delete/{id}", [Admin\PartnerController::class, "destroy"])->middleware(["permission:partners-menu.delete"]);
+    Route::get("/detail", [Admin\PartnerController::class, "show"]);
+    Route::delete("/delete/{id}", [Admin\PartnerController::class, "destroy"]);
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'awards'], function () {
