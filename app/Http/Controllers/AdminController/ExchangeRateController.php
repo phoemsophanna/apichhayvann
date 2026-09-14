@@ -103,9 +103,9 @@ class ExchangeRateController extends Controller
                 ExchangeRate::create([
                     "image" => $query['image'] ?? null,
                     "from"  => $query['from'],
-                    "fromKm"  => $query['fromKm'],
+                    "fromKm"  => isset($query['fromKm']) ? $query['fromKm'] : "",
                     "to"    => $query['to'],
-                    "toKm"    => $query['toKm'],
+                    "toKm"    => isset($query['toKm']) ? $query['toKm'] : "",
                     "buy"   => $query['buy'],
                     "sell"  => $query['sell'],
                     "isMultiply" => $query['isMultiply'],
