@@ -38,14 +38,14 @@ Route::group([
 
 Route::group(['middleware' => 'api', 'prefix' => 'partners'], function () {
     Route::get("/", [Admin\PartnerController::class, "index"]);
-    Route::post("/", [Admin\PartnerController::class, "store"])->middleware(["permission:pertners-menu.create|permission:pertners-menu.edit"]);
+    Route::post("/", [Admin\PartnerController::class, "store"]);
     Route::get("/detail", [Admin\PartnerController::class, "show"])->middleware(["permission:partners-menu.edit"]);
     Route::delete("/delete/{id}", [Admin\PartnerController::class, "destroy"])->middleware(["permission:partners-menu.delete"]);
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'awards'], function () {
     Route::get("/", [Admin\AwardController::class, "index"]);
-    Route::post("/", [Admin\AwardController::class, "store"]);
+    Route::post("/", [Admin\AwardController::class, "store"])->middleware(["permission:award-menu.create|permission:award-menu.edit"]);
     Route::get("/detail", [Admin\AwardController::class, "show"])->middleware(["permission:award-menu.edit"]);
     Route::delete("/delete/{id}", [Admin\AwardController::class, "destroy"])->middleware(["permission:award-menu.delete"]);
 });
