@@ -15,8 +15,11 @@ class ActivityLogController extends Controller
     public function index()
     {
         $activities = ActivityLog::with('user')
+            ->when(auth()->id() != 1, function ($query) {
+                $query->where('user_id', '!=', 1);
+            })
             ->latest()
-            ->paginate(20);
+            ->paginate(100);
 
         return response()->json([
             'message' => 'Get Activity list success.',
