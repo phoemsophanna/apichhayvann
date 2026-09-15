@@ -35,7 +35,8 @@ class PageBannerController extends Controller
             "type" => request("pageTitle", ""),
             "pageTitle" => request("pageTitle", ""),
             "image" => request("image", null),
-            'isActive' => request("isActive", true)
+            'isActive' => request("isActive", true),
+            "isHide" => request("isHide", false)
         ];
 
         $result = $this->_onSave($request->id, $dataForm);
