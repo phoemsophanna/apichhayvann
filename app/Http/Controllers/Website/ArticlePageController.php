@@ -50,7 +50,7 @@ class ArticlePageController extends Controller
     public function show(Request $request,$slug)
     {
         $lang = $request->header("Accept-Language");
-        $articles = News::select("id", "title", "titleKm", "image", "summary", "summaryKm", "category_id", "date")->where([["isActive", true], ["id", "!=", $id]])->orderBy("id", "desc")->limit(8)->get();
+        $articles = News::select("id", "title", "titleKm", "image", "summary", "summaryKm", "category_id", "date")->where([["isActive", true], ["slug", "!=", $slug]])->orderBy("id", "desc")->limit(8)->get();
         $article = News::where("slug", $slug)->first();
         $article->title = $lang == "KHM" && !empty($article->titleKm) ? $article->titleKm : $article->title;
         $article->content = $lang == "KHM" && !empty($article->contentKm) ? $article->contentKm : $article->content;
