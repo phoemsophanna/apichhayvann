@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AdminController;
 use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
+use App\Models\ActivityLog;
 
 class SiteSettingController extends Controller
 {
@@ -98,6 +99,15 @@ class SiteSettingController extends Controller
         } else {
             SiteSetting::create(["type" => $req->type, "content" => json_encode($item)]);
         }
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'update',
+            'module' => 'site-settings',
+            'description' => 'Updated Site Settings:'.$req->type,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
 
         return response()->json([
             'message' => 'Save record is successfully.',
