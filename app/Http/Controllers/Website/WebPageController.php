@@ -506,7 +506,7 @@ class WebPageController extends Controller
         $general->teams = Team::where("isActive",1)->count();
         $general->testimonels = Testimonial::where("isActive",1)->count();
         $general->article = News::where("isActive",1)->count();
-        $service = Service::select("title","titleKm","id")->where("isActive", 1)->orderby("ordering")->get();
+        $service = Service::select("title","titleKm","slug","id")->where("isActive", 1)->orderby("ordering")->get();
         $contact = json_decode($contact->content);
         $contact->phoneNumber = $contact->phoneNumber ? json_decode($contact->phoneNumber) : null;
         $general->faq = Faq::where("isActive", 1)->count();

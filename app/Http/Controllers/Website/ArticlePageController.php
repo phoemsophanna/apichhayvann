@@ -17,9 +17,9 @@ class ArticlePageController extends Controller
     {
         $lang = $request->header("Accept-Language");
         if($request->categoryId) {
-            $articles = News::select("id", "title", "titleKm", "image", "summary", "summaryKm", "category_id", "date")->where([["isActive", true],['category_id',$request->categoryId]])->orderBy("ordering", "asc")->get();
+            $articles = News::select("id", "title", "titleKm", "image", "summary", "summaryKm", "category_id", "slug", "date")->where([["isActive", true],['category_id',$request->categoryId]])->orderBy("ordering", "asc")->get();
         } else {
-            $articles = News::select("id", "title", "titleKm", "image", "summary", "summaryKm", "category_id", "date")->where([["isActive", true]])->orderBy("ordering", "asc")->get();
+            $articles = News::select("id", "title", "titleKm", "image", "summary", "summaryKm", "category_id", "slug", "date")->where([["isActive", true]])->orderBy("ordering", "asc")->get();
         }
         $articles->each(function($q) use ($lang) {
             $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title;
