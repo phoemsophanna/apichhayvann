@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Permission;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class RolePermissionController extends Controller
 {
