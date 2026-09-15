@@ -27,7 +27,7 @@ class CareerPageController extends Controller
         $career->subtitle = $lang == "KHM" && !empty($career->subtitleKm) ? $career->subtitleKm : $career->subtitle;
         $career->title = $lang == "KHM" && !empty($career->titleKm) ? $career->titleKm : $career->title;
         $career->summary = $lang == "KHM" && !empty($career->summaryKm) ? $career->summaryKm : $career->summary;
-        $meta = PageBanner::where("type", "CareerPage")->first();
+        $meta = PageBanner::where("type", "Careers")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
@@ -47,7 +47,7 @@ class CareerPageController extends Controller
         $career->content = $lang == "KHM" && !empty($career->contentKm) ? $career->contentKm : $career->content;
         $career->deadline = Carbon::parse($career->deadline)->format("F d, Y");
         
-        $meta = PageBanner::where("type", "CareerPage")->first();
+        $meta = PageBanner::where("type", "Careers")->first();
         if (!$career) {
             return response()->json([
                 "status" => "failed",

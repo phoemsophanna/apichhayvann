@@ -41,7 +41,7 @@ class WebPageController extends Controller
             $q->reviewerPosition = $lang == "KHM" && !empty($q->reviewerPositionKm) ? $q->reviewerPositionKm : $q->reviewerPosition;
             $q->comment = $lang == "KHM" && !empty($q->commentKm) ? $q->commentKm : $q->comment;
         });
-        $meta = PageBanner::where("type", "TestimonialPage")->first();
+        $meta = PageBanner::where("type", "Testimonials")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
@@ -125,7 +125,7 @@ class WebPageController extends Controller
         $service->summary = $lang == "KHM" && !empty($service->summaryKm) ? $service->summaryKm : $service->summary;
         $service->title = $lang == "KHM" && !empty($service->titleKm) ? $service->titleKm : $service->title; 
         
-        $meta = PageBanner::where("type", "ExchangePage")->first();
+        $meta = PageBanner::where("type", "Currency Exchange")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
@@ -233,7 +233,7 @@ class WebPageController extends Controller
             });
             $q->faq = $faq;
         });
-        $meta = PageBanner::where("type", "FaqPage")->first();
+        $meta = PageBanner::where("type", "FAQs")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
@@ -248,7 +248,7 @@ class WebPageController extends Controller
         $organization = SiteSetting::where("type", "ORGANIZATION")->first();
         $organization = json_decode($organization->content);
         $organization->des = $lang == "KHM" && !empty($organization->desKm) ? $organization->desKm : $organization->des;
-        $banner = PageBanner::where("type", "ORGANIZATION")->first();
+        $banner = PageBanner::where("type", "Organization")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
@@ -267,7 +267,7 @@ class WebPageController extends Controller
         $settings = SiteSetting::where("type", "HISTORY")->first();
         $settings = json_decode($settings->content);
         $settings->history_description_eng = $lang == "KHM" && !empty($settings->history_description_km) ? $settings->history_description_km : $settings->history_description_eng;
-        $banner = PageBanner::where("type", "HISTORY")->first();
+        $banner = PageBanner::where("type", "Our History")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
@@ -286,7 +286,7 @@ class WebPageController extends Controller
         $team->description = $lang == "KHM" && !empty($team->descriptionKm) ? $team->descriptionKm : $team->description;
         $sites = SiteSetting::where("type", "TEAMPAGE")->first();
         $sites = json_decode($sites->content);
-        $banner = PageBanner::where("type", "TEAM")->first();
+        $banner = PageBanner::where("type", "Our Team")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
@@ -337,7 +337,8 @@ class WebPageController extends Controller
         $sites->video_title = $lang == "KHM" && !empty($sites->video_title_km)
             ? $sites->video_title_km
             : $sites->video_title_eng;
-        $banner = PageBanner::where("type", "PLATFORM")->first();
+        $banner = PageBanner::where("type", "
+Our Platform")->first();
         $services = Card::where("status", 1)->orderby("ordering", "desc")->get();
         $services->each(function($query) use ($lang){
             $query->title = $lang == "KHM" && !empty($query->title_km) ? $query->title_km : $query->title_eng;
@@ -373,7 +374,7 @@ class WebPageController extends Controller
         });
         $sites = SiteSetting::where("type", "TEAMPAGE")->first();
         $sites = json_decode($sites->content);
-        $banner = PageBanner::where("type", "TEAM")->first();
+        $banner = PageBanner::where("type", "Our Team")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
@@ -390,7 +391,7 @@ class WebPageController extends Controller
         $service->title = $lang == "KHM" && !empty($service->titleKm) ? $service->titleKm : $service->title;
         $service->content = $lang == "KHM" && !empty($service->contentKm) ? $service->contentKm : $service->content;
 
-        $banner = PageBanner::where("type", "SERVICE")->first();
+        $banner = PageBanner::where("type", "Our Services")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
@@ -408,7 +409,7 @@ class WebPageController extends Controller
             $q->country = $lang == "KHM" && !empty($q->countryKm) ? $q->countryKm : $q->country;
             $q->gallery = json_decode($q->gallery);
         });
-        $banner = PageBanner::where("type", "PRODUCT")->first();
+        $banner = PageBanner::where("type", "Our Products")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
@@ -435,7 +436,7 @@ class WebPageController extends Controller
         $product->country = $lang == "KHM" && !empty($product->countryKm) ? $product->countryKm : $product->country;
         $product->description = $lang == "KHM" && !empty($product->descriptionKm) ? $product->descriptionKm : $product->description;
         $product->gallery = json_decode($product->gallery);
-        $banner = PageBanner::where("type", "PRODUCT")->first();
+        $banner = PageBanner::where("type", "Our Products")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
@@ -530,7 +531,7 @@ class WebPageController extends Controller
         $contact->working2 = $lang == "KHM" && !empty($contact->working2_Km) ? $contact->working2_Km : $contact->working2;
         $contact->working3 = $lang == "KHM" && !empty($contact->working3_Km) ? $contact->working3_Km : $contact->working3;
         $contact->phoneNumber = json_decode($contact->phoneNumber);
-        $meta = PageBanner::where("type", "ContactPage")->first();
+        $meta = PageBanner::where("type", "Contact Us")->first();
 
         return response()->json([
             "status" => "success",
@@ -548,7 +549,7 @@ class WebPageController extends Controller
         $individual->subtitle = $lang == "KHM" && !empty($individual->subtitleKm) ? $individual->subtitleKm : $individual->subtitle;
         $individual->title = $lang == "KHM" && !empty($individual->titleKm) ? $individual->titleKm : $individual->title;
         $individual->summary = $lang == "KHM" && !empty($individual->summaryKm) ? $individual->summaryKm : $individual->summary;
-        $meta = PageBanner::where("type", "Individual")->first();
+        $meta = PageBanner::where("type", "Open Account")->first();
 
         return response()->json([
             "status" => "success",

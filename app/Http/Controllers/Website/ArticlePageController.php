@@ -37,7 +37,7 @@ class ArticlePageController extends Controller
             $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title;
         });
 
-        $meta = PageBanner::where("type", "NEWS")->first();
+        $meta = PageBanner::where("type", "Latest News")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
@@ -74,7 +74,7 @@ class ArticlePageController extends Controller
             $q->title = $lang == "KHM" && !empty($q->titleKm) ? $q->titleKm : $q->title;
         });
 
-        $meta = PageBanner::where("type", "NEWS")->first();
+        $meta = PageBanner::where("type", "Latest News")->first();
         if (!$article) {
             return response()->json([
                 "status" => "failed",
