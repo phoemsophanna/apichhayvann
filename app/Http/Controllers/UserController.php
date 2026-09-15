@@ -6,6 +6,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class UserController extends Controller
 {
@@ -58,6 +59,15 @@ class UserController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'user',
+            'description' => $request->id ? 'Updated Users:'.$request->name : 'Created Users:'.$request->name,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success'
@@ -91,6 +101,14 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $model = User::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'user',
+            'description' =>'Deleted Users:'.$model->name,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',
