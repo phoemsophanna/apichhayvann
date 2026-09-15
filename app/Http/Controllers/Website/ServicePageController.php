@@ -18,7 +18,7 @@ class ServicePageController extends Controller
 
         $service = SiteSetting::where("type", "SERVICE")->first();
         $skillset = SiteSetting::where("type", "SKILLSET")->first();
-        $meta = PageBanner::where("pageTitle", "ServicePage")->first();
+        $meta = PageBanner::where("type", "ServicePage")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",

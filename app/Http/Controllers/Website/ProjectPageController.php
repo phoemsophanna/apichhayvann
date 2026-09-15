@@ -15,7 +15,7 @@ class ProjectPageController extends Controller
     {
         $projectCategory = ProjectCategory::select("id", "name")->where('isActive', true)->orderBy("ordering", "asc")->get();
         $project = SiteSetting::where("type", "PROJECT")->first();
-        $meta = PageBanner::where("pageTitle", "ProjectPage")->first();
+        $meta = PageBanner::where("type", "ProjectPage")->first();
         return response()->json([
             "status" => "success",
             "message" => "Load data success",
