@@ -34,9 +34,8 @@ class ServicePageController extends Controller
 
     public function show($id)
     {
-        dd($id);
-        $model = Service::where("slug", $id)->first();
-        $relatedServices = Service::where([["isActive", true], ["slug", "!=", $id]])->orderBy('ordering', 'asc')->get();
+        $model = Service::find($id);
+        $relatedServices = Service::where([["isActive", true], ["id", "!=", $id]])->orderBy('ordering', 'asc')->get();
         $service = SiteSetting::where("type", "SERVICE")->first();
         if (!$model) {
             return response()->json([

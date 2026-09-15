@@ -385,7 +385,8 @@ class WebPageController extends Controller
 
     public function servicePage(Request $request, $id) {
         $lang = $request->header("Accept-Language");
-        $service = Service::findOrFail($id);
+        $service = Service::where("slug", $id)->first();
+        // $service = Service::findOrFail($id);
         $service->title = $lang == "KHM" && !empty($service->titleKm) ? $service->titleKm : $service->title;
         $service->content = $lang == "KHM" && !empty($service->contentKm) ? $service->contentKm : $service->content;
 
