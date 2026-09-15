@@ -13,5 +13,6 @@ class PageBanner extends Model
         "pageTitle",
         "image",
         "isActive",
+        "isHide"
     ];
 }
