@@ -249,6 +249,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'corporates'], function () {
     Route::get("/detail", [Admin\CorporateController::class, "show"])->middleware(["permission:corporate-form.view"]);
     Route::delete("/delete/{id}", [Admin\CorporateController::class, "destroy"])->middleware(["permission:corporate-form.delete"]);
 });
+Route::group(['middleware' => 'api', 'prefix' => 'activities'], function () {
+    Route::get("/", [Admin\ActivityLogController::class, "index"]);
+    Route::get("/{id}", [Admin\ActivityLogController::class, "show"]);
+});
 Route::group(['middleware' => 'api', 'prefix' => 'individuals'], function () {
     Route::get("/", [Admin\IndividualController::class, "index"]);
     Route::post("/", [Admin\IndividualController::class, "store"])->middleware(["permission:individual-form.edit"]);
