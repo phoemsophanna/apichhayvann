@@ -337,8 +337,7 @@ class WebPageController extends Controller
         $sites->video_title = $lang == "KHM" && !empty($sites->video_title_km)
             ? $sites->video_title_km
             : $sites->video_title_eng;
-        $banner = PageBanner::where("type", "
-Our Platform")->first();
+        $banner = PageBanner::where("type", "Our Platform")->first();
         $services = Card::where("status", 1)->orderby("ordering", "desc")->get();
         $services->each(function($query) use ($lang){
             $query->title = $lang == "KHM" && !empty($query->title_km) ? $query->title_km : $query->title_eng;
