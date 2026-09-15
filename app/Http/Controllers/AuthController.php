@@ -85,6 +85,14 @@ class AuthController extends Controller
      */
     public function logout()
     {
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'logout',
+            'module' => 'auth',
+            'description' => 'User logged out',
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         auth()->logout();
         return response()->json(['message' => 'User successfully signed out']);
     }
