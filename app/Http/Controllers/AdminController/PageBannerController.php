@@ -7,6 +7,7 @@ use App\Models\PageBanner;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class PageBannerController extends Controller
 {
@@ -46,6 +47,15 @@ class PageBannerController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'page_banners',
+            'description' => $request->id ? 'Updated Page Banners:'.$request->pageTitle : 'Created Page Banners:'.$request->pageTitle,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success'
@@ -79,6 +89,14 @@ class PageBannerController extends Controller
     public function destroy(string $id)
     {
         $model = PageBanner::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'page_banners',
+            'description' => 'Deleted Page Banners:'.$model->pageTitle,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',

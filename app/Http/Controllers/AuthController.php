@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\ActivityLog;
 
 class AuthController extends Controller
 {
@@ -34,6 +35,14 @@ class AuthController extends Controller
         if (!$token = auth()->attempt($validator->validated())) {
             return response()->json(['status' => 'fail', 'message' => "Email or password is incorrect."], 202);
         }
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'login',
+            'module' => 'auth',
+            'description' => 'User logged in',
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         return $this->createNewToken($token);
     }
     /**
@@ -55,6 +64,14 @@ class AuthController extends Controller
             $validator->validated(),
             ['password' => bcrypt($request->password)]
         ));
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'create',
+            'module' => 'user',
+            'description' => 'Created User:'.$request->name,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user
@@ -92,6 +109,14 @@ class AuthController extends Controller
             'phoneNumber' => request('phoneNumber', $user->phoneNumber),
             'userRole' => request('userRole', $user->userRole),
             'image' => request('image', $user->image),
+        ]);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'update',
+            'module' => 'user',
+            'description' => 'Updated User:'.$user->name,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
         ]);
         return response()->json([
             "message" => 'success',

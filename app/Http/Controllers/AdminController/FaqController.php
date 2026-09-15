@@ -7,6 +7,7 @@ use App\Models\Faq;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class FaqController extends Controller
 {
@@ -49,6 +50,15 @@ class FaqController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'faqs',
+            'description' => $request->id ? 'Updated FAQ:'.$request->question : 'Created FAQ:'.$request->question,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success'
@@ -83,6 +93,14 @@ class FaqController extends Controller
     public function destroy(string $id)
     {
         $model = Faq::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'faqs',
+            'description' => 'Deleted FAQ:'.$model->question,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',

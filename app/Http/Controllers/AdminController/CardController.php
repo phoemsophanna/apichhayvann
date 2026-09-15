@@ -7,6 +7,7 @@ use App\Models\Card;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class CardController extends Controller
 {
@@ -48,6 +49,15 @@ class CardController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'cards',
+            'description' => $request->id ? 'Updated Platform Guide:'.$request->title_eng : 'Created Platform Guide:'.$request->title_eng,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success'
@@ -81,6 +91,14 @@ class CardController extends Controller
     public function destroy(string $id)
     {
         $model = Card::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'cards',
+            'description' => 'Deleted Platform Guide:'.$model->title,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',

@@ -7,6 +7,7 @@ use App\Models\Partner;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class PartnerController extends Controller
 {
@@ -45,6 +46,15 @@ class PartnerController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'partners',
+            'description' => $request->id ? 'Updated Partners:(ID: '.$request->id.')' : 'Created Partners.',
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success'
@@ -78,6 +88,14 @@ class PartnerController extends Controller
     public function destroy(string $id)
     {
         $model = Partner::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'partners',
+            'description' => 'Deleted Partners:(ID: '.$id.')',
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',

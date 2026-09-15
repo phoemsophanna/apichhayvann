@@ -7,6 +7,7 @@ use App\Models\Award;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class AwardController extends Controller
 {
@@ -48,7 +49,14 @@ class AwardController extends Controller
                 'status' => 'failed'
             ], 200);
         }
-
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'awards',
+            'description' => $request->id ? 'Updated Awards:'.$request->title : 'Created Awards:'.$request->title,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success'
@@ -82,6 +90,14 @@ class AwardController extends Controller
     public function destroy(string $id)
     {
         $model = Award::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'awards',
+            'description' => 'Deleted Awards:'.$model->title,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',

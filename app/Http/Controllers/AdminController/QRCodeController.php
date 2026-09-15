@@ -7,6 +7,7 @@ use App\Models\QRCode;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class QRCodeController extends Controller
 {
@@ -42,6 +43,15 @@ class QRCodeController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'qr_code',
+            'description' => $request->id ? 'Updated QR Code:'.$request->link : 'Created QR Code:'.$request->link,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success'
@@ -75,6 +85,14 @@ class QRCodeController extends Controller
     public function destroy(string $id)
     {
         $model = QRCode::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'qr_code',
+            'description' => 'Deleted QR Code:'.$model->link,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',

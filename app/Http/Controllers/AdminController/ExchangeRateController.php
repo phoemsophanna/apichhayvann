@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Models\ActivityLog;
 
 class ExchangeRateController extends Controller
 {
@@ -53,6 +54,15 @@ class ExchangeRateController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'exchange_rate',
+            'description' => $request->id ? 'Updated Exchange Rate:(from)'.$request->from.'(to)'.$request->to : 'Created Exchange Rate:(from)'.$request->from.'(to)'.$request->to,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success'
@@ -86,6 +96,14 @@ class ExchangeRateController extends Controller
     public function destroy(string $id)
     {
         $model = ExchangeRate::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'exchange_rate',
+            'description' => 'Deleted Exchange Rate:(from)'.$model->from.'(to)'.$model->to,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',
@@ -121,6 +139,16 @@ class ExchangeRateController extends Controller
                 'status' => 'fail'
             ]);
         }
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'import',
+            'module' => 'exchange_rate',
+            'description' => 'Import Exchange Rate.',
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Import exchange rate successfully!',
             "status" => 'success'

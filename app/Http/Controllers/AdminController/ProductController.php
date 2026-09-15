@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Models\ActivityLog;
 
 class ProductController extends Controller
 {
@@ -66,6 +67,15 @@ class ProductController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'products',
+            'description' => $request->id ? 'Updated Products:'.$request->title : 'Created Products:'.$request->title,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success',
@@ -101,6 +111,14 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $model = Product::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'products',
+            'description' => 'Deleted Products:'.$model->title,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',

@@ -7,6 +7,7 @@ use App\Models\Category;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class CategoryController extends Controller
 {
@@ -49,6 +50,15 @@ class CategoryController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => $request->type == "FAQ" ? 'faq_category' : 'news_category',
+            'description' => $request->id ? ($request->type == "FAQ" ? 'Updated Category FAQ:'.$request->title : 'Updated Category News:'.$request->title) : ($request->type == "FAQ" ? 'Created Category FAQ:'.$request->title : 'Created Category News:'.$request->title),
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success'
@@ -89,6 +99,14 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $model = Category::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => $model->type == "FAQ" ? 'faq_category' : 'news_category',
+            'description' => $model->type == "FAQ" ? 'Deleted Category FAQ:'.$model->title : 'Deleted Category News:'.$model->title,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',

@@ -7,6 +7,7 @@ use App\Models\Testimonial;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class TestimonialController extends Controller
 {
@@ -52,6 +53,15 @@ class TestimonialController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'testimonial',
+            'description' => $request->id ? 'Updated Testimonial:'.$request->reviewerName : 'Created Testimonial:'.$request->reviewerName,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success'
@@ -85,6 +95,14 @@ class TestimonialController extends Controller
     public function destroy(string $id)
     {
         $model = Testimonial::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'testimonials',
+            'description' => 'Deleted Testimonial:'.$model->reviewerName,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',

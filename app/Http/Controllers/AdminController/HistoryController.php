@@ -7,6 +7,7 @@ use App\Models\History;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class HistoryController extends Controller
 {
@@ -50,6 +51,15 @@ class HistoryController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'history',
+            'description' => $request->id ? 'Updated History:'.$request->title : 'Created History:'.$request->title,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success'
@@ -83,6 +93,14 @@ class HistoryController extends Controller
     public function destroy(string $id)
     {
         $model = History::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'history',
+            'description' => 'Deleted History:'.$model->title,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',

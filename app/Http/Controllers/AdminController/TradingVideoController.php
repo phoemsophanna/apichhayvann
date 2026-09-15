@@ -7,6 +7,7 @@ use App\Models\TradingVideo;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class TradingVideoController extends Controller
 {
@@ -52,6 +53,15 @@ class TradingVideoController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'trading_video',
+            'description' => $request->id ? 'Updated Trading Video:'.$request->title : 'Created Trading Video:'.$request->title,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success'
@@ -85,6 +95,14 @@ class TradingVideoController extends Controller
     public function destroy(string $id)
     {
         $model = TradingVideo::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'trading_video',
+            'description' => 'Deleted Trading Video:'.$model->title,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',

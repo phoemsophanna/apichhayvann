@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Models\ActivityLog;
 
 class TeamController extends Controller
 {
@@ -63,6 +64,15 @@ class TeamController extends Controller
                 'status' => 'failed'
             ], 200);
         }
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'team',
+            'description' => $request->id ? 'Updated Teams:'.$request->title : 'Created Teams:'.$request->title,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
 
         return response()->json([
             'message' => 'Save record is successfully.',

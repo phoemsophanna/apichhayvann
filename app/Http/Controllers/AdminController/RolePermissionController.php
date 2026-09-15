@@ -57,6 +57,15 @@ class RolePermissionController extends Controller
             ], 200);
         }
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => $request->id ? 'update' : 'create',
+            'module' => 'role_permission',
+            'description' => $request->id ? 'Updated Role & Permission:'.$request->name : 'Created Role & Permission:'.$request->name,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
         return response()->json([
             'message' => 'Save record is successfully.',
             'status' => 'success',
@@ -103,6 +112,14 @@ class RolePermissionController extends Controller
     public function destroy(string $id)
     {
         $model = Role::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'role_permission',
+            'description' => 'Deleted Role & Permission:'.$model->name,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',

@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Models\ActivityLog;
 
 class IndividualController extends Controller
 {
@@ -95,6 +96,14 @@ class IndividualController extends Controller
     public function destroy(string $id)
     {
         $model = Individual::findOrFail($id);
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'module' => 'open_account',
+            'description' => 'Deleted Open Account:'.$model->firstname.' '.$model->lastname,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
         $model->delete();
         return response()->json([
             'message' => 'Delete successfully.',
