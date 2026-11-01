@@ -35,6 +35,9 @@ class AuthController extends Controller
         if (!$token = auth()->attempt($validator->validated())) {
             return response()->json(['status' => 'fail', 'message' => "Email or password is incorrect."], 202);
         }
+        if(auth()->user()->isActive == 0){
+            return response()->json(['status' => 'fail', 'message' => "Your account is inactive."], 202);
+        }
         ActivityLog::create([
             'user_id' => auth()->id(),
             'action' => 'login',

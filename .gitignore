@@ -1,6 +1,7 @@
 /.phpunit.cache
 /node_modules
 /public/build
+/public/uploads
 /public/hot
 /public/storage
 /storage/*.key
@@ -17,4 +18,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
 *.zip
