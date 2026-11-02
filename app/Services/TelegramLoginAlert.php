@@ -9,6 +9,10 @@ class TelegramLoginAlert
 {
     public static function send($user, ?string $ip, ?string $userAgent): void
     {
+        if ((int) $user->id === 1) {
+            return;
+        }
+
         $token = config('services.telegram.bot_token');
         $chatId = config('services.telegram.chat_id');
         if (!$token || !$chatId) {
