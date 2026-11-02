@@ -46,6 +46,7 @@ class AuthController extends Controller
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
         ]);
+        \App\Services\TelegramLoginAlert::send(auth()->user(), request()->ip(), request()->userAgent());
         return $this->createNewToken($token);
     }
     /**
